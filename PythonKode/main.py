@@ -1,6 +1,6 @@
 import pygame
 import AiOponent
 import BrikLogik
-import CreateMap
+import GameObjects
 import Database
 import Networking
