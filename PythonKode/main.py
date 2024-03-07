@@ -4,3 +4,4 @@ import BrikLogik
 import GameObjects
 import Database
 import Networking
+from Constants import FPS

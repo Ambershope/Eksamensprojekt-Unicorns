@@ -1,6 +1,6 @@
 import random
 from Database import pathToGameDataFile
-
+from Constants import MAX_DUPES_IN_PILE
 
 class Field:
     def __init__ (self, fieldId=0):
@@ -78,7 +78,7 @@ class Pile:
         for line in pileData:
             lineDataSplit=line.split(" ", 1)
 
-            for piece in range (int(lineDataSplit[0])):
+            for piece in range (  min( int(lineDataSplit[0]) , MAX_DUPES_IN_PILE)  ):
                 pile.append(lineDataSplit[1])
 
         return pile
@@ -115,6 +115,5 @@ if __name__ == '__main__':
     print(kort)
 
     pile=Pile("Default")
-    #pile.insertPiece(["Testing","1,2","uhm", "12"])
     print(pile)
     pass
