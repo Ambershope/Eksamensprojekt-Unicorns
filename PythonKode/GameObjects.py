@@ -1,5 +1,5 @@
 import random
-import Database
+from Database import pathToGameDataFile
 
 
 class Field:
@@ -20,7 +20,7 @@ class Field:
         
     def getStartField(self):
         #får field ind i fieldData
-        file=open(Database.pathToGameDataFile("Maps","Map"+str(self.fieldId)), 'r')
+        file=open(pathToGameDataFile("Maps","Map"+str(self.fieldId)), 'r')
         fieldData=file.read().split("\n")
         file.close()
 
@@ -69,7 +69,7 @@ class Pile:
     def getStartPile(self):
     
         #læser pile ind i pileData
-        file=open(Database.pathToGameDataFile("Piles",self.pileName), 'r', encoding="utf-8")
+        file=open(pathToGameDataFile("Piles",self.pileName), 'r', encoding="utf-8")
         pileData=file.read().split("\n")
         file.close()
 
