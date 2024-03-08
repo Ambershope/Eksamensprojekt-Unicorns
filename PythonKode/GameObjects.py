@@ -7,7 +7,7 @@ class Field:
         self.fieldId=fieldId
         self.tileField=self.getStartField()
 
-    #returnere en string med et flot formateret kort
+    #returnere en string med et flot formateret field
     def __str__ (self):
         tekst="\n"
 
