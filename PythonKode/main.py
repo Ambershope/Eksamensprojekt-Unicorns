@@ -10,5 +10,6 @@ from Constants import FPS
 
 def main():
     pass
+Networking.net
 
 main()

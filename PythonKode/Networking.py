@@ -4,11 +4,11 @@ import threading
 def findPorts(port=35565):
     '''
     Finds a list of open ports on current internet
-    \n*port is the port to search on. Deafault 35565.
+    \n*port is the port to search on. Default 35565.
     '''
     pass
 
-class NetConecter():
+class NetConnecter():
     '''
     This class handels Networking in our game, \nHere we can open ports and connect to ports on certain addresses
     '''
@@ -44,13 +44,13 @@ class NetConecter():
 if __name__ == "__main__":
     def startClient():
         print("Client is starting")
-        clientNet = NetConecter()
-        clientNet.connectPort("10.160.219.215")
+        clientNet = NetConnecter()
+        clientNet.connectPort("5.56.146.71")
         pass
 
     def startServer():
         print("Server is starting")
-        serverNet = NetConecter()
+        serverNet = NetConnecter()
         threading.Thread(target=serverNet.openPort).start()
         pass
 
