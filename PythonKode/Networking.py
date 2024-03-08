@@ -11,6 +11,9 @@ class NetConecter():
 
     def openPort(self):
         self.socket.bind(('', self.port))
+        self.socket.listen()
+        client, addr = self.socket.accept()
+        print("Got connection from", addr)
 
     def connectPort(self, portAddress, port = 35565):
         try:
