@@ -2,17 +2,38 @@ import socket
 import threading
 
 def findPorts(port=35565):
+    '''
+    Finds a list of open ports on current internet
+    \n*port is the port to search on. Deafault 35565.
+    '''
     pass
 
 class NetConecter():
+    '''
+    This class handels Networking in our game, \nHere we can open ports and connect to ports on certain addresses
+    '''
     def __init__(self, port = 35565):
         self.port = port
         self.socket = socket.socket()
+        self.stopServer = False
+        self.client = None
+        self.addr = None
 
     def openPort(self):
+        '''
+        This function should not be used with it self.
+        \n.
+        '''
         self.socket.bind(('', self.port))
+        self.socket.listen()
+        self.client, self.addr = self.socket.accept()
+        print("Got connection from", self.addr)
 
     def connectPort(self, portAddress, port = 35565):
+        '''
+        This function should not be used on your own.
+        \nInstead use connect().
+        '''
         try:
             self.socket.connect((portAddress, port))
         except:
@@ -24,13 +45,13 @@ if __name__ == "__main__":
     def startClient():
         print("Client is starting")
         clientNet = NetConecter()
-        clientNet.connectPort("127.0.0.1")
+        clientNet.connectPort("10.160.219.215")
         pass
 
     def startServer():
         print("Server is starting")
         serverNet = NetConecter()
-        serverNet.openPort()
+        threading.Thread(target=serverNet.openPort).start()
         pass
 
     from tkinter import *
