@@ -9,7 +9,7 @@ from Constants import FPS
 pygame.init()
 
 
-screensize = (800, 1200)
+screensize = (1200, 600)
 screen = pygame.display.set_mode(screensize)
 clock = pygame.time.Clock()
 
@@ -48,7 +48,7 @@ def idelWait():
     pass
 
 def checkWin():
-    return True
+    return False
 
 def sendTurn():
     pass
