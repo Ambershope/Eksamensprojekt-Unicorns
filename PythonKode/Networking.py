@@ -14,7 +14,7 @@ class NetConnecter():
     '''
     def __init__(self, port = 35565):
         self.port = port
-        self.socket = socket.socket()
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.stopServer = False
         self.client = None
         self.addr = None
@@ -24,7 +24,9 @@ class NetConnecter():
         This function should not be used with it self.
         \n.
         '''
-        self.socket.bind(('', self.port))
+        addr = (socket.gethostbyname(socket.gethostname()), self.port)
+        self.socket.bind(addr)
+        print("Server open on", addr[0], ":", addr[1])
         self.socket.listen()
         self.client, self.addr = self.socket.accept()
         print("Got connection from", self.addr)
@@ -42,10 +44,10 @@ class NetConnecter():
 
 
 if __name__ == "__main__":
-    def startClient():
+    def startClient(addr):
         print("Client is starting")
         clientNet = NetConnecter()
-        clientNet.connectPort("5.56.146.71")
+        clientNet.connectPort(addr)
         pass
 
     def startServer():
@@ -59,13 +61,16 @@ if __name__ == "__main__":
     root.title("Networking Test")
     root.geometry("500x500")
     f1 = Frame(root)
-    b1 = Button(f1, text="Start Client", command=startClient)
+    e1 = Entry(f1, width=50, justify=CENTER)
+    e1.insert(END, '127.0.0.1')
+    b1 = Button(f1, text="Start Client", command=lambda: startClient(e1.get()))
     b2 = Button(f1, text="Start 'Server'", command=startServer)
-    t1 = Text(f1, height=25, width=50)
+    t1 = Text(f1, height=20, width=50)
     l1 = Label(f1, text=" --- Netværks text --- ")
     f1.pack()
     l1.grid(row=0, column=0, columnspan=2)
     b1.grid(row=1, column=0)
     b2.grid(row=1, column=1)
-    t1.grid(row=2, column=0, columnspan=2)
+    e1.grid(row=2, column=0, columnspan=2, )
+    t1.grid(row=3, column=0, columnspan=2)
     root.mainloop()
