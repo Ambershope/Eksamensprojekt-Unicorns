@@ -17,8 +17,11 @@ class Inputs:
 
         #only active for a single frame
         self.mouseLeftButtonClick=False
+        
+        self.frameCounter = 0
 
     def update(self):
+        self.frameCounter += 1
         self.mouseLeftButtonClick=False
         self.mousePosition=pygame.mouse.get_pos()
 
@@ -43,7 +46,6 @@ class Inputs:
         
 
 def main():
-    global frameCounter
     #main program loop
     #Updates the input and calls either game() or startscreen() every frame
     while True:
@@ -63,7 +65,6 @@ def main():
 
         pygame.display.update()
         clock.tick(FPS)
-        frameCounter += 1
 
 def game():
     '''
@@ -77,7 +78,7 @@ Core game logic, called every frame while in game
 
 #visuals for the core game
 def drawGame():
-    global frameCounter
+    frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,brightness,0))
 
@@ -94,7 +95,7 @@ Stuff for while on the start screen should
 
 #visuals for the startscreen    
 def drawStartScreen():
-    global frameCounter
+    frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,0,brightness))
 
@@ -141,7 +142,7 @@ def opponentWin():
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
-pygame.display.set_caption("Unicorn Fight Club")
+pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 frameCounter=1
 screenSelector="start"

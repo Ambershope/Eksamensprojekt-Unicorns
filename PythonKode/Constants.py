@@ -4,3 +4,4 @@ FPS = 30 #frames per second
 SCREEN_WITH = 1200
 SCREEN_HEIGHT = 600
 SCREEN_SIZE=(SCREEN_WITH,SCREEN_HEIGHT)
+CAPTION = "Unicorn competition"
