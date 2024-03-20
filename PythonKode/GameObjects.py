@@ -25,6 +25,8 @@ class Field:
         file.close()
 
         #finder sidelængden på banen
+        
+        # Shouldnt it be sizeX [0] instead of sizeY [0]?
         sizeX=len(fieldData)
         sizeY=len(fieldData[0])
         if sizeX == sizeY:
@@ -52,11 +54,13 @@ class Field:
 
 class Pile:
     def __init__(self, pileName):
-        self.pileName =pileName
+        self.pileName = pileName
         self.pile=self.getStartPile()
         self.shuffle()
 
     def __str__(self):
+
+        # Heyo Mayo David what does this mean?
         string="\nStart bunken var "+self.pileName+"\nNuværende bunke:\n"
         for i in self.pile:
             string=string+str(i)+"\n"
