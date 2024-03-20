@@ -98,7 +98,7 @@ class Pile:
     #indsætter en string eller liste med strings i bunken enten i toppen eller bunden
     def insertPiece(self, pieceNameStrOrList, onTop = True):
 
-        if str(type(pieceNameStrOrList)) == "<class 'str'>":
+        if type(pieceNameStrOrList) == str:
             pieceList = [pieceNameStrOrList]
         else:
             pieceList = pieceNameStrOrList
