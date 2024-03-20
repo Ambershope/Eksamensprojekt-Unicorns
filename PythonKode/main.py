@@ -26,12 +26,15 @@ class Inputs:
             if event.type == pygame.QUIT:
                 self.quit=True
 
+                # If the event type from Pygame says that a button has been pressed,
+                # and that event is that the left button has been presed while is isnt already pressed, then we set it to be pressed
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse=pygame.mouse.get_pressed()
                 if self.mouseLeftButtonDown == False and mouse[0] == True:
                     self.mouseLeftButtonDown = True
                     self.mouseLeftButtonClick = True
                 
+                # If Pygame event is that a button has been liften, and its the left mouse, then we set left mouse down = false
             elif event.type == pygame.MOUSEBUTTONUP:
                 mouse=pygame.mouse.get_pressed()
                 if mouse[0] == False:
