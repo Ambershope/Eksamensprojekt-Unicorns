@@ -13,8 +13,8 @@ class Field:
 
         for y in range (self.fieldSize):
             for x in range (self.fieldSize):
-                tekst = tekst + " " + str(self.tileField[x][y]) + " "
-            tekst = tekst + "\n"
+                tekst += " " + str(self.tileField[x][y]) + " "
+            tekst += "\n"
 
         return tekst
         
