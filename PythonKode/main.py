@@ -8,7 +8,7 @@ import Networking
 from Constants import *
 
 
-
+Networking.NetConnecter
 class Inputs:
     def __init__(self):
         self.quit=False
