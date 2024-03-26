@@ -58,11 +58,14 @@ def main():
             game()
         elif screenSelector == "start":
             startScreen()
+        elif screenSelector == "gamemode":
+            gamemodeSelect()
         else:
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
-        
 
+        overlay()
+        
         pygame.display.update()
         clock.tick(FPS)
 
@@ -78,6 +81,9 @@ Core game logic, called every frame while in game
 
 #visuals for the core game
 def drawGame():
+    '''
+Draws the game\n
+    '''
     frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,brightness,0))
@@ -90,16 +96,44 @@ Stuff for while on the start screen should
     '''
     if Input.mouseLeftButtonClick == True:
         global screenSelector
-        screenSelector ="game"
+        screenSelector ="gamemode"
     drawStartScreen()
 
 #visuals for the startscreen    
 def drawStartScreen():
+    '''
+Draws the start screen\n
+    '''
     frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,0,brightness))
 
 
+def gamemodeSelect():
+    '''Stuff for while on the gamemode selection screen should
+\nhappen within this function, including drawing it
+    '''
+    if Input.mouseLeftButtonClick == True:
+        global screenSelector
+        screenSelector ="game"
+    gamemodeScreenDraw()
+
+def gamemodeScreenDraw():
+    '''
+Draws the select gamemode screen\n
+    '''
+    frameCounter = Input.frameCounter
+    brightness=abs(255-((frameCounter*3)%511))
+    screen.fill((brightness,0,0))
+
+def overlay():
+    '''The overlay on all screens'''
+
+    overlayDraw()
+
+def overlayDraw():
+    print("over and out")
+    '''draws the overlay'''
 
 
 def startGame():
@@ -141,7 +175,7 @@ def opponentWin():
 
 
 pygame.init()
-screen = pygame.display.set_mode(SCREEN_SIZE)
+screen = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 frameCounter=1
