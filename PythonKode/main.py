@@ -64,8 +64,8 @@ def main():
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
 
-        overlay()
-        
+        if overlay() == "close game":
+            return "close game"
         pygame.display.update()
         clock.tick(FPS)
 
@@ -128,12 +128,15 @@ Draws the select gamemode screen\n
 
 def overlay():
     '''The overlay on all screens'''
-
+    
+    if Input.mouseLeftButtonClick and Input.mousePosition[0]<50 and Input.mousePosition[1]<50:
+        return "close game"
+    
     overlayDraw()
 
 def overlayDraw():
-    print("over and out")
     '''draws the overlay'''
+    pass
 
 
 def startGame():
