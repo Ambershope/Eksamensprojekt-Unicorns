@@ -58,14 +58,16 @@ def main():
             game()
         elif screenSelector == "start":
             startScreen()
+        elif screenSelector == "main menu":
+            pass
         elif screenSelector == "gamemode":
             gamemodeSelect()
         else:
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
-
-        if overlay() == "close game":
-            return "close game"
+        if screenSelector != "start" and screenSelector != "main menu":
+            if overlay() == "close game":
+                return "close game"
         pygame.display.update()
         clock.tick(FPS)
 
