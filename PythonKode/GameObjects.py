@@ -83,7 +83,7 @@ class Pile:
             lineDataSplit=line.split(" ", 1)
 
             for piece in range (  min( int(lineDataSplit[0]) , MAX_DUPES_IN_PILE)  ):
-                pile.append(lineDataSplit[1])
+                pile.append(int(lineDataSplit[1]))
 
         return pile
     

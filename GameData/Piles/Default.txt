@@ -1,3 +1,3 @@
-1 Enhjørning A
-3 Enhjørning B
-2 Enhjørning C
+1 1
+3 2
+2 3
