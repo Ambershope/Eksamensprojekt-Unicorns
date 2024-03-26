@@ -117,7 +117,7 @@ def gamemodeSelect():
     gamemodeScreenDraw(Input, screen)
 
 def overlay():
-    '''The overlay on all most screens'''
+    '''The overlay on most screens'''
     
     if Input.mouseLeftButtonClick and Input.mousePosition[0]<50 and Input.mousePosition[1]<50:
         return "close game"
@@ -166,13 +166,14 @@ def opponentWin():
 
 
 pygame.init()
-screen = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
+screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 frameCounter=1
 screenSelector="start"
 Input=Inputs()
-#tileSize=
-
+tileSizeX=screen.get_width()/GRID_LENGTH_X
+tileSizeY=screen.get_height()/GRID_LENGTH_Y
+print(tileSizeX,tileSizeY)
 main()
 pygame.quit()
