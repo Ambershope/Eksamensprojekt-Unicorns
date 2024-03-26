@@ -1,4 +1,5 @@
 import pygame
+import Database
 
 
 
@@ -20,7 +21,9 @@ Draws the select gamemode screen\n
 
 def overlayDraw(Input, screen):
     '''draws the overlay'''
-    pass
+    image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
+    screen.blit(image, (0, 0))
+    
 
 def drawStartScreen(screen):
     '''
