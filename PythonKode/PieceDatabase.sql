@@ -16,7 +16,10 @@ CREATE TABLE `pieces` (
 
 INSERT INTO `pieces` 
 (`pieceId`, `pieceName`, `north`, `east`, `south`, `west`, `artPath`, `effektId`) VALUES
-(1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0),
+(1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0)
+
+ALTER TABLE `pieces`
+  ADD PRIMARY KEY (`pieceId`)
 
 COMMIT;
 
