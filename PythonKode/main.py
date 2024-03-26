@@ -5,6 +5,7 @@ import BrikLogik
 import GameObjects
 import Database
 import Networking
+from Visuals import *
 from Constants import *
 
 
@@ -59,7 +60,7 @@ def main():
         elif screenSelector == "start":
             startScreen()
         elif screenSelector == "main menu":
-            pass
+            mainMenu()
         elif screenSelector == "gamemode":
             gamemodeSelect()
         else:
@@ -78,17 +79,8 @@ Core game logic, called every frame while in game
     '''
     if Input.mouseLeftButtonClick == True:
         global screenSelector
-        screenSelector ="start"
-    drawGame()
-
-#visuals for the core game
-def drawGame():
-    '''
-Draws the game\n
-    '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((0,brightness,0))
+        screenSelector ="main menu"
+    drawGame(Input, screen)
 
 
 def startScreen():
@@ -98,17 +90,21 @@ Stuff for while on the start screen should
     '''
     if Input.mouseLeftButtonClick == True:
         global screenSelector
-        screenSelector ="gamemode"
-    drawStartScreen()
+        screenSelector ="main menu"
+    drawStartScreen(screen)
+   
 
-#visuals for the startscreen    
-def drawStartScreen():
+
+def mainMenu():
     '''
-Draws the start screen\n
+Stuff for while on the main menu should
+\nhappen within this function, including drawing it
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((0,0,brightness))
+    if Input.mouseLeftButtonClick == True:
+        global screenSelector
+        screenSelector = "gamemode"
+    mainMenuDraw(Input, screen)
+    
 
 
 def gamemodeSelect():
@@ -118,27 +114,17 @@ def gamemodeSelect():
     if Input.mouseLeftButtonClick == True:
         global screenSelector
         screenSelector ="game"
-    gamemodeScreenDraw()
-
-def gamemodeScreenDraw():
-    '''
-Draws the select gamemode screen\n
-    '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((brightness,0,0))
+    gamemodeScreenDraw(Input, screen)
 
 def overlay():
-    '''The overlay on all screens'''
+    '''The overlay on all most screens'''
     
     if Input.mouseLeftButtonClick and Input.mousePosition[0]<50 and Input.mousePosition[1]<50:
         return "close game"
     
-    overlayDraw()
+    overlayDraw(Input, screen)
 
-def overlayDraw():
-    '''draws the overlay'''
-    pass
+
 
 
 def startGame():
@@ -186,6 +172,7 @@ clock = pygame.time.Clock()
 frameCounter=1
 screenSelector="start"
 Input=Inputs()
+#tileSize=
 
 main()
 pygame.quit()
