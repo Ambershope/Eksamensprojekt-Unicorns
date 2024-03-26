@@ -16,7 +16,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pieces (
                     south INTEGER,
                     west INTEGER,
                     artPath TEXT NOT NULL,
-                    effektId INTEGER
+                    effektId INTEGER,
                     flavorText TEXT NOT NULL)''')
 
 # Insert or update data into the table
