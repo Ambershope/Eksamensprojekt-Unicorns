@@ -16,11 +16,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pieces (
                     south INTEGER,
                     west INTEGER,
                     artPath TEXT NOT NULL,
-                    effektId INTEGER)''')
+                    effektId INTEGER
+                    flavorText TEXT NOT NULL)''')
 
 # Insert or update data into the table
-piece_data = (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0)
-cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
+piece_data = (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'cute and bubbly')
+cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
 
 # Commit changes
 conn.commit()
