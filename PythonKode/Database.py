@@ -21,10 +21,8 @@ def databaseCardFinder(cardId):
 
     # Create a cursor object
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM pieces WHERE pieceId == "+cardId)
+    cursor.execute("SELECT * FROM pieces WHERE pieceId == "+str(cardId))
     rows = cursor.fetchall()
-    for row in rows:
-        print(row)
     cursor.close()
     conn.close()
     return rows
