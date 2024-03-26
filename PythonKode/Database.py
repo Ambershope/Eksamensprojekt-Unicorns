@@ -15,3 +15,5 @@ def pathToGameFolder(folder):
     path = os.path.dirname(__file__).strip("\PythonKode")
     relativePath = "\GameData\\" + folder
     return path + relativePath
+
+# find noget i databasen
