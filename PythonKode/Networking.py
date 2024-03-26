@@ -34,7 +34,7 @@ class NetConnecter():
     def broadcastServer(self):
         '''
         This function starts a TCP server and then broadcast the ip, for this computer.\n
-        
+        This allows other computers on the same internet to find this server.\n
         '''
         print("Server starting to broadcast")
         threading.Thread(target=self.openTCPPort).start()
@@ -102,10 +102,10 @@ class NetConnecter():
 
 
     # ----------   TCP Port functions   ----------
-    def sendTurn(self, message):
+    def sendTCPMessage(self, message):
         pass
 
-    def resiveTurn(self, procesFunk):
+    def resiveTCPMessage(self, procesFunk):
         pass
 
     def openTCPPort(self):
@@ -129,7 +129,7 @@ class NetConnecter():
         \nInstead use connect().
         '''
         try:
-            self.socketTCP.connect((portAddress, self.port))
+            self.socketTCP.connect(portAddress)
             print(portAddress, self.port)
         except:
             print("Port not open on", portAddress, ":", self.port)
@@ -163,7 +163,7 @@ if __name__ == "__main__":
     e1 = Entry(f1, width=50, justify=CENTER)
     e1.insert(END, socket.gethostbyname(socket.gethostname()))
     e2 = Entry(f1, width=50, justify=CENTER)
-    b1 = Button(f1, text="Start Client", command=lambda: startClient(e1.get()))
+    b1 = Button(f1, text="Start Client", command=lambda: startClient((e1.get()), netCon.port))
     b2 = Button(f1, text="Start 'Server'", command=startServer)
     b3 = Button(f1, text="Find open ports", command=lambda: netCon.serverLister())
     b4 = Button(f1, text="UDP messaging", command=lambda: netCon.broadcastServer())
