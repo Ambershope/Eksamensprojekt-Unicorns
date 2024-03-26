@@ -1,6 +1,5 @@
 import os
 
-
 # Finder pathen til en fil, som fx. kortene. Det gør vi fordi programmet kan ligge forskellige steder
 def pathToGameDataFile(folder, fileName, fileType = ".txt"):
     # Finder først pathen til denne fil
