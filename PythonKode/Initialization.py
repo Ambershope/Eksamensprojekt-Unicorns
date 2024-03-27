@@ -20,8 +20,17 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pieces (
                     flavorText TEXT)''')
 
 # Insert or update data into the table
-piece_data = (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'Cute and bubbly')
-cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
+# piece_data = (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'Cute and bubbly')
+# cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
+
+cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+               (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'Cute and bubbly'),
+               (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+               (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+               (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+               (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+               (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+               )
 
 # Commit changes
 conn.commit()

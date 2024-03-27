@@ -16,12 +16,12 @@ def pathToGameFolder(folder):
     relativePath = "\GameData\\" + folder
     return path + relativePath
 
-def databaseCardFinder(cardId):
+def databaseCardFinder(table, identifier, cardId):
     conn = sqlite3.connect(pathToGameFolder('Databases')+'/Database.db')
 
     # Create a cursor object
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM pieces WHERE pieceId == "+str(cardId))
+    cursor.execute("SELECT * FROM " + table + " WHERE " + identifier + " == " + str(cardId))
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
