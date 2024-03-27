@@ -8,15 +8,17 @@ class Grid:
         self.GRID_LENGTH_Y=GRID_LENGTH_Y
         gridSizeX=screen.get_width()/GRID_LENGTH_X
         gridSizeY=screen.get_height()/GRID_LENGTH_Y
-
+        print(gridSizeX, gridSizeY)
+        self.gridSize=min(gridSizeX, gridSizeY)
         self.startX, self.startY = 0,0 
+
         if gridSizeX > gridSizeY:
-            self.startX = (gridSizeY*GRID_LENGTH_X) - screen.get_width() // 2
+            self.startX = ((self.gridSize*GRID_LENGTH_X) - screen.get_width())
 
         elif gridSizeY > gridSizeX:
-            self.startY = (gridSizeX*GRID_LENGTH_Y) - screen.get_length() // 2
+            self.startY = ((self.gridSize*GRID_LENGTH_Y) - screen.get_height())
 
-        self.gridSize=min(gridSizeX, gridSizeY)
+
     
     def getReal(self, gridCord=(0,0)):
         '''
@@ -49,11 +51,11 @@ def overlayDraw(Input, screen, grid):
 
     if grid.startY != 0:
         pygame.draw.rect(screen, "pink", ((0,0),grid.getReal((GRID_LENGTH_X,0))))
-        pygame.draw.rect(screen, "pink", (grid.getReal((0,GRID_LENGTH_Y),(screen.get_width(), screen.get_height()))))
+        #pygame.draw.rect(screen, "pink", (grid.getReal((0,GRID_LENGTH_Y)),(screen.get_width(), screen.get_height())))
         
     elif grid.startX !=0:
         pygame.draw.rect(screen, "pink", ((0,0),grid.getReal((0,GRID_LENGTH_Y))))
-        pygame.draw.rect(screen, "pink", (grid.getReal((GRID_LENGTH_X,0),(screen.get_width(), screen.get_height()))))
+        pygame.draw.rect(screen, "pink", (grid.getReal((GRID_LENGTH_X,0)),(screen.get_width(), screen.get_height())))
 
     
 
