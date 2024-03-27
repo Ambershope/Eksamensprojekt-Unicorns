@@ -6,17 +6,17 @@ class Grid:
     def __init__(self, screen):
         self.GRID_LENGTH_X=GRID_LENGTH_X
         self.GRID_LENGTH_Y=GRID_LENGTH_Y
-        gridSizeX=screen.get_width()/GRID_LENGTH_X
-        gridSizeY=screen.get_height()/GRID_LENGTH_Y
+        gridSizeX=screen.get_width()//GRID_LENGTH_X
+        gridSizeY=screen.get_height()//GRID_LENGTH_Y
         print(gridSizeX, gridSizeY)
         self.gridSize=min(gridSizeX, gridSizeY)
         self.startX, self.startY = 0,0 
 
         if gridSizeX > gridSizeY:
-            self.startX = ((self.gridSize*GRID_LENGTH_X) - screen.get_width())
+            self.startX = ((self.gridSize*GRID_LENGTH_X) - screen.get_width())//2
 
         elif gridSizeY > gridSizeX:
-            self.startY = ((self.gridSize*GRID_LENGTH_Y) - screen.get_height())
+            self.startY = ((self.gridSize*GRID_LENGTH_Y) - screen.get_height())//2
 
 
     
