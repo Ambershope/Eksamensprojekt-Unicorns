@@ -16,7 +16,7 @@ class Inputs:
         self.quit=False
         self.mousePosition=[-1,-1]
         self.mouseLeftButtonDown=False
-
+        self.overlayOpen=False
         #only active for a single frame
         self.mouseLeftButtonClick=False
         
@@ -52,10 +52,12 @@ def main():
     #Updates the input and calls either game() or startscreen() every frame
     while True:
         Input.update()
-
+        if screenSelector != "start" and screenSelector != "main menu":
+            if overlay() == "close game":
+                return "close game"
         if Input.quit == True:
             return "close game"
-        
+
         if screenSelector == "game":
             game()
         elif screenSelector == "start":
@@ -67,9 +69,12 @@ def main():
         else:
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
+
         if screenSelector != "start" and screenSelector != "main menu":
-            if overlay() == "close game":
-                return "close game"
+            #draws the overlay
+            overlayDraw(Input, screen)
+
+
         pygame.display.update()
         clock.tick(FPS)
 
@@ -78,9 +83,10 @@ def game():
 Core game logic, called every frame while in game
 \nAlso calls drawGame()
     '''
-    if Input.mouseLeftButtonClick == True:
-        global screenSelector
-        screenSelector ="main menu"
+    if not Input.overlayOpen:
+        if Input.mouseLeftButtonClick == True:
+            global screenSelector
+            screenSelector ="main menu"
     drawGame(Input, screen)
 
 
@@ -89,9 +95,10 @@ def startScreen():
 Stuff for while on the start screen should
 \nhappen within this function, including drawing it
     '''
-    if Input.mouseLeftButtonClick == True:
-        global screenSelector
-        screenSelector ="main menu"
+    if not Input.overlayOpen:
+        if Input.mouseLeftButtonClick == True:
+            global screenSelector
+            screenSelector ="main menu"
     drawStartScreen(screen)
    
 
@@ -101,9 +108,10 @@ def mainMenu():
 Stuff for while on the main menu should
 \nhappen within this function, including drawing it
     '''
-    if Input.mouseLeftButtonClick == True:
-        global screenSelector
-        screenSelector = "gamemode"
+    if not Input.overlayOpen:
+        if Input.mouseLeftButtonClick == True:
+            global screenSelector
+            screenSelector = "gamemode"
     mainMenuDraw(Input, screen)
     
 
@@ -112,19 +120,20 @@ def gamemodeSelect():
     '''Stuff for while on the gamemode selection screen should
 \nhappen within this function, including drawing it
     '''
-    if Input.mouseLeftButtonClick == True:
-        global screenSelector
-        screenSelector ="game"
+    if not Input.overlayOpen:
+        if Input.mouseLeftButtonClick == True:
+            global screenSelector
+            screenSelector ="game"
     gamemodeScreenDraw(Input, screen)
 
 def overlay():
     '''The overlay on most screens'''
-    
+    if Input.overlayOpen:
+        pass
     if Input.mouseLeftButtonClick and Input.mousePosition[0]<50 and Input.mousePosition[1]<50:
         return "close game"
     
-    overlayDraw(Input, screen)
-
+    
 
 
 
