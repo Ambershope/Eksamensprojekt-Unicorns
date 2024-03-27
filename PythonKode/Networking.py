@@ -17,6 +17,7 @@ class NetConnecter():
         self.socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socketUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self.stopServer = False
+        self.rescivingTCP = True
         self.client = None
         self.cliAddr = None
         self.addr = (socket.gethostbyname(socket.gethostname()), self.port)
@@ -103,9 +104,13 @@ class NetConnecter():
 
     # ----------   TCP Port functions   ----------
     def sendTCPMessage(self, message):
-        pass
+        self.socketTCP.send(message)
 
-    def resiveTCPMessage(self, procesFunk):
+    def resiveTCPMessage(self, procesFunk = lambda message: print(message)):
+        self.rescivingTCP = True
+        while self.rescivingTCP:
+            message = self.socketTCP.recv(1024)
+            procesFunk(message)
         pass
 
     def openTCPPort(self):
