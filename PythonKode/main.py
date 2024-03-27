@@ -6,20 +6,20 @@ import GameObjects
 import Database
 import Networking
 import Initialization
-from Visuals import *
+import Visuals
 from Constants import *
 
 
 Networking.NetConnecter
 class Inputs:
     def __init__(self):
-        self.quit=False
-        self.mousePosition=[-1,-1]
-        self.mouseLeftButtonDown=False
-        self.overlayOpen=False
+        self.quit = False
+        self.mousePosition = [0,0]
+        self.mouseLeftButtonDown = False
+        self.overlayOpen = False
         #only active for a single frame
-        self.mouseLeftButtonClick=False
-        
+        self.mouseLeftButtonClick = False
+        self.DEVTOOLdisplayGrid = False
         self.frameCounter = 0
 
     def update(self):
@@ -31,7 +31,7 @@ class Inputs:
             if event.type == pygame.QUIT:
                 self.quit=True
 
-                # If the event type from Pygame says that a button has been pressed,
+                # If the event type from Pygame says that a mouse button has been pressed,
                 # and that event is that the left button has been presed while is isnt already pressed, then we set it to be pressed
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse=pygame.mouse.get_pressed()
@@ -44,14 +44,22 @@ class Inputs:
                 mouse=pygame.mouse.get_pressed()
                 if mouse[0] == False:
                     self.mouseLeftButtonDown = False
+            
+            #detects the event as a key pres
+            elif event.type == pygame.KEYDOWN:
+                #if the g key is pressed down
+                if event.key == pygame.K_g:
+                    self.DEVTOOLdisplayGrid = not self.DEVTOOLdisplayGrid
 
-        
+
+
 
 def main():
     #main program loop
     #Updates the input and calls either game() or startscreen() every frame
     while True:
         Input.update()
+
         if screenSelector != "start" and screenSelector != "main menu":
             if overlay() == "close game":
                 return "close game"
@@ -72,8 +80,10 @@ def main():
 
         if screenSelector != "start" and screenSelector != "main menu":
             #draws the overlay
-            overlayDraw(Input, screen)
+            Visuals.overlayDraw(Input, screen, Grid)
 
+        if Input.DEVTOOLdisplayGrid:
+            Visuals.DEVTOOLdrawGrid(screen, Grid)
 
         pygame.display.update()
         clock.tick(FPS)
@@ -87,7 +97,8 @@ Core game logic, called every frame while in game
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector ="main menu"
-    drawGame(Input, screen)
+
+    Visuals.drawGame(Input, screen, Grid)
 
 
 def startScreen():
@@ -99,7 +110,8 @@ Stuff for while on the start screen should
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector ="main menu"
-    drawStartScreen(screen)
+
+    Visuals.drawStartScreen(screen)
    
 
 
@@ -112,7 +124,8 @@ Stuff for while on the main menu should
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector = "gamemode"
-    mainMenuDraw(Input, screen)
+
+    Visuals.mainMenuDraw(Input, screen, Grid)
     
 
 
@@ -124,13 +137,13 @@ def gamemodeSelect():
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector ="game"
-    gamemodeScreenDraw(Input, screen)
+    Visuals.gamemodeScreenDraw(Input, screen, Grid)
 
 def overlay():
     '''The overlay on most screens'''
     if Input.overlayOpen:
         pass
-    if Input.mouseLeftButtonClick and Input.mousePosition[0]<50 and Input.mousePosition[1]<50:
+    if Input.mouseLeftButtonClick and Input.mousePosition[0]>Grid.getReal((31,0))[0] and Input.mousePosition[0] < Grid.getReal((31,0))[0] + 51 and Input.mousePosition[1]<50:
         return "close game"
     
     
@@ -182,8 +195,7 @@ clock = pygame.time.Clock()
 frameCounter=1
 screenSelector="start"
 Input=Inputs()
-tileSizeX=screen.get_width()/GRID_LENGTH_X
-tileSizeY=screen.get_height()/GRID_LENGTH_Y
-print(tileSizeX,tileSizeY)
+Grid=Visuals.Grid(screen)
+
 main()
 pygame.quit()
