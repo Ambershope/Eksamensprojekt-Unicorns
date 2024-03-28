@@ -21,5 +21,5 @@ class GameState:
         self.startCycle=["Draw Start Hands", "Select First Player"]
         self.turnCycleTable=["You Select Piece", "You Select Tile", "Send To Opponent", "Piece ETB (A)", "Test Win(A)", "Draw Card", 
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
-
-print(Piece(1).flavorText)
+if __name__ == "__main__":
+    print(Piece(1).flavorText)
