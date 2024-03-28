@@ -78,15 +78,18 @@ def main():
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
 
+        #draws the overlay on most screens
         if screenSelector != "start" and screenSelector != "main menu":
-            #draws the overlay
             Visuals.overlayDraw(Input, screen, Grid)
 
+        #draws the underlying visual grid
         if Input.DEVTOOLdisplayGrid:
             Visuals.DEVTOOLdrawGrid(screen, Grid)
-
-        pygame.display.update()
+        
+        Visuals.border(screen, Grid)
+        
         clock.tick(FPS)
+        pygame.display.update()
 
 def game():
     '''
@@ -143,7 +146,7 @@ def overlay():
     '''The overlay on most screens'''
     if Input.overlayOpen:
         pass
-    if Input.mouseLeftButtonClick and Input.mousePosition[0]>Grid.getReal((31,0))[0] and Input.mousePosition[0] < Grid.getReal((31,0))[0] + 51 and Input.mousePosition[1]<50:
+    if Input.mouseLeftButtonClick and Input.mousePosition[0]>Grid.getReal((31,0))[0] and Input.mousePosition[0] < Grid.getReal((32,1))[0] and Input.mousePosition[1] > Grid.getReal((31,0))[1] and Input.mousePosition[1]< Grid.getReal((32,1))[1]:
         return "close game"
     
     
