@@ -27,6 +27,9 @@ class Grid:
         Turns a grid cordinate (0,0) into a real screen cordinate \nuses a tuple/list as input
         '''
         return ((gridCord[0] * self.gridSize + self.startX , gridCord[1] * self.gridSize + self.startY))
+    
+    def getGrid(self, realCord=(0,0)):
+        return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
             
 
 
@@ -51,6 +54,22 @@ def overlayDraw(Input, screen, grid):
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.gridSize,grid.gridSize))
     screen.blit(scaledImage, grid.getReal((31, 0)))
+
+    if Input.overlayOpen:
+        #creates a dark seethroug layer that covers the entire screen
+        alfaSurface=pygame.Surface((grid.gridSize*GRID_LENGTH_X,grid.gridSize*GRID_LENGTH_Y))
+        alfaSurface.set_alpha(128)
+        alfaSurface.fill((0,0,0))
+        screen.blit(alfaSurface, grid.getReal((0,0)))
+
+        #creates the underlying box for the options full screen overlay
+        pygame.draw.rect(screen, (255,255,255), (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
+
+        #creates the qui game button
+        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
+        scaledImage=pygame.transform.scale(image, (grid.gridSize*8,grid.gridSize*1))
+        screen.blit(scaledImage, grid.getReal((12, 12)))
+
 
     
 
