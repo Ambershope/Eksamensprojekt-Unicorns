@@ -18,6 +18,7 @@ class Inputs:
         self.mouseLeftButtonDown = False
         self.overlayOpen = False
         #only active for a single frame
+        self.closeOverlay = False
         self.mouseLeftButtonClick = False
         self.DEVTOOLdisplayGrid = False
         self.frameCounter = 0
@@ -50,6 +51,13 @@ class Inputs:
                 #if the g key is pressed down
                 if event.key == pygame.K_g:
                     self.DEVTOOLdisplayGrid = not self.DEVTOOLdisplayGrid
+
+                elif event.key == pygame.K_ESCAPE and screenSelector != "start" and screenSelector != "main menu":
+                    self.overlayOpen = not self.overlayOpen
+
+        if self.closeOverlay:
+            self.closeOverlay, self.overlayOpen = False, False
+            
 
 
 
@@ -145,12 +153,28 @@ def gamemodeSelect():
 def overlay():
     '''The overlay on most screens'''
     if Input.overlayOpen:
-        pass
-    if Input.mouseLeftButtonClick and Input.mousePosition[0]>Grid.getReal((31,0))[0] and Input.mousePosition[0] < Grid.getReal((32,1))[0] and Input.mousePosition[1] > Grid.getReal((31,0))[1] and Input.mousePosition[1]< Grid.getReal((32,1))[1]:
-        return "close game"
-    
-    
+        if Input.mouseLeftButtonClick and not testColision(Grid.getGrid(Input.mousePosition),(10,4),(22,14)):
+            Input.closeOverlay = True
+        
+        if Input.mouseLeftButtonClick and testColision(Grid.getGrid(Input.mousePosition),(12,12),(20,13)):
+            return "close game"
+    else:
+        if Input.mouseLeftButtonClick and testColision(Grid.getGrid(Input.mousePosition),(31,0),(32,1)):
+            Input.overlayOpen = True
 
+
+def testColision(position, cornerA, cornerB):
+    '''
+    Test if a position is within a rectangle
+    '''
+    #test if in range of x
+    if position[0]>=min(cornerA[0], cornerB[0]) and position[0]<=max(cornerA[0], cornerB[0]):
+
+        #test if in range of y
+        if position[1]>=min(cornerA[1], cornerB[1]) and position[1]<=max(cornerA[1], cornerB[1]):
+            return True
+        
+    return False
 
 
 def startGame():
@@ -192,7 +216,7 @@ def opponentWin():
 
 
 pygame.init()
-screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 frameCounter=1
