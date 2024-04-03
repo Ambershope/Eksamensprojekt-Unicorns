@@ -63,7 +63,7 @@ def overlayDraw(Input, screen, grid):
         screen.blit(alfaSurface, grid.getReal((0,0)))
 
         #creates the underlying box for the options full screen overlay
-        pygame.draw.rect(screen, (255,255,255), (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
+        pygame.draw.rect(screen, (255,255,255), (grid.getReal((10,4)),((GRID_LENGTH_X-20)*grid.gridSize,(GRID_LENGTH_Y-8)*grid.gridSize)), border_radius=round(grid.gridSize*0.5))
 
         #creates the qui game button
         image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
