@@ -216,6 +216,9 @@ def opponentWin():
 
 
 pygame.init()
+#Initialization.innitialise()
+
+
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
