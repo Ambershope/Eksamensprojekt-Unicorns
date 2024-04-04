@@ -27,7 +27,7 @@ class GameState:
         print(self.tileSize)
 
     def newTurnStep(self):
-        if self.turnCycleStep >= len(self.turnCycleTable)+1:
+        if self.turnCycleStep+1 >= len(self.turnCycleTable):
             self.turnCycleStep = 0
         else:
             self.turnCycleStep += 1
