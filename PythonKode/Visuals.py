@@ -30,6 +30,11 @@ class Grid:
     
     def getGrid(self, realCord=(0,0)):
         return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
+    
+    def getRealLength(self, gridLength=(0,0)):
+        return (gridLength[0]*self.gridSize, gridLength[1]*self.gridSize)
+    
+
             
 
 
@@ -51,6 +56,7 @@ Draws the select gamemode screen\n
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
+    #breates the bruger meny that opens the overlay
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.gridSize,grid.gridSize))
     screen.blit(scaledImage, grid.getReal((31, 0)))
@@ -65,29 +71,58 @@ def overlayDraw(Input, screen, grid):
         #creates the underlying box for the options full screen overlay
         pygame.draw.rect(screen, (255,255,255), (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
 
-        #creates the qui game button
+        #creates the quit game button
         image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
         scaledImage=pygame.transform.scale(image, (grid.gridSize*8,grid.gridSize*1))
         screen.blit(scaledImage, grid.getReal((12, 12)))
-
-
     
 
 def drawStartScreen(screen):
     '''
 Draws the start screen\n
     '''
-
     screen.fill((200,200,200))
 
 
-def drawGame(Input, screen, grid):
+def drawGame(Input, screen, grid, gameState):
     '''
 Draws the game\n
     '''
     frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,brightness,0))
+
+
+    #draw field base
+    pygame.draw.rect(screen, (255, 192, 203), (grid.getReal((7,0)),grid.getRealLength((18,18))))
+
+    #draw field base tiles
+    tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
+    tile0Img=pygame.transform.scale( tile0ImgUnscaled, (gameState.tileSize*grid.gridSize,gameState.tileSize*grid.gridSize))
+    tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
+    tile1Img=pygame.transform.scale( tile1ImgUnscaled, (gameState.tileSize*grid.gridSize,gameState.tileSize*grid.gridSize))
+
+    for xField in range (gameState.field.fieldSize):
+        xGrid=(xField*gameState.tileSize)+7+((xField+1)*GRID_BETWEEN_TILES)
+
+        for yField in range (gameState.field.fieldSize):
+            yGrid=(yField*gameState.tileSize)+((yField+1)*GRID_BETWEEN_TILES)
+
+            curentTileValue=gameState.field.tileField[xField][yField]
+
+            if curentTileValue==0:
+                screen.blit(tile0Img, grid.getReal((xGrid, yGrid)))
+            else:
+                screen.blit(tile1Img, grid.getReal((xGrid, yGrid)))
+                
+            
+
+
+    GRID_BETWEEN_TILES
+    
+
+
+
 
 def border(screen, grid):
     '''

@@ -6,9 +6,12 @@ class Field:
     def __init__ (self, fieldId=0):
         self.fieldId=fieldId
         self.tileField=self.getStartField()
+        self.pieceField=self.getFullField()
 
-    #returnere en string med et flot formateret field
     def __str__ (self):
+        '''
+        returnere en string med et flot formateret field
+        '''
         tekst="\n"
 
         for y in range (self.fieldSize):
@@ -17,6 +20,23 @@ class Field:
             tekst += "\n"
 
         return tekst
+    
+    def getFullField(self, value=0):
+        '''
+        creates a square field that is full of the specified value,\n
+        and has a side length = self.fieldSize
+        '''
+        field=[]
+        yField=[]
+
+        for y in range (self.fieldSize):
+            yField.append(value)
+
+        for x in range (self.fieldSize):
+            field.append(yField)
+
+        return field
+
         
     def getStartField(self):
         #får field ind i fieldData
@@ -25,10 +45,8 @@ class Field:
         file.close()
 
         #finder sidelængden på banen
-        
-        # Shouldnt it be sizeX [0] instead of sizeY [0]?
-        sizeX=len(fieldData)
-        sizeY=len(fieldData[0])
+        sizeX=len(fieldData[0])
+        sizeY=len(fieldData)
         if sizeX == sizeY:
             self.fieldSize=sizeX
         else:
@@ -43,9 +61,16 @@ class Field:
         for x in range (self.fieldSize):
             yValues=[]
             for y in range (self.fieldSize):
+                yValues.insert(0,int(fieldData[self.fieldSize-y-1][self.fieldSize-x-1]))
+            field.insert(0,yValues)
+        '''
+        field=[]
+        for x in range (self.fieldSize):
+            yValues=[]
+            for y in range (self.fieldSize):
                 yValues.insert(0,int(fieldData[x][self.fieldSize-y-1]))
             field.insert(0,yValues)
-        
+            '''        
         return field
 
 
@@ -60,7 +85,7 @@ class Pile:
 
     def __str__(self):
 
-        # Heyo Mayo David what does this mean?
+        #hvis en pile kaldes som en string, returneres en flot formateret sting med a
         string="\nStart bunken var "+self.pileName+"\nNuværende bunke:\n"
         for i in self.pile:
             string=string+str(i)+"\n"
@@ -87,21 +112,27 @@ class Pile:
 
         return pile
     
-    #fjern det øverste kort i bunken og returner det
     def drawPiece(self):
+        '''
+        fjern det øverste kort i bunken og returner det
+        '''
         return self.pile.pop(0)
     
-    #returnere de øverste kort af bunken
+
     def lookAtTop(self, amount=1):
+        '''
+        returnere de øverste kort af bunken
+        '''
         return self.pile[:amount]
     
-    #indsætter en string eller liste med strings i bunken enten i toppen eller bunden
-    def insertPiece(self, pieceNameStrOrList, onTop = True):
-
-        if type(pieceNameStrOrList) == str:
-            pieceList = [pieceNameStrOrList]
+    def insertPiece(self, pieceIdOrPieceIdList, onTop = True):
+        '''
+        indsætter en string eller liste med strings i bunken enten i toppen eller bunden
+        '''
+        if type(pieceIdOrPieceIdList) == int:
+            pieceList = [pieceIdOrPieceIdList]
         else:
-            pieceList = pieceNameStrOrList
+            pieceList = pieceIdOrPieceIdList
         
 
         if onTop:
@@ -109,8 +140,11 @@ class Pile:
         else: 
             self.pile.extend(pieceList)
     
-    #bland bunken
+   
     def shuffle(self):
+        '''
+        bland bunken
+        '''
         random.shuffle(self.pile)
 
 

@@ -4,3 +4,4 @@ GRID_LENGTH_Y = 9*2
 FPS = 30 #frames per second
 CAPTION = "Unicorn competition"
 BORDER_COLOR= (125, 51, 115)
+GRID_BETWEEN_TILES = 0.5
