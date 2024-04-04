@@ -73,7 +73,7 @@ def main():
                 return "close game"
         if Input.quit == True:
             return "close game"
-
+        
         if screenSelector == "game":
             game()
         elif screenSelector == "start":
@@ -101,21 +101,24 @@ def main():
 
 def game():
     '''
-Core game logic, called every frame while in game
-\nAlso calls drawGame()
+    Core game logic, called every frame while in game
+    \nAlso calls drawGame()
     '''
+    gameState
+    
+
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector ="main menu"
 
-    Visuals.drawGame(Input, screen, Grid)
-
+    Visuals.drawGame(Input, screen, Grid, gameState)
+    
 
 def startScreen():
     '''
-Stuff for while on the start screen should
-\nhappen within this function, including drawing it
+    Stuff for while on the start screen should
+    \nhappen within this function, including drawing it
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
@@ -128,8 +131,8 @@ Stuff for while on the start screen should
 
 def mainMenu():
     '''
-Stuff for while on the main menu should
-\nhappen within this function, including drawing it
+    Stuff for while on the main menu should
+    \nhappen within this function, including drawing it
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
@@ -141,8 +144,9 @@ Stuff for while on the main menu should
 
 
 def gamemodeSelect():
-    '''Stuff for while on the gamemode selection screen should
-\nhappen within this function, including drawing it
+    '''
+    Stuff for while on the gamemode selection screen should
+    \nhappen within this function, including drawing it
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
@@ -151,7 +155,9 @@ def gamemodeSelect():
     Visuals.gamemodeScreenDraw(Input, screen, Grid)
 
 def overlay():
-    '''The overlay on most screens'''
+    '''
+    The overlay on most screens
+    '''
     if Input.overlayOpen:
         if Input.mouseLeftButtonClick and not testColision(Grid.getGrid(Input.mousePosition),(10,4),(22,14)):
             Input.closeOverlay = True
@@ -173,7 +179,6 @@ def testColision(position, cornerA, cornerB):
         #test if in range of y
         if position[1]>=min(cornerA[1], cornerB[1]) and position[1]<=max(cornerA[1], cornerB[1]):
             return True
-        
     return False
 
 
@@ -222,10 +227,13 @@ pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
-frameCounter=1
 screenSelector="start"
 Input=Inputs()
 Grid=Visuals.Grid(screen)
+
+#midlertidig gameState, ændres inden et spil startes
+gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
+
 
 main()
 pygame.quit()
