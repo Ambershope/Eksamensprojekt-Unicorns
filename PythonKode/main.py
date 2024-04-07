@@ -125,7 +125,7 @@ def startScreen():
             global screenSelector
             screenSelector ="main menu"
 
-    Visuals.drawStartScreen(screen)
+    Visuals.drawStartScreen(screen, Grid)
    
 
 

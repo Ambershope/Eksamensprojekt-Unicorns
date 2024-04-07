@@ -25,7 +25,6 @@ class GameState:
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
         
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
-        print(self.tileSize)
 
     def newTurnStep(self):
         if self.turnCycleStep >= len(self.turnCycleTable)+1:

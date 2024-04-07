@@ -63,14 +63,7 @@ class Field:
             for y in range (self.fieldSize):
                 yValues.insert(0,int(fieldData[self.fieldSize-y-1][self.fieldSize-x-1]))
             field.insert(0,yValues)
-        '''
-        field=[]
-        for x in range (self.fieldSize):
-            yValues=[]
-            for y in range (self.fieldSize):
-                yValues.insert(0,int(fieldData[x][self.fieldSize-y-1]))
-            field.insert(0,yValues)
-            '''        
+    
         return field
 
 
