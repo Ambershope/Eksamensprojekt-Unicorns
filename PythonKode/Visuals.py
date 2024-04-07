@@ -52,7 +52,7 @@ Draws the select gamemode screen\n
     '''
     frameCounter = Input.frameCounter
     brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((brightness,0,0))
+    screen.fill((150, 194, 145))
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''

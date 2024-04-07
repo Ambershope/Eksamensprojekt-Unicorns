@@ -10,7 +10,6 @@ import Visuals
 from Constants import *
 
 
-Networking.NetConnecter
 class Inputs:
     def __init__(self):
         self.quit = False
@@ -143,7 +142,7 @@ def mainMenu():
     
 
 
-def gamemodeSelect():
+def gamemodeSelect(): # Bjørn arbejder på den lige nu
     '''
     Stuff for while on the gamemode selection screen should
     \nhappen within this function, including drawing it
