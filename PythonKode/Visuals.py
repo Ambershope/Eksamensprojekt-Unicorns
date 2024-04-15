@@ -56,7 +56,7 @@ Draws the select gamemode screen\n
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
-    #breates the bruger meny that opens the overlay
+    #creates the bruger meny that opens the overlay
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.gridSize,grid.gridSize))
     screen.blit(scaledImage, grid.getReal((31, 0)))

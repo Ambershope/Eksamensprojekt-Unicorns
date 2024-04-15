@@ -6,6 +6,7 @@ import GameObjects
 import Database
 import Networking
 import Initialization
+import Knapper
 import Visuals
 from Constants import *
 
