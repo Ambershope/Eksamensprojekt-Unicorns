@@ -98,6 +98,11 @@ def main():
         clock.tick(FPS)
         pygame.display.update()
 
+def switchScreen(target: str) -> None:
+    global screenSelector
+
+
+
 def game():
     '''
     Core game logic, called every frame while in game
@@ -137,6 +142,7 @@ def mainMenu():
         if Input.mouseLeftButtonClick == True:
             global screenSelector
             screenSelector = "gamemode"
+    
 
     Visuals.mainMenuDraw(Input, screen, Grid)
     

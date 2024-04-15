@@ -33,10 +33,22 @@ class Grid:
     
     def getRealLength(self, gridLength=(0,0)):
         return (gridLength[0]*self.gridSize, gridLength[1]*self.gridSize)
-    
 
-            
+class LoadedPictures:
+    '''
+    A class for loading pictures into the game.
+    \n This allows us to optimize loading, so that we don't load every picture -
+    \nevery frame or store every picture in memory
+    '''
+    def __init__(self):
+        '''This class doesn't need anything to be intizialised'''
+        pass
 
+    def loadGamemodeScreen(self, grid):
+        self.networksBackground=pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), (grid.getReal((10.667,0))[0],grid.getReal((0,14.4))[1]))
+
+'''We create a loader that can be called from other scirptis to load difrent classes'''
+Loader = LoadedPictures()
 
 def mainMenuDraw(Input, screen, grid):
     '''
@@ -50,9 +62,13 @@ def gamemodeScreenDraw(Input, screen, grid):
     '''
 Draws the select gamemode screen\n
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
+    Loader.loadGamemodeScreen(grid)
+    frameCounter = Input.frameCounter # Animations - tick
+    # Display background (Layer 1):
     screen.fill((150, 194, 145))
+    # Display layer 2:
+    screen.blit(Loader.networksBackground, grid.getReal((20, 1.8)))
+
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
