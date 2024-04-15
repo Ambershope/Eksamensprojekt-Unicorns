@@ -25,6 +25,11 @@ class Knapper:
             return ReturnValue
         return False
     
+    def antiKnap(self,CornerA, CornerB, ReturnValue):
+        if main.Input.mouseLeftButtonClick and not self.buttonCollisionTest(CornerA, CornerB):
+            return ReturnValue
+        return False
+    
 
 
     
