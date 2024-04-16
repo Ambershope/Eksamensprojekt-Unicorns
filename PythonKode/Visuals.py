@@ -119,11 +119,12 @@ Draws the game\n
 
     #draw field base tiles
 
-    #load in the diffrent tiles
+    #load in the different tiles
     tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
-    tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.getRealLen)))
+    tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
+
     tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
-    tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.getRealLen)))
+    tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
     #for each location in the field, place the appropriate tile
     for xField in range (gameState.field.fieldSize):
@@ -132,13 +133,18 @@ Draws the game\n
         for yField in range (gameState.field.fieldSize):
             yGrid=(yField*gameState.tileSize)+((yField+1)*GRID_BETWEEN_TILES)
 
-            curentTileValue=gameState.field.tileField[xField][yField]
+            currentTileValue=gameState.field.tileField[xField][yField]
+            currentPieceValue=gameState.field.pieceField[xField][yField]
 
-            if curentTileValue==0:
+            if currentTileValue==0:
                 screen.blit(tile0Img, grid.getReal((xGrid, yGrid)))
             else:
                 screen.blit(tile1Img, grid.getReal((xGrid, yGrid)))
 
+            if currentPieceValue != 0:
+                pieceImgUnscaled=currentPieceValue.artwork
+                pieceImg=pygame.transform.scale( pieceImgUnscaled, grid.getRealLen((gameState.tileSize-0.5,gameState.tileSize-0.5)))
+                screen.blit(pieceImg, grid.getReal((xGrid+0.25, yGrid+0.25)))
 
 def border(screen, grid):
     '''

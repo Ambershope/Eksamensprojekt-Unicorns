@@ -233,6 +233,8 @@ Grid=Visuals.Grid(screen)
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
+print(gameState.playerPile)
+gameState.field.pieceField[1][1] = BrikLogik.Piece(gameState.playerPile.drawPiece(), True)
 
 
 main()
