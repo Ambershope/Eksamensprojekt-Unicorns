@@ -34,7 +34,7 @@ class Grid:
     def getRealLength(self, gridLength=(0,0)):
         return (gridLength[0]*self.gridSize, gridLength[1]*self.gridSize)
 
-class LoadedPictures:
+class LoadedVariabels:
     '''
     A class for loading pictures into the game.
     \n This allows us to optimize loading, so that we don't load every picture -
@@ -45,10 +45,11 @@ class LoadedPictures:
         pass
 
     def loadGamemodeScreen(self, grid):
-        self.networksBackground=pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), (grid.getReal((10.667,0))[0],grid.getReal((0,14.4))[1]))
+        self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), (grid.getReal((10.667,0))[0],grid.getReal((0,14.4))[1]))
+        titleFont = pygame.font.SysFont(TITLE_FONT, int(grid.getRealLen(2)))
 
 '''We create a loader that can be called from other scirptis to load difrent classes'''
-Loader = LoadedPictures()
+Loader = LoadedVariabels()
 
 def mainMenuDraw(Input, screen, grid):
     '''
@@ -58,7 +59,7 @@ Draws the start screen\n
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,0,brightness))
 
-def gamemodeScreenDraw(Input, screen: pygame.surface, grid: Grid, servers: list[tuple]) -> None:
+def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, servers: list[tuple]) -> None:
     '''
     Draws the select gamemode screen.\n
     '''

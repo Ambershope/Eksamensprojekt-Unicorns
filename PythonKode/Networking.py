@@ -25,7 +25,7 @@ class NetConnecter():
         self.broadcastingUDP = True
         self.listerUDP = True
         self.openServers = []
-        self.serverName = str(self.addr[0] + ":" + self.addr[1])
+        self.serverName = str(self.addr[0] + ":" + str(self.addr[1]))
 
     # ----------   General functions   ----------
     
