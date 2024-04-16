@@ -44,9 +44,9 @@ class LoadedVariabels:
         '''This class doesn't need anything to be intizialised'''
         pass
 
-    def loadGamemodeScreen(self, grid):
+    def loadGamemodeScreen(self, grid: Grid):
         self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), (grid.getReal((10.667,0))[0],grid.getReal((0,14.4))[1]))
-        titleFont = pygame.font.SysFont(TITLE_FONT, int(grid.getRealLen(2)))
+        self.titleFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((2,0))[0]))
 
 '''We create a loader that can be called from other scirptis to load difrent classes'''
 Loader = LoadedVariabels()
@@ -70,6 +70,7 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
     # Display layer 2:
     screen.blit(Loader.networksBackground, grid.getReal((20, 1.8)))
     #Display layer 3 (Tekst?):
+    screen.blit(Loader.titleFont.render("Hello World!", True, (0, 0, 0)), (400, 400))
     
 
 
