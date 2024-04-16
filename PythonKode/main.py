@@ -100,6 +100,13 @@ def main():
 
 def switchScreen(target: str) -> None:
     global screenSelector
+    # Code that runs, when you leave a screen:
+    if screenSelector == "gamemode":
+        network.serverLister()
+    screenSelector = target
+    # Code that runs, when you enter a screen:
+    if screenSelector == "gamemode":
+        network.leaveServerLister()
 
 
 
@@ -113,8 +120,7 @@ def game():
 
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="main menu"
+            switchScreen("main menu")
 
     Visuals.drawGame(Input, screen, Grid, gameState)
     
@@ -126,8 +132,7 @@ def startScreen():
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="main menu"
+            switchScreen("main menu")
 
     Visuals.drawStartScreen(screen)
    
@@ -140,8 +145,7 @@ def mainMenu():
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector = "gamemode"
+            switchScreen("gamemode")
     
 
     Visuals.mainMenuDraw(Input, screen, Grid)
@@ -155,9 +159,8 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="game"
-    Visuals.gamemodeScreenDraw(Input, screen, Grid)
+            switchScreen("game")
+    Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
 
 def overlay():
     '''
@@ -187,49 +190,13 @@ def testColision(position, cornerA, cornerB):
     return False
 
 
-def startGame():
-    while True:
-        #userInputs
-        drawBrick()
-        sendTurn()
-        if checkWin(): 
-            youWin()
-            break
-        opponentTurn()
-        if checkWin(): 
-            opponentWin()
-            break
-
-
-'''#Whats a brick?'''
-def drawBrick():
-    pass
-
-def opponentTurn():
-    idelWait()
-    pass
-
-def idelWait():
-    pass
-
-def checkWin():
-    return False
-
-def sendTurn():
-    pass
-
-def youWin():
-    pass
-
-def opponentWin():
-    pass
-
 
 pygame.init()
 #Initialization.innitialise()
 
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
+network = Networking.NetConnecter()
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector="start"

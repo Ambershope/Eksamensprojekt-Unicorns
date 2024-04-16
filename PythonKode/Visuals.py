@@ -58,9 +58,9 @@ Draws the start screen\n
     brightness=abs(255-((frameCounter*3)%511))
     screen.fill((0,0,brightness))
 
-def gamemodeScreenDraw(Input, screen, grid):
+def gamemodeScreenDraw(Input, screen: pygame.surface, grid: Grid, servers: list[tuple]) -> None:
     '''
-Draws the select gamemode screen\n
+    Draws the select gamemode screen.\n
     '''
     Loader.loadGamemodeScreen(grid)
     frameCounter = Input.frameCounter # Animations - tick
@@ -68,6 +68,9 @@ Draws the select gamemode screen\n
     screen.fill((150, 194, 145))
     # Display layer 2:
     screen.blit(Loader.networksBackground, grid.getReal((20, 1.8)))
+    #Display layer 3 (Tekst?):
+    
+
 
 
 def overlayDraw(Input, screen, grid):
