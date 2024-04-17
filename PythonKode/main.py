@@ -7,6 +7,7 @@ import Database
 import Networking
 import Initialization
 import Knapper
+from Knapper import KnappeDetection
 import Visuals
 from Constants import *
 
@@ -159,6 +160,10 @@ def overlay():
     The overlay on most screens
     '''
     if Input.overlayOpen:
+        
+        if KnappeDetection.antiKnap():
+            return
+        
         if Input.mouseLeftButtonClick and not testColision(Grid.getGrid(Input.mousePosition),(10,4),(22,14)):
             Input.closeOverlay = True
         
@@ -169,7 +174,7 @@ def overlay():
             Input.overlayOpen = True
 
 
-def testColision(position, cornerA, cornerB):
+def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
     '''
     Test if a position is within a rectangle
     '''

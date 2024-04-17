@@ -2,7 +2,7 @@ import Visuals
 import main
 
 
-class Knapper:
+class KnappeDetection:
     def __init__(self):
         self.buttonCollisionTest
         self.knap
@@ -20,12 +20,12 @@ class Knapper:
         return False
 
 
-    def knap(self, CornerA, CornerB, ReturnValue):
+    def knap(self, CornerA: tuple, CornerB: tuple, ReturnValue = True):
         if main.Input.mouseLeftButtonClick and self.buttonCollisionTest(CornerA, CornerB):
             return ReturnValue
         return False
     
-    def antiKnap(self,CornerA, CornerB, ReturnValue):
+    def antiKnap(self,CornerA, CornerB, ReturnValue = True):
         if main.Input.mouseLeftButtonClick and not self.buttonCollisionTest(CornerA, CornerB):
             return ReturnValue
         return False
