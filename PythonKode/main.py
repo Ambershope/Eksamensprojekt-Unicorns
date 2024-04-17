@@ -6,7 +6,6 @@ import GameObjects
 import Database
 import Networking
 import Initialization
-import Knapper
 from Knapper import KnappeDetection
 import Visuals
 from Constants import *
@@ -161,17 +160,14 @@ def overlay():
     '''
     if Input.overlayOpen:
         
-        if KnappeDetection.antiKnap():
-            return
-        
-        if Input.mouseLeftButtonClick and not testColision(Grid.getGrid(Input.mousePosition),(10,4),(22,14)):
+        if Knapperne.antiKnap(Knapperne,Input,(10,4),(22,14)):
             Input.closeOverlay = True
         
-        if Input.mouseLeftButtonClick and testColision(Grid.getGrid(Input.mousePosition),(12,12),(20,13)):
+        if Knapperne.knap(Knapperne,Input,(12,12),(20,13)):
             return "close game"
     else:
-        if Input.mouseLeftButtonClick and testColision(Grid.getGrid(Input.mousePosition),(31,0),(32,1)):
-            Input.overlayOpen = True
+        if Knapperne.knap(Knapperne,Input,(31,0),(32,1)):
+            Input.overlayOpen = True 
 
 
 def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
@@ -235,6 +231,7 @@ clock = pygame.time.Clock()
 screenSelector="start"
 Input=Inputs()
 Grid=Visuals.Grid(screen)
+Knapperne = KnappeDetection
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))

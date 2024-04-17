@@ -1,5 +1,5 @@
 import Visuals
-import main
+import pygame
 
 
 class KnappeDetection:
@@ -11,7 +11,7 @@ class KnappeDetection:
 
     def buttonCollisionTest(self, cornorButtonPositionA, cornorButtonPositionB, useUserMouse = True):
         if useUserMouse == True:
-            MousePosition = Visuals.Grid.getGrid(main.Input.mousePosition)
+            MousePosition = pygame.mouse.get_pos()
     
         if MousePosition[0] >= min(cornorButtonPositionA[0], cornorButtonPositionB) and MousePosition[0] <= max(cornorButtonPositionA[0], cornorButtonPositionB[0]):
                 
@@ -20,13 +20,13 @@ class KnappeDetection:
         return False
 
 
-    def knap(self, CornerA: tuple, CornerB: tuple, ReturnValue = True):
-        if main.Input.mouseLeftButtonClick and self.buttonCollisionTest(CornerA, CornerB):
+    def knap(self,input, CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
+        if input.mouseLeftButtonClick and self.buttonCollisionTest(CornerA, CornerB):
             return ReturnValue
         return False
     
-    def antiKnap(self,CornerA, CornerB, ReturnValue = True):
-        if main.Input.mouseLeftButtonClick and not self.buttonCollisionTest(CornerA, CornerB):
+    def antiKnap(self,input,CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
+        if input.mouseLeftButtonClick and not self.buttonCollisionTest(CornerA, CornerB):
             return ReturnValue
         return False
     
