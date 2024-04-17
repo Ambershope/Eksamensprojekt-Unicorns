@@ -1,6 +1,6 @@
 import pygame
 import random
-import AiOponent
+import AiOpponent
 import BrikLogik
 import GameObjects
 import Database
@@ -160,13 +160,13 @@ def overlay():
     '''
     if Input.overlayOpen:
         
-        if Knapperne.antiKnap(Knapperne,Input,(10,4),(22,14)):
+        if Knapperne.antiKnap(Input,Grid.getReal((10,4)),Grid.getReal((22,14))):
             Input.closeOverlay = True
         
-        if Knapperne.knap(Knapperne,Input,(12,12),(20,13)):
+        if Knapperne.knap(Input,Grid.getReal((12,12)),Grid.getReal((20,13))):
             return "close game"
     else:
-        if Knapperne.knap(Knapperne,Input,(31,0),(32,1)):
+        if Knapperne.knap(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
             Input.overlayOpen = True 
 
 
@@ -231,7 +231,7 @@ clock = pygame.time.Clock()
 screenSelector="start"
 Input=Inputs()
 Grid=Visuals.Grid(screen)
-Knapperne = KnappeDetection
+Knapperne = KnappeDetection()
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))

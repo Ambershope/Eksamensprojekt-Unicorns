@@ -24,13 +24,23 @@ def innitialise():
     # cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
 
     cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'Cute and bubbly'),
-                (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
-                (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
-                (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
-                (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
-                (id, 'piecename', north, east, south, west, 'artPath', effektId, 'flavorText'),
+                (1, 'Totally unicorn', 3, 1, 0, 1, 'totallyUnicorn', 0, 'You can be anything you want to be!'), # (https://stockcake.com/i/majestic-horse-posing_720055_761979)
+                (2, 'Fire Breathing Unicorn', 1, 3, 1, 2, 'FireBreathingUnicorn', 0, 'Refreshing in winter'), # (https://stockcake.com/i/fiery-unicorn-blaze_234695_44744)
+                (3, 'Normie', 0, 0, 0, 0, 'Normiecorn', 1, 'Wait, jeg troede dette var lol'), # (https://stockcake.com/i/majestic-unicorn-magic_176901_30135)
+                (4, 'Coolicorn', 0, 1, 3, 1, 'CoolUnicorn', 0, '(⌐■_■)'), # Anna har tegnet og givet os copyright på dette billede
+                (5, 'Ice breathing Unicorn', 1, 2, 1, 3, 'FrostUnicorn', 0, 'Refreshing in summer'), # (https://stockcake.com/i/mystical-unicorn-scene_828530_804034)
+                 #(6, 'Uniquecorn', 2, 4, 2, 4, artpath, 2, 'One of a kind'),
+                (7, 'Unicake', 2, 2, 2, 2, 'Unicake', 0, 'Mums!'), # Har fået billedet fra free image librariet Stockcake.com (https://stockcake.com/i/unicorn-cupcake-delight_134375_15991)
+                (8, 'Sleepiecorn', 1, 2, 4, 1, 'SleepyUnicorn', 0, 'Nimble like a cat, and sleepy too'), # (https://stockcake.com/i/whimsical-unicorn-bedroom_575124_928066)
+                (9, 'Sea Unicorn', 1, 2, 3, 3, 'SeaUnicorn', 0, 'Very nimble in the sea'), # (https://www.deviantart.com/pulchridude/art/Lil-Narwhal-783280497)
+                (10, 'Rainbowsprint', 1, 1, 3, 2, 'RainbowSprint', 0, 'Legally distinct'), # (https://stockcake.com/i/majestic-sky-unicorn_815280_976023)
+                (11, 'Dualcorn', 1, 4, 1, 4, 'DualCorn', 0, 'Twice as magical'), # (https://stockcake.com/i/bull-in-motion_753655_971346)
                 )
+    
+    # Effekt 0: No effect
+    # Effekt 1: (normie aura): Reduce attack of surrounding Unicorns to 1
+    # Effekt 2:  (legendary )Romves all other [Cardname] from the battlefield
+    # Template (id, 'Name', north, east, south, west, artpath, effektId, 'flavorText'),
 
     # Commit changes
     conn.commit()
