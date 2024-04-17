@@ -109,24 +109,23 @@ def drawGame(Input, screen, grid, gameState):
     '''
 Draws the game\n
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((0,brightness,0))
+    screen.fill(SUNSHINE)
 
-
+    #draw the facy top infobar
+    pygame.draw.rect(screen, PINK, (grid.getReal((0,0)),grid.getRealLen((32,1.1))))
     #draw field base
     pygame.draw.rect(screen, BACKGROUND_COLOR, (grid.getReal((7,0)),grid.getRealLen((18,18))))
 
-    #draw field base tiles
-
-    #load in the different tiles
+    
+    #draw field
+    #load in the different tiles 
     tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
     tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
     tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
     tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
-    #for each location in the field, place the appropriate tile
+    #for each location on the field, 
     for xField in range (gameState.field.fieldSize):
         xGrid=(xField*gameState.tileSize)+7+((xField+1)*GRID_BETWEEN_TILES)
 
@@ -136,15 +135,16 @@ Draws the game\n
             currentTileValue=gameState.field.tileField[xField][yField]
             currentPieceValue=gameState.field.pieceField[xField][yField]
 
+            #place the appropriate tile
             if currentTileValue==0:
                 screen.blit(tile0Img, grid.getReal((xGrid, yGrid)))
             else:
                 screen.blit(tile1Img, grid.getReal((xGrid, yGrid)))
 
+            #place the appropiate piece
             if currentPieceValue != 0:
-                pieceImgUnscaled=currentPieceValue.artwork
-                pieceImg=pygame.transform.scale( pieceImgUnscaled, grid.getRealLen((gameState.tileSize-0.5,gameState.tileSize-0.5)))
-                screen.blit(pieceImg, grid.getReal((xGrid+0.25, yGrid+0.25)))
+                currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
+
 
 def border(screen, grid):
     '''

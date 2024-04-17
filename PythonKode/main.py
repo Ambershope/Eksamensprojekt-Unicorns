@@ -104,8 +104,41 @@ def game():
     Core game logic, called every frame while in game
     \nAlso calls drawGame()
     '''
-    gameState
+
+    '''since the game has many different things to do, 
+    depending on were on a turncycle the players are,
+    it figures it out in this massive if-elif statement'''
     
+    if gameState.turnCycleStep == 0: #you select piece (form hand)
+        pass
+
+    elif gameState.turnCycleStep == 1: #you select tile (from field)
+        pass
+
+    elif gameState.turnCycleStep == 2: #send to opponent (send selection to opponent)
+        #bjørn plz fiks
+        gameState.newTurnStep()
+
+    elif gameState.turnCycleStep == 5: #draw back too 5 pieces (draw missing pieces at the end of turn)
+        gameState.fillHand()
+        gameState.newTurnStep()
+
+    elif gameState.turnCycleStep == 6: #wait for opponent
+        #bjørn plz fiks
+        pass
+
+    elif gameState.turnCycleStep == 4 or gameState.turnCycleStep == 8: #test if game is over (test win)
+        pass
+
+    elif gameState.turnCycleStep == -1: #(select fist player)
+        pass
+
+    elif gameState.turnCycleStep == -2: #draw start hands of 5 pieces
+        gameState.fillHand()
+        gameState.newTurnStep()
+
+    else: #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+        pass
 
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
@@ -233,8 +266,9 @@ Grid=Visuals.Grid(screen)
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
-print(gameState.playerPile)
-gameState.field.pieceField[1][1] = BrikLogik.Piece(gameState.playerPile.drawPiece(), True)
+
+fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece())
+gameState = fluttersej.placeOnField(gameState, (2,4))
 
 
 main()

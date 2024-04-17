@@ -12,11 +12,16 @@ class Field:
         '''
         returnere en string med et flot formateret field
         '''
-        tekst="\n"
+        tekst="\ntile layer\n"
 
         for y in range (self.fieldSize):
             for x in range (self.fieldSize):
                 tekst += " " + str(self.tileField[x][y]) + " "
+            tekst += "\n"
+        tekst += "\npiece layer\n"
+        for y in range (self.fieldSize):
+            for x in range (self.fieldSize):
+                tekst += " " + str(self.pieceField[x][y]) + " "
             tekst += "\n"
 
         return tekst
@@ -33,7 +38,7 @@ class Field:
             yField.append(value)
 
         for x in range (self.fieldSize):
-            field.append(yField)
+            field.append(list(yField))
 
         return field
 
