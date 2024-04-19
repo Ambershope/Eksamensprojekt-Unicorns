@@ -99,6 +99,18 @@ def main():
         clock.tick(FPS)
         pygame.display.update()
 
+def switchScreen(target: str) -> None:
+    global screenSelector
+    # Code that runs, when you leave a screen:
+    if screenSelector == "gamemode":
+        network.serverLister()
+    screenSelector = target
+    # Code that runs, when you enter a screen:
+    if screenSelector == "gamemode":
+        network.leaveServerLister()
+
+
+
 def game():
     '''
     Core game logic, called every frame while in game
@@ -142,8 +154,7 @@ def game():
 
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="main menu"
+            switchScreen("main menu")
 
     Visuals.drawGame(Input, screen, Grid, gameState)
     
@@ -155,8 +166,7 @@ def startScreen():
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="main menu"
+            switchScreen("main menu")
 
     Visuals.drawStartScreen(screen, Grid)
    
@@ -169,8 +179,8 @@ def mainMenu():
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector = "gamemode"
+            switchScreen("gamemode")
+    
 
     Visuals.mainMenuDraw(Input, screen, Grid)
     
@@ -183,9 +193,8 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     '''
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
-            global screenSelector
-            screenSelector ="game"
-    Visuals.gamemodeScreenDraw(Input, screen, Grid)
+            switchScreen("game")
+    Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
 
 def overlay():
     '''
@@ -221,6 +230,7 @@ pygame.init()
 
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
+network = Networking.NetConnecter()
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector="start"

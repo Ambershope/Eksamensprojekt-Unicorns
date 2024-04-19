@@ -42,8 +42,28 @@ class Grid:
             return gridLength*self.gridSize
     
 
-            
+class LoadedVariabels:
+    '''
+    A class for loading pictures into the game.
+    \n This allows us to optimize loading, so that we don't load every picture -
+    \nevery frame or store every picture in memory
+    '''
+    def __init__(self):
+        '''This class doesn't need anything to be intizialised'''
+        pass
 
+    def loadGamemodeScreen(self, grid: Grid):
+        self.networksBackgroundText = "Hello World!"
+        self.networksBackgroundSize = grid.getRealLength((10.667, 14.4))
+        self.networksBackgroundPos = grid.getReal((20, 1.8))
+        self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), self.networksBackgroundSize)
+        self.titleFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((2,0))[0]))
+        self.nameFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((1,0))[0]))
+        self.portFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((0.5,0))[0]))
+        self.fontColor = (0, 0, 0)
+
+'''We create a loader that can be called from other scirptis to load difrent classes'''
+Loader = LoadedVariabels()
 
 def mainMenuDraw(Input, screen, grid):
     '''
@@ -59,13 +79,27 @@ Draws the start screen\n
 
 
 
-def gamemodeScreenDraw(Input, screen, grid):
+def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, servers: list[tuple]) -> None:
     '''
-Draws the select gamemode screen\n
+    Draws the select gamemode screen.\n
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
+    Loader.loadGamemodeScreen(grid)
+    frameCounter = Input.frameCounter # Animations - tick
+    # Display background (Layer 1):
     screen.fill((150, 194, 145))
+    # Display layer 2:
+    screen.blit(Loader.networksBackground, Loader.networksBackgroundPos)
+    #Display layer 3 (Tekst?):
+    
+    screen.blit(Loader.titleFont.render(Loader.networksBackgroundText, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.titleFont.size(Loader.networksBackgroundText)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1]))
+    for i in range(len(servers)):
+        name = servers[i][2]
+        porttext = str(servers[i][0] + " : " + str(servers[i][1]))
+        screen.blit(Loader.nameFont.render(name, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.nameFont.size(name)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLength((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1]))
+        screen.blit(Loader.portFont.render(porttext, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.portFont.size(porttext)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLength((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1] + Loader.nameFont.size("Hello world")[1]))
+    
+
+
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
@@ -166,3 +200,6 @@ draws the underlying visual grid for development use, toggel with g at the time 
         pygame.draw.line(screen, "black", grid.getReal((0,y)), grid.getReal((GRID_LENGTH_X,y)), 1)
     for x in range (GRID_LENGTH_X+1):
         pygame.draw.line(screen, "black", grid.getReal((x,0)), grid.getReal((x,GRID_LENGTH_Y)), 1)
+
+if __name__ == "__main__":
+    import main

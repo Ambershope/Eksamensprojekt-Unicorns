@@ -25,6 +25,7 @@ class NetConnecter():
         self.broadcastingUDP = True
         self.listerUDP = True
         self.openServers = []
+        self.serverName = str(self.addr[0] + ":" + str(self.addr[1]))
 
     # ----------   General functions   ----------
     
@@ -50,8 +51,9 @@ class NetConnecter():
         '''
         while self.broadcastingUDP:
             print(str("O:" + self.addr[0] + ":" + str(self.addr[1])))
-            self.socketUDP.sendto(str("O:" + self.addr[0] + ":" + str(self.addr[1])).encode("utf-8"), self.addrUDP)
+            self.socketUDP.sendto(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
             sleep(1.5)
+        self.socketUDP.sendto(str("C:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
 
     def serverLister(self):
         '''
@@ -84,8 +86,12 @@ class NetConnecter():
             message = message.split(':')
             if message[0] == 'O':
                 addr = (message[1], message[2])
-                if addr not in self.openServers: self.openServers.append(addr)
+                if addr not in self.openServers: self.openServers.append((addr, message[3]))
             print(self.openServers)
+            if message[0] == 'C':
+                addr = (message[1], message[2])
+                try: self.openServers.remove((addr, message[3]))
+                except: pass
     
     def leaveServerLister(self):
         '''
