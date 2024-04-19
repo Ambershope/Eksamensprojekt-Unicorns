@@ -38,10 +38,14 @@ class NetConnecter():
         This allows other computers on the same internet to find this server.\n
         '''
         print("Server starting to broadcast")
-        threading.Thread(target=self.openTCPPort).start()
+        thread = threading.Thread(target=self.openTCPPort)
+        thread.daemon = True
+        thread.start()
         self.broadcastingUDP = True
         self.socketUDP.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, self.timeToLive)
-        threading.Thread(target=self.broadcastServerTreadUDP).start()
+        thread = threading.Thread(target=self.broadcastServerTreadUDP)
+        thread.daemon = True
+        thread.start()
 
     def broadcastServerTreadUDP(self):
         '''
@@ -69,7 +73,9 @@ class NetConnecter():
             mreq = socket.inet_aton(self.addrUDP[0]) + socket.inet_aton('0.0.0.0')
             self.socketUDP.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
             print("Server starting to listen")
-            threading.Thread(target=self.serverListerTreadUDP).start()
+            thread = threading.Thread(target=self.serverListerTreadUDP)
+            thread.daemon = True
+            thread.start()
         except:
             print("Server already listening")
     
@@ -155,7 +161,9 @@ if __name__ == "__main__":
 
     def startServer():
         print("Server is starting")
-        threading.Thread(target=netCon.openTCPPort).start()
+        thread = threading.Thread(target=netCon.openTCPPort)
+        thread.daemon = True
+        thread.start()
         
     def clientMessage():
         pass
@@ -174,7 +182,6 @@ if __name__ == "__main__":
     b3 = Button(f1, text="Find open ports", command=lambda: netCon.serverLister())
     b4 = Button(f1, text="UDP messaging", command=lambda: netCon.broadcastServer())
     b5 = Button(f1, text="Stop finding ports", command=lambda: netCon.leaveServerLister())
-    # b3 = Button(f1, text="Find open ports", command=lambda: threading.Thread(target=findPorts, args=()).start())
     l1 = Label(f1, text=" --- Netværks text --- ")
     f1.pack()
     l1.grid(row=0, column=0, columnspan=3)
