@@ -31,10 +31,9 @@ class Grid:
     def getGrid(self, realCord=(0,0)):
         return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
     
-    def getRealLen(self, gridLength=(0)):
+    def getRealLen(self, gridLength: int | float | tuple | list) -> int | float | list:
         returnList=[]
-        
-        if str(type(gridLength)) == "<class 'list'>" or str(type(gridLength)) == "<class 'tuple'>":
+        if type(gridLength) == list or type(gridLength) == tuple:
             for i in gridLength:
                 returnList.append(i*self.gridSize)
             return returnList
@@ -54,7 +53,7 @@ class LoadedVariabels:
 
     def loadGamemodeScreen(self, grid: Grid):
         self.networksBackgroundText = "Hello World!"
-        self.networksBackgroundSize = grid.getRealLength((10.667, 14.4))
+        self.networksBackgroundSize = grid.getRealLen((10.667, 14.4))
         self.networksBackgroundPos = grid.getReal((20, 1.8))
         self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), self.networksBackgroundSize)
         self.titleFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((2,0))[0]))
@@ -91,12 +90,12 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
     screen.blit(Loader.networksBackground, Loader.networksBackgroundPos)
     #Display layer 3 (Tekst?):
     
-    screen.blit(Loader.titleFont.render(Loader.networksBackgroundText, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.titleFont.size(Loader.networksBackgroundText)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1]))
+    screen.blit(Loader.titleFont.render(Loader.networksBackgroundText, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.titleFont.size(Loader.networksBackgroundText)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen((0,0.25))[1]))
     for i in range(len(servers)):
         name = servers[i][2]
         porttext = str(servers[i][0] + " : " + str(servers[i][1]))
-        screen.blit(Loader.nameFont.render(name, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.nameFont.size(name)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLength((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1]))
-        screen.blit(Loader.portFont.render(porttext, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.portFont.size(porttext)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLength((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLength((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1] + Loader.nameFont.size("Hello world")[1]))
+        screen.blit(Loader.nameFont.render(name, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.nameFont.size(name)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLen((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1]))
+        screen.blit(Loader.portFont.render(porttext, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.portFont.size(porttext)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen((0,0.25))[1] + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLen((0, 0.25))[0]) + Loader.titleFont.size(Loader.networksBackgroundText)[1] + Loader.nameFont.size("Hello world")[1]))
     
 
 
