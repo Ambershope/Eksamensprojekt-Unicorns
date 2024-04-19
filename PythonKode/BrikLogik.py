@@ -29,7 +29,7 @@ class GameState:
     
 class Piece:
     def __init__ (self, pieceId_, isYours_=True):
-        cardData = Database.databaseCardFinder(pieceId_)[0]
+        cardData = Database.databaseCardFinder('pieces','pieceId',pieceId_)[0]
         print(cardData)
         self.pieceName = cardData[1]
         print(self.pieceName)
