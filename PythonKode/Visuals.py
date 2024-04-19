@@ -31,8 +31,15 @@ class Grid:
     def getGrid(self, realCord=(0,0)):
         return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
     
-    def getRealLength(self, gridLength=(0,0)):
-        return (gridLength[0]*self.gridSize, gridLength[1]*self.gridSize)
+    def getRealLen(self, gridLength=(0)):
+        returnList=[]
+        
+        if str(type(gridLength)) == "<class 'list'>" or str(type(gridLength)) == "<class 'tuple'>":
+            for i in gridLength:
+                returnList.append(i*self.gridSize)
+            return returnList
+        else:
+            return gridLength*self.gridSize
     
 
             
@@ -42,9 +49,15 @@ def mainMenuDraw(Input, screen, grid):
     '''
 Draws the start screen\n
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((0,0,brightness))
+    screen.fill(BACKGROUND_COLOR)
+    titleFont = pygame.font.SysFont(TITLE_FONT, int(grid.getRealLen(2)))
+    img = titleFont.render(GAME_NAME, True, "white")
+    
+    
+    screen.blit(img, ((grid.getRealLen(32) - img.get_width())/2, grid.getReal((0,1.5))[1]))
+
+
+
 
 def gamemodeScreenDraw(Input, screen, grid):
     '''
@@ -58,70 +71,79 @@ def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
     #creates the bruger meny that opens the overlay
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
-    scaledImage=pygame.transform.scale(image, (grid.gridSize,grid.gridSize))
+    scaledImage=pygame.transform.scale(image, (grid.getRealLen((1,1))))
     screen.blit(scaledImage, grid.getReal((31, 0)))
 
     if Input.overlayOpen:
         #creates a dark seethroug layer that covers the entire screen
-        alfaSurface=pygame.Surface((grid.gridSize*GRID_LENGTH_X,grid.gridSize*GRID_LENGTH_Y))
+        alfaSurface=pygame.Surface(grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
         alfaSurface.set_alpha(128)
         alfaSurface.fill((0,0,0))
         screen.blit(alfaSurface, grid.getReal((0,0)))
 
         #creates the underlying box for the options full screen overlay
-        pygame.draw.rect(screen, (255,255,255), (grid.getReal((10,4)),((GRID_LENGTH_X-20)*grid.gridSize,(GRID_LENGTH_Y-8)*grid.gridSize)), border_radius=round(grid.gridSize*0.5))
+        pygame.draw.rect(screen, OPTIONS_BACKGROUND, (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
 
         #creates the quit game button
         image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
-        scaledImage=pygame.transform.scale(image, (grid.gridSize*8,grid.gridSize*1))
+        scaledImage=pygame.transform.scale(image, grid.getRealLen((8,1)))
         screen.blit(scaledImage, grid.getReal((12, 12)))
     
 
-def drawStartScreen(screen):
+def drawStartScreen(screen, grid):
     '''
 Draws the start screen\n
     '''
-    screen.fill((200,200,200))
+
+    #clears the screen
+    screen.fill((0,0,0))
+    
+    #creates the startscreen art
+    image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
+    scaledImage=pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
+    screen.blit(scaledImage, grid.getReal((0, 0)))
+    
 
 
 def drawGame(Input, screen, grid, gameState):
     '''
 Draws the game\n
     '''
-    frameCounter = Input.frameCounter
-    brightness=abs(255-((frameCounter*3)%511))
-    screen.fill((0,brightness,0))
+    screen.fill(SUNSHINE)
 
-
+    #draw the facy top infobar
+    pygame.draw.rect(screen, PINK, (grid.getReal((0,0)),grid.getRealLen((32,1.1))))
     #draw field base
-    pygame.draw.rect(screen, (255, 192, 203), (grid.getReal((7,0)),grid.getRealLength((18,18))))
+    pygame.draw.rect(screen, BACKGROUND_COLOR, (grid.getReal((7,0)),grid.getRealLen((18,18))))
 
-    #draw field base tiles
+    
+    #draw field
+    #load in the different tiles 
     tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
-    tile0Img=pygame.transform.scale( tile0ImgUnscaled, (gameState.tileSize*grid.gridSize,gameState.tileSize*grid.gridSize))
-    tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
-    tile1Img=pygame.transform.scale( tile1ImgUnscaled, (gameState.tileSize*grid.gridSize,gameState.tileSize*grid.gridSize))
+    tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
+    tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
+    tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
+
+    #for each location on the field, 
     for xField in range (gameState.field.fieldSize):
         xGrid=(xField*gameState.tileSize)+7+((xField+1)*GRID_BETWEEN_TILES)
 
         for yField in range (gameState.field.fieldSize):
             yGrid=(yField*gameState.tileSize)+((yField+1)*GRID_BETWEEN_TILES)
 
-            curentTileValue=gameState.field.tileField[xField][yField]
+            currentTileValue=gameState.field.tileField[xField][yField]
+            currentPieceValue=gameState.field.pieceField[xField][yField]
 
-            if curentTileValue==0:
+            #place the appropriate tile
+            if currentTileValue==0:
                 screen.blit(tile0Img, grid.getReal((xGrid, yGrid)))
             else:
                 screen.blit(tile1Img, grid.getReal((xGrid, yGrid)))
-                
-            
 
-
-    GRID_BETWEEN_TILES
-    
-
-
+            #place the appropiate piece
+            if currentPieceValue != 0:
+                currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
 
 
 def border(screen, grid):
