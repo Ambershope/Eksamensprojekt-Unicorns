@@ -1,4 +1,6 @@
 import Database
+from GameObjects import Field
+from Visuals import Grid
 import pygame
 from Constants import *
 
@@ -21,10 +23,19 @@ class GameState:
         else:
             self.turnCycleStep += 1
         return self.turnCycleStep
+    
     def fillHand(self):
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
+
+    def isPlacable(self):
+        tileMousedOver = Grid.getGrid(pygame.mouse.get_pos())
+        if Field.pieceField[tileMousedOver] == 0:
+            return True
+        else:
+            return False
+        
 
     
 class Piece:
@@ -34,8 +45,8 @@ class Piece:
         self.pieceName = cardData[1]
         print(self.pieceName)
         self.pieceId = pieceId_
-        self.isYours=isYours_
-        self.persuasion= [cardData[2], cardData[3], cardData[4], cardData[5]]
+        self.isYours = isYours_
+        self.persuasion = [cardData[2], cardData[3], cardData[4], cardData[5]]
         self.artworkPath = Database.pathToGameDataFile("Visuals\PieceArtwork", cardData[6], ".png")
         self.artwork = pygame.image.load(self.artworkPath)
         self.effectFunctionId = cardData[7]
