@@ -215,44 +215,6 @@ def testColision(position, cornerA, cornerB):
     return False
 
 
-def startGame():
-    while True:
-        #userInputs
-        drawBrick()
-        sendTurn()
-        if checkWin(): 
-            youWin()
-            break
-        opponentTurn()
-        if checkWin(): 
-            opponentWin()
-            break
-
-
-'''#Whats a brick?'''
-def drawBrick():
-    pass
-
-def opponentTurn():
-    idelWait()
-    pass
-
-def idelWait():
-    pass
-
-def checkWin():
-    return False
-
-def sendTurn():
-    pass
-
-def youWin():
-    pass
-
-def opponentWin():
-    pass
-
-
 pygame.init()
 #Initialization.innitialise()
 

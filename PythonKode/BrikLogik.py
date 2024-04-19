@@ -22,9 +22,9 @@ class GameState:
             self.turnCycleStep += 1
         return self.turnCycleStep
     def fillHand(self):
-        for i in len(self.hand):
+        for i in range (len(self.hand)):
             if self.hand[i] == 0:
-                self.hand[i] == Piece(self.playerPile.drawPiece())
+                self.hand[i] = Piece(self.playerPile.drawPiece())
 
     
 class Piece:
