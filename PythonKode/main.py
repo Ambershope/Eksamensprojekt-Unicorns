@@ -22,6 +22,7 @@ class Inputs:
         self.mouseLeftButtonClick = False
         self.DEVTOOLdisplayGrid = False
         self.frameCounter = 0
+        self.isHolding = False
 
     def update(self):
         self.frameCounter += 1
