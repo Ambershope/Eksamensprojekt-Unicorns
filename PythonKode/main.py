@@ -126,7 +126,9 @@ def game():
         pass
 
     elif gameState.turnCycleStep == 1: #you select tile (from field)
-        pass
+        if Input.mouseLeftButtonClick:
+            pass
+
 
     elif gameState.turnCycleStep == 2: #send to opponent (send selection to opponent)
         #bjørn plz fiks
