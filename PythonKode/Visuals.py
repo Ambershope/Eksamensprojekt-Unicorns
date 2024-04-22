@@ -1,7 +1,7 @@
 import pygame
 import Database
 from Constants import *
-
+import BrikLogik
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
@@ -138,7 +138,7 @@ Draws the start screen\n
     
 
 
-def drawGame(Input, screen, grid, gameState):
+def drawGame(Input, screen :pygame.surface, grid, gameState:BrikLogik.GameState):
     '''
 Draws the game\n
     '''
@@ -177,7 +177,14 @@ Draws the game\n
             #place the appropiate piece
             if currentPieceValue != 0:
                 currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
-
+    #draw the hand
+    handInfoSize = 5
+    for i in range (len(gameState.hand)):
+        drawYCorner = (handInfoSize*(i%3)) + (0.45*((i%3)+1)) + 1.1
+        drawXCorner = 1 + ((i//3)*(18+7))
+        currentPieceValue= gameState.hand[i]
+        if currentPieceValue != 0:
+            currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
 
 def border(screen, grid):
     '''

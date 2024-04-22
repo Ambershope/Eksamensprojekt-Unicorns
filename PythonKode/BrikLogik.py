@@ -28,6 +28,12 @@ class GameState:
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
+    
+    def SelectPiece(self):
+        '''
+        
+        '''
+        return
 
     def isPlacable(self):
         tileMousedOver = Grid.getGrid(pygame.mouse.get_pos())

@@ -22,6 +22,7 @@ class Inputs:
         self.mouseLeftButtonClick = False
         self.DEVTOOLdisplayGrid = False
         self.frameCounter = 0
+        self.isHolding = False
 
     def update(self):
         self.frameCounter += 1
@@ -125,7 +126,9 @@ def game():
         pass
 
     elif gameState.turnCycleStep == 1: #you select tile (from field)
-        pass
+        if Input.mouseLeftButtonClick:
+            pass
+
 
     elif gameState.turnCycleStep == 2: #send to opponent (send selection to opponent)
         #bjørn plz fiks
@@ -185,7 +188,6 @@ def mainMenu():
     Visuals.mainMenuDraw(Input, screen, Grid)
     
 
-
 def gamemodeSelect(): # Bjørn arbejder på den lige nu
     '''
     Stuff for while on the gamemode selection screen should
@@ -210,20 +212,6 @@ def overlay():
     else:
         if Knapperne.knap(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
             Input.overlayOpen = True 
-
-
-def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
-    '''
-    Test if a position is within a rectangle
-    '''
-    #test if in range of x
-    if position[0]>=min(cornerA[0], cornerB[0]) and position[0]<=max(cornerA[0], cornerB[0]):
-
-        #test if in range of y
-        if position[1]>=min(cornerA[1], cornerB[1]) and position[1]<=max(cornerA[1], cornerB[1]):
-            return True
-    return False
-
 
 pygame.init()
 #Initialization.innitialise()
