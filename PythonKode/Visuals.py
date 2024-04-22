@@ -49,7 +49,12 @@ class LoadedVariabels:
     '''
     def __init__(self):
         '''This class doesn't need anything to be intizialised'''
+        self.currentScreenLoaded = "none"
         pass
+    def loadStartScreen(self, grid : Grid):
+        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
+        self.backgroundImg = pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
+        self.currentScreenLoaded = "start"
 
     def loadGamemodeScreen(self, grid: Grid):
         self.networksBackgroundText = "Hello World!"
@@ -103,9 +108,12 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
     #creates the bruger meny that opens the overlay
+
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.getRealLen((1,1))))
+
     screen.blit(scaledImage, grid.getReal((31, 0)))
+
 
     if Input.overlayOpen:
         #creates a dark seethroug layer that covers the entire screen
@@ -118,27 +126,30 @@ def overlayDraw(Input, screen, grid):
         pygame.draw.rect(screen, OPTIONS_BACKGROUND, (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
 
         #creates the quit game button
-        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
-        scaledImage=pygame.transform.scale(image, grid.getRealLen((8,1)))
+        exitTextFont=pygame.font.SysFont(None, 72)
+        exitTextImage=exitTextFont.render("Exit?", True, "BLUE")
+        exitImage=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
+        scaledImage=pygame.transform.scale(exitImage, grid.getRealLen((8,1)))
         screen.blit(scaledImage, grid.getReal((12, 12)))
+        screen.blit(exitTextImage, grid.getReal((14.5,8)))
+        
     
 
 def drawStartScreen(screen, grid):
     '''
 Draws the start screen\n
     '''
-
+    if Loader.currentScreenLoaded != "start":
+        Loader.loadStartScreen(grid)
     #clears the screen
     screen.fill((0,0,0))
     
-    #creates the startscreen art
-    image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
-    scaledImage=pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
-    screen.blit(scaledImage, grid.getReal((0, 0)))
+    #draws the startscreen art
+    screen.blit(Loader.backgroundImg, grid.getReal((0, 0)))
     
 
 
-def drawGame(Input, screen :pygame.surface, grid, gameState:BrikLogik.GameState):
+def drawGame(Input, screen : pygame.surface, grid, gameState:BrikLogik.GameState):
     '''
 Draws the game\n
     '''
@@ -179,12 +190,17 @@ Draws the game\n
                 currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
     #draw the hand
     handInfoSize = 5
-    for i in range (len(gameState.hand)):
+    for i in range (len(gameState.hand)+1):
         drawYCorner = (handInfoSize*(i%3)) + (0.45*((i%3)+1)) + 1.1
         drawXCorner = 1 + ((i//3)*(18+7))
-        currentPieceValue= gameState.hand[i]
-        if currentPieceValue != 0:
-            currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
+        try:
+            currentPieceValue= gameState.hand[i]
+            if currentPieceValue != 0:
+                currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
+        except: # the end of the hand and the hover info tile
+            pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
+
+    
 
 def border(screen, grid):
     '''
