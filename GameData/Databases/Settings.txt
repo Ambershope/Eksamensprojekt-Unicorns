@@ -1,4 +1,4 @@
-Name:
+Name: My first server
 #!#
 This document is created for storing settings that are stored between game sessions.
 This will later be loaded in main, on the starting screen. The line #!# is settings end line.

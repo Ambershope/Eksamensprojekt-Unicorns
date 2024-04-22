@@ -245,6 +245,10 @@ gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
 fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece())
 gameState = fluttersej.placeOnField(gameState, (2,4))
 
+with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
+    for setting in settingsFile.readlines():
+        if setting == "#!#": break
+        elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
 
 main()
 pygame.quit()

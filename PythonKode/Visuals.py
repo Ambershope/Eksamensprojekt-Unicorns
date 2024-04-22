@@ -90,8 +90,8 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
     #Display layer 3 (Tekst?):
     screen.blit(Loader.titleFont.render(Loader.networksBackgroundText, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.titleFont.size(Loader.networksBackgroundText)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen(0.25)))
     for i in range(len(servers)):
-        name = servers[i][2]
-        porttext = str(servers[i][0] + " : " + str(servers[i][1]))
+        name = servers[i][1]
+        porttext = str(servers[i][0][0] + " : " + str(servers[i][0][1]))
         screen.blit(Loader.nameFont.render(name, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.nameFont.size(name)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen(0.25) + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLen(0.25)) + Loader.titleFont.size(Loader.networksBackgroundText)[1]))
         screen.blit(Loader.portFont.render(porttext, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.portFont.size(porttext)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen(0.25) + i * (Loader.nameFont.size(name)[1] + (Loader.portFont.size(porttext)[1]) + grid.getRealLen(0.25)) + Loader.titleFont.size(Loader.networksBackgroundText)[1] + Loader.nameFont.size("Hello world")[1]))
     
