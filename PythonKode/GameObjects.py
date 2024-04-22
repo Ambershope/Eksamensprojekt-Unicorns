@@ -1,7 +1,6 @@
 import random
 from Database import pathToGameDataFile
 from Constants import MAX_DUPES_IN_PILE
-
 class Field:
     def __init__ (self, fieldId=0):
         self.fieldId=fieldId
@@ -26,6 +25,12 @@ class Field:
 
         return tekst
     
+    def isPlacable(self, cords : tuple | list):
+        if self.pieceField[cords] == 0 and self.tileField != 0:
+            return True
+        else:
+            return False
+
     def getFullField(self, value=0):
         '''
         creates a square field that is full of the specified value,\n

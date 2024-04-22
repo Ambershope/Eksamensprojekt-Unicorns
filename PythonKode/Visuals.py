@@ -1,7 +1,7 @@
 import pygame
 import Database
 from Constants import *
-import BrikLogik
+from BrikLogik import GameState
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
@@ -149,7 +149,7 @@ Draws the start screen\n
     
 
 
-def drawGame(Input, screen : pygame.surface, grid, gameState:BrikLogik.GameState):
+def drawGame(Input, screen : pygame.surface, grid, gameState:GameState):
     '''
 Draws the game\n
     '''

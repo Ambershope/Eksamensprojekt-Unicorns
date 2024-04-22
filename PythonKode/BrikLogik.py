@@ -1,6 +1,5 @@
 import Database
 from GameObjects import Field
-from Visuals import Grid
 import pygame
 from Constants import *
 
@@ -36,13 +35,6 @@ class GameState:
         
         '''
         return
-
-    def isPlacable(self):
-        tileMousedOver = Grid.getGrid(pygame.mouse.get_pos())
-        if Field.pieceField[tileMousedOver] == 0:
-            return True
-        else:
-            return False
         
 
     
