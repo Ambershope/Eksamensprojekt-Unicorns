@@ -103,11 +103,12 @@ def switchScreen(target: str) -> None:
     global screenSelector
     # Code that runs, when you leave a screen:
     if screenSelector == "gamemode":
-        network.serverLister()
+        network.leaveServerLister()
     screenSelector = target
     # Code that runs, when you enter a screen:
     if screenSelector == "gamemode":
-        network.leaveServerLister()
+        Visuals.Loader.loadGamemodeScreen(Grid)
+        network.serverLister()
 
 
 

@@ -82,14 +82,12 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
     '''
     Draws the select gamemode screen.\n
     '''
-    Loader.loadGamemodeScreen(grid)
     frameCounter = Input.frameCounter # Animations - tick
     # Display background (Layer 1):
     screen.fill((150, 194, 145))
     # Display layer 2:
     screen.blit(Loader.networksBackground, Loader.networksBackgroundPos)
     #Display layer 3 (Tekst?):
-    
     screen.blit(Loader.titleFont.render(Loader.networksBackgroundText, True, Loader.fontColor), (Loader.networksBackgroundPos[0] + (Loader.networksBackground.get_rect()[2] - Loader.titleFont.size(Loader.networksBackgroundText)[0]) / 2, Loader.networksBackgroundPos[1] + grid.getRealLen(0.25)))
     for i in range(len(servers)):
         name = servers[i][2]
