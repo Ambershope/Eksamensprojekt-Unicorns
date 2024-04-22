@@ -57,44 +57,68 @@ class Piece:
         return str(self.pieceId)
     
     def calculatePowerArrowSurface(self):
+        
+        #constants that can be changed
         triangleColor = LUKEWARM_PINK
         triangleSize = 16*4
         spaceBetweenTriangles= 16
         pieceSize = 64*8
-        edgeSize = pieceSize//20
         overlapSize = pieceSize // 32
-        surfaceSize=pieceSize+((edgeSize+overlapSize)*2)
+
+        #constants that shouldent be changed
+        edgeSize = pieceSize//20
+        
         self.powerArrowSurface = pygame.surface.Surface((surfaceSize,surfaceSize), pygame.SRCALPHA)
+        surfaceSize=pieceSize+((edgeSize+overlapSize)*2)
         pieceCenterX , pieceCenterY = surfaceSize // 2, surfaceSize // 2
+        '''the rest of the coordinates are relative, compared to the previous cordinate
+        edgecenter is relative to piece center
+        triangle center is relative to the edge center
+        the points on the triangles are relative to the triangle center
+        
+        this makes it possible to find each points position relative to the center, and rotate them aroud it
+        '''
         edgeCenterY = -(0.5*(pieceSize+edgeSize))
         edgeCenterX = 0
+
+    #actually calculete the triangle
         self.listOfAllTriangles=[]
- 
+        #for each direction find the number of triangles needed
         for direction in range (len(self.persuasion)):
             power = self.persuasion[direction]
 
             for triangle in range (power):
-                triangleCenterX=spaceBetweenTriangles*triangle+((triangle+0.5)*triangleSize) - (((power*triangleSize)+((power-1)*spaceBetweenTriangles))*0.5)
+                #for each triangle calculate the center
+                triangleCenterX = spaceBetweenTriangles*triangle+((triangle+0.5)*triangleSize) - (((power*triangleSize)+((power-1)*spaceBetweenTriangles))*0.5)
+                triangleCenterY = 0
                 triangleCords = []
 
-                for point in range (3):    
+                for point in range (3):  
+                    #for each corner on the triangle calculate the position relative to the TRIANGLEcenter 
                     if point == 2:
                         pointY= - overlapSize - (edgeSize*0.5)
                         pointX= 0
                     else:
                         pointY= overlapSize + (edgeSize*0.5)
                         pointX= (triangleSize * (point-0.5))
+                    
+                    #finds the triangle corner relative to the center of the piece
+                    currentPoint = (pointX+triangleCenterX+edgeCenterX, pointY+triangleCenterY+edgeCenterY)
 
-                    currentPoint = (pointX+triangleCenterX+edgeCenterX, pointY+edgeCenterY)
+                    #rotates the triangle aroud the piece center so its pointing in the right direction 
                     for i in range (direction):
                         currentPoint = tvearVektor(currentPoint)
 
                     triangleCords.append((currentPoint[0]+pieceCenterX, currentPoint[1]+pieceCenterY))
-
+                
+                #adds the triangle to the list of triangles
                 self.listOfAllTriangles.append(tuple(triangleCords))
-            
+        
+        #draw the triangles
         for tri in self.listOfAllTriangles:
+            #draw center color
             pygame.draw.polygon(self.powerArrowSurface, triangleColor, tri)
+            #draw edge
             pygame.draw.polygon(self.powerArrowSurface, "black", tri, 4)
             
 
