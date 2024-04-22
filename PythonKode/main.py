@@ -188,7 +188,6 @@ def mainMenu():
     Visuals.mainMenuDraw(Input, screen, Grid)
     
 
-
 def gamemodeSelect(): # Bjørn arbejder på den lige nu
     '''
     Stuff for while on the gamemode selection screen should

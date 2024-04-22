@@ -21,10 +21,17 @@ class GameState:
         else:
             self.turnCycleStep += 1
         return self.turnCycleStep
+    
     def fillHand(self):
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
+    
+    def SelectPiece(self):
+        '''
+        
+        '''
+        return
 
     
 class Piece:
