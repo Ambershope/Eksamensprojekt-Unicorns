@@ -214,20 +214,6 @@ def overlay():
         if Knapperne.knap(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
             Input.overlayOpen = True 
 
-
-def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
-    '''
-    Test if a position is within a rectangle
-    '''
-    #test if in range of x
-    if position[0]>=min(cornerA[0], cornerB[0]) and position[0]<=max(cornerA[0], cornerB[0]):
-
-        #test if in range of y
-        if position[1]>=min(cornerA[1], cornerB[1]) and position[1]<=max(cornerA[1], cornerB[1]):
-            return True
-    return False
-
-
 pygame.init()
 #Initialization.innitialise()
 
