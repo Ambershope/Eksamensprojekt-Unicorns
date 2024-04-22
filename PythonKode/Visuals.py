@@ -103,9 +103,12 @@ def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, server
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
     #creates the bruger meny that opens the overlay
+
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.getRealLen((1,1))))
+
     screen.blit(scaledImage, grid.getReal((31, 0)))
+
 
     if Input.overlayOpen:
         #creates a dark seethroug layer that covers the entire screen
@@ -118,9 +121,13 @@ def overlayDraw(Input, screen, grid):
         pygame.draw.rect(screen, OPTIONS_BACKGROUND, (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
 
         #creates the quit game button
-        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
-        scaledImage=pygame.transform.scale(image, grid.getRealLen((8,1)))
+        exitTextFont=pygame.font.SysFont(None, 72)
+        exitTextImage=exitTextFont.render("Exit?", True, "BLUE")
+        exitImage=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
+        scaledImage=pygame.transform.scale(exitImage, grid.getRealLen((8,1)))
         screen.blit(scaledImage, grid.getReal((12, 12)))
+        screen.blit(exitTextImage, grid.getReal((14.5,8)))
+        
     
 
 def drawStartScreen(screen, grid):
