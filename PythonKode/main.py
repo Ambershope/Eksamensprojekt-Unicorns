@@ -121,39 +121,39 @@ def game():
     '''since the game has many different things to do, 
     depending on were on a turncycle the players are,
     it figures it out in this massive if-elif statement'''
-    
-    if gameState.turnCycleStep == 0: #you select piece (form hand)
-        pass
-
-    elif gameState.turnCycleStep == 1: #you select tile (from field)
-        if Input.mouseLeftButtonClick:
+    match gameState.turnCycleStep:
+        case 0: #you select piece (form hand)
             pass
 
+        case  1: #you select tile (from field)
+            if Input.mouseLeftButtonClick:
+                pass
 
-    elif gameState.turnCycleStep == 2: #send to opponent (send selection to opponent)
-        #bjørn plz fiks
-        gameState.newTurnStep()
+        case  2: #send to opponent (send selection to opponent)
+            #bjørn plz fiks
+            gameState.newTurnStep()
 
-    elif gameState.turnCycleStep == 5: #draw back too 5 pieces (draw missing pieces at the end of turn)
-        gameState.fillHand()
-        gameState.newTurnStep()
+        case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
+            gameState.fillHand()
+            gameState.newTurnStep()
 
-    elif gameState.turnCycleStep == 6: #wait for opponent
-        #bjørn plz fiks
-        pass
+        case 6: #wait for opponent
+            #bjørn plz fiks
+            pass
 
-    elif gameState.turnCycleStep == 4 or gameState.turnCycleStep == 8: #test if game is over (test win)
-        pass
+        case  4 | 8: #test if game is over (test win)
+            pass
 
-    elif gameState.turnCycleStep == -1: #(select fist player)
-        pass
+        case -1: #(select fist player)
+            # we gotta make it so the server randomly decides. for now you always start.
+            gameState.newTurnStep()
 
-    elif gameState.turnCycleStep == -2: #draw start hands of 5 pieces
-        gameState.fillHand()
-        gameState.newTurnStep()
+        case -2: #draw start hands of 5 pieces
+            gameState.fillHand()
+            gameState.newTurnStep()
 
-    else: #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
-        pass
+        case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+            pass
 
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
@@ -212,6 +212,9 @@ def overlay():
     else:
         if Knapperne.knap(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
             Input.overlayOpen = True 
+
+
+
 
 pygame.init()
 #Initialization.innitialise()
