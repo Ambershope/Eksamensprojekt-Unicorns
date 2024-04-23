@@ -147,10 +147,6 @@ Draws the start screen\n
     #draws the startscreen art
     screen.blit(Loader.backgroundImg, grid.getReal((0, 0)))
 
-def drawDraggedUnicorn(piece,screen,grid):
-        mousePos = pygame.mouse.get_pos()
-
-        piece.drawMe(screen, mousePos, grid.getRealLen(GameState.tileSize-0.5))
 
     
 
