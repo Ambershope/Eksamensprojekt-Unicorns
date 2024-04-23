@@ -26,6 +26,7 @@ class NetConnecter():
         self.listerUDP = True
         self.openServers = []
         self.serverName = str(self.addr[0] + "|" + str(self.addr[1]))
+        self.processFunk = lambda a: print(a)
 
     # ----------   General functions   ----------
     
@@ -50,7 +51,7 @@ class NetConnecter():
         It is part of broadcastServer, and will crash the program if called.
         '''
         while self.broadcastingUDP:
-            print(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName))
+            # print(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName))
             self.socketUDP.sendto(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
             sleep(1.5)
         self.socketUDP.sendto(str("C:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
@@ -82,13 +83,12 @@ class NetConnecter():
         '''
         while self.listerUDP:
             message = self.socketUDP.recv(1024).decode('utf-8')
-            print(message)
             message = message.split(':')
             if message[0] == 'O':
-                addr = (message[1], message[2])
+                addr = (message[1], int(message[2]))
                 if (addr, message[3]) not in self.openServers: self.openServers.append((addr, message[3]))
             if message[0] == 'C':
-                addr = (message[1], message[2])
+                addr = (message[1], int(message[2]))
                 try: self.openServers.remove((addr, message[3]))
                 except: pass
     
@@ -119,24 +119,29 @@ class NetConnecter():
         Although it probebly is not needed as a thread, we have decided to \n
         make it a thread, to ensure that the game will run smoothly.
         '''
-        errorCode = self.socketTCP.send(message.encode("utf-8"))
-        if errorCode:
-            print("An Error has accured in sending the message")
+        if self.client: self.client.send(message.encode("utf-8"))
+        else: self.socketTCP.send(message.encode("utf-8"))
 
-    def reciveTCPMessage(self, procesFunk):
+    def reciveTCPMessage(self):
         '''
         Resive message from opponent, then run that code throug the processing funktion.\n
-        The Processing funktion is not part of this document, and can be found in main.
+        The Processing funktion is not part of this document, and can be found in main.\n
+        To set the processing funktion set "ProcessFunk".
         '''
-        threading.Thread(target = self.reciveTCPMessageThread, args = [procesFunk], daemon = True).start()
+        threading.Thread(target = self.reciveTCPMessageThread, daemon = True).start()
 
-    def reciveTCPMessageThread(self, procesFunk):
+    def reciveTCPMessageThread(self):
         '''
         This funktion should not be called unless throug a thread.
         '''
         while True:
-            message = self.socketTCP.recv(1024)
-            procesFunk(message.decode("utf-8"))
+            try:
+                if self.client: message = self.client.recv(1024)
+                else: message = self.socketTCP.recv(1024)
+                self.processFunk(message.decode("utf-8"))
+            except:
+                print("Socket has been closed!")
+                break
 
 
     def openTCPPort(self):
@@ -153,18 +158,21 @@ class NetConnecter():
             self.client, self.cliAddr = self.socketTCP.accept()
             print("Got connection from", self.cliAddr)
             self.broadcastingUDP = False
+            self.reciveTCPMessage()
         except: print("Server already open!")
 
-    def connectTCPPort(self, portAddress: str):
+    def connectTCPPort(self, portAddress: tuple[str | int]):
         '''
-        This function should not be used on your own.
-        \nInstead use connect().
+        This function connects the TCP socket to the port.
         '''
         try:
             self.socketTCP.connect(portAddress)
             print(portAddress, self.port)
+            self.reciveTCPMessage()
+            return 0
         except:
-            print("Port not open on", portAddress, ":", self.port)
+            print("Port not open on", portAddress)
+            return 1
 
 
 
@@ -176,8 +184,8 @@ if __name__ == "__main__":
 
     def startClient(addr):
         print("Client is starting")
+        print(addr)
         netCon.connectTCPPort(addr)
-        pass
 
     def startServer():
         print("Server is starting")
@@ -185,10 +193,11 @@ if __name__ == "__main__":
         
     def clientMessage(tekst: str):
         netCon.sendTCPMessage(tekst)
-        netCon.reciveTCPMessage(testprocessor)
 
     def testprocessor(message: str):
         print(message)
+
+    netCon.processFunk = testprocessor
 
     from tkinter import *
     root = Tk()
@@ -219,6 +228,7 @@ if __name__ == "__main__":
     root.mainloop()
     netCon.leaveServerLister()
     netCon.broadcastingUDP = False
+    sleep(2)
 
 ''' Code that is no longer used '''
 

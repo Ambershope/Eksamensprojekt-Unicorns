@@ -192,10 +192,18 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     Stuff for while on the gamemode selection screen should
     \nhappen within this function, including drawing it
     '''
-    if not Input.overlayOpen:
-        if Input.mouseLeftButtonClick == True:
-            switchScreen("game")
-    Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
+    # if not Input.overlayOpen:
+    #     if Input.mouseLeftButtonClick == True:
+    #         switchScreen("game")
+    interatives = Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
+    for tmp in interatives:
+        if tmp[2].startswith("b"):
+            if tmp[2].find("j")+1:
+                if Knapperne.knap(Input, tmp[0], tmp[1]):
+                    print(tmp[3])
+                    if not(network.connectTCPPort(tmp[3])):
+                        switchScreen("game")
+                        print("Joined Game on port: {}".format(tmp[3]))
 
 def overlay():
     '''
@@ -225,6 +233,8 @@ def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
             return True
     return False
 
+def networkingReader(message: str):
+    print(message)
 
 pygame.init()
 #Initialization.innitialise()
@@ -232,6 +242,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 network = Networking.NetConnecter()
+network.processFunk = networkingReader
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector="start"
@@ -246,9 +257,11 @@ fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece())
 gameState = fluttersej.placeOnField(gameState, (2,4))
 
 with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
-    for setting in settingsFile.readlines():
-        if setting == "#!#": break
+    while True:
+        setting = settingsFile.readline()
+        if setting == "#!#\n": break
         elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
+    print("Settings Loaded!")
 
 main()
 pygame.quit()
