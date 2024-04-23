@@ -146,6 +146,12 @@ Draws the start screen\n
     
     #draws the startscreen art
     screen.blit(Loader.backgroundImg, grid.getReal((0, 0)))
+
+def drawDraggedUnicorn(piece,screen,grid):
+        mousePos = pygame.mouse.get_pos()
+
+        piece.drawMe(screen, mousePos, grid.getRealLen(GameState.tileSize-0.5))
+
     
 
 
@@ -199,6 +205,8 @@ Draws the game\n
                 currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
         except: # the end of the hand and the hover info tile
             pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
+
+
 
     
 
