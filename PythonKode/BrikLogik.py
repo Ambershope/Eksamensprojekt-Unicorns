@@ -15,6 +15,7 @@ class GameState:
         self.startCycle=["Draw Start Hands", "Select First Player"]
         self.turnCycleTable=["You Select Piece", "You Select Tile", "Send To Opponent", "Piece ETB (A)", "Test Win(A)", "Draw Card", 
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
+        self.holdingPiece = 0
         
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
         
@@ -25,6 +26,10 @@ class GameState:
             self.turnCycleStep += 1
         return self.turnCycleStep
     
+    def placePiece(self, fieldPosition : list | tuple):
+        self.field.pieceField[fieldPosition[0]][fieldPosition[1]] = self.holdingPiece
+        self.holdingPiece = 0
+
     def fillHand(self):
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
@@ -120,11 +125,6 @@ class Piece:
             pygame.draw.polygon(self.powerArrowSurface, triangleColor, tri)
             #draw edge
             pygame.draw.polygon(self.powerArrowSurface, "black", tri, 4)
-            
-
-    def placeOnField(self, gameState:GameState ,fieldPosition:tuple):
-        gameState.field.pieceField[fieldPosition[0]][fieldPosition[1]]=self
-        return gameState
     
     def drawMe(self, gameScreen:pygame.Surface, realCords:tuple, realSize:float|int, neutralBorder:bool = False):
         #draws the artwork

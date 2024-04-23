@@ -26,7 +26,9 @@ class Field:
         return tekst
     
     def isPlacable(self, cords : tuple | list):
-        if self.pieceField[cords] == 0 and self.tileField != 0:
+        if cords[0] < 0 or cords[1] < 0:
+            return False
+        if self.pieceField[cords[0]][cords[1]] == 0 and self.tileField[cords[0]][cords[1]] != 0:
             return True
         else:
             return False

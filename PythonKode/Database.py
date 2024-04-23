@@ -1,6 +1,5 @@
 import os
 import sqlite3
-import BrikLogik
 
 # Finder pathen til en fil, som fx. kortene. Det gør vi fordi programmet kan ligge forskellige steder
 def pathToGameDataFile(folder, fileName, fileType = ".txt"):
