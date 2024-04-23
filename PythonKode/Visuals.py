@@ -196,11 +196,13 @@ Draws the game\n
     for i in range (len(gameState.hand)+1):
         drawYCorner = (handInfoSize*(i%3)) + (0.45*((i%3)+1)) + 1.1
         drawXCorner = 1 + ((i//3)*(18+7))
-        try:
+        if i < len(gameState.hand):
             currentPieceValue= gameState.hand[i]
             if currentPieceValue != 0:
                 currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
-        except: # the end of the hand and the hover info tile
+            else:
+                pygame.draw.rect(screen, MINT_GREEN, (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize, handInfoSize))))
+        else: # the end of the hand and the hover info tile
             pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
             if hoveringPiece != 0:
                 hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))

@@ -6,6 +6,7 @@ class Field:
         self.fieldId=fieldId
         self.tileField=self.getStartField()
         self.pieceField=self.getFullField()
+        self.yourPieces, self.opponentPieces = 0, 0
 
     def __str__ (self):
         '''
@@ -77,6 +78,23 @@ class Field:
             field.insert(0,yValues)
     
         return field
+    
+    def testGameOver(self):
+        self.yourPieces, self.opponentPieces = 0, 0
+        gameIsOver = True
+
+        for x in range (self.fieldSize):
+            for y in range (self.fieldSize):
+
+                if not self.isPlacable((x,y)):
+                    if self.pieceField[x][y] != 0:
+                        if self.pieceField[x][y].isYours:
+                            self.yourPieces += 1
+                        else:
+                            self.opponentPieces += 1
+                else:
+                    gameIsOver = False
+        return gameIsOver
 
 
 

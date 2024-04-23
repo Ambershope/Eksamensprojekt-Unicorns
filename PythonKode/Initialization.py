@@ -50,8 +50,8 @@ def innitialise():
     
     # Effekt 0: No effect
     # Effekt 1: (normie aura): Reduce attack of surrounding Unicorns to 1
-    # Effekt 2: (legendary )Romves all other [Cardname] from the battlefield
-    # Effekt 3: Attacks 2 tiles from tile
+    # Effekt 2: (legendary )Removes all other [Cardname] from the battlefield     #
+    # Effekt 3: Attacks 2 tiles from tile     #done
     # Template (id, 'Name', north, east, south, west, artpath, effektId, 'flavorText'),
 
     # Commit changes

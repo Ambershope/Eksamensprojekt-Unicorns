@@ -17,6 +17,7 @@ class GameState:
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
         self.holdingPiece = 0
         self.newestPiece = (-1,-1)
+        self.yourPieces, self.opponentPieces = 0,0
         
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
         
@@ -50,9 +51,15 @@ class Piece:
         self.persuasion = [cardData[2], cardData[3], cardData[4], cardData[5]] #N E S W
         self.artworkPath = Database.pathToGameDataFile("Visuals\PieceArtwork", cardData[6], ".png")
         self.artwork = pygame.image.load(self.artworkPath)
-        self.effectFunctionId = cardData[7]
+        self.effectId = cardData[7]
         self.flavorText = cardData[8]
         self.calculatePowerArrowSurface()
+
+        if self.effectId == 3:
+            self.persuasionRange = 2
+        else:
+            self.persuasionRange = 1
+
 
     def __str__ (self):
         return str(self.pieceId)

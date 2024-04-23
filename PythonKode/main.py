@@ -173,23 +173,25 @@ def game():
             
 
         case  1: #you select tile (from field)
+            hoveringPiece = gameState.holdingPiece
+
+            #when held button is released
             if Input.mouseLeftButtonDown == False:
                 Input.isHolding = False
 
+                #test if it is possible to place the piece in the selectet tile
                 if isHoveringField and gameState.field.isPlacable((xField,yField)):
                     gameState.placePiece((xField,yField))
                     gameState.newTurnStep()
 
-                else:
+                else: #if it isnt possible, go back a step to turnCycleStep 0
                     gameState.turnCycleStep = 0
                     for i in range (len(gameState.hand)):
                         if gameState.hand[i] == 0:
                             gameState.hand[i] = gameState.holdingPiece
                             gameState.holdingPiece = 0
                             break
-                    
-
-            
+                
 
         case  2: #send to opponent (send selection to opponent)
             #bjørn plz fiks
@@ -204,10 +206,25 @@ def game():
             pass
 
         case  4 | 8: #test if game is over (test win)
-            pass
+            
+            if gameState.field.testGameOver() == False:
+                gameState.newTurnStep()
+
+            else:
+                if gameState.field.yourPieces > gameState.field.opponentPieces:
+                    #youWin
+                    pass
+                elif gameState.field.opponentPieces < gameState.field.yourPieces:
+                    #opponentWins
+                    pass
+                else:
+                    #no one wins
+                    pass
+                
 
         case -1: #(select fist player)
             # we gotta make it so the server randomly decides. for now you always start.
+            # aka. bjørn plz fiks
             gameState.newTurnStep()
 
         case -2: #draw start hands of 5 pieces
@@ -215,7 +232,7 @@ def game():
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
-            
+
             pass
 
 
@@ -295,9 +312,9 @@ Grid=Visuals.Grid(screen)
 Knapperne = KnappeDetection()
 
 #midlertidig gameState, ændres inden et spil startes
-gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
+gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("Default"))
 
-fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece())
+fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece(),False)
 gameState.holdingPiece = fluttersej
 gameState.placePiece((2,4))
 
