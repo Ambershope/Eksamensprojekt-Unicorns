@@ -1,7 +1,7 @@
 import pygame
 import Database
 from Constants import *
-from BrikLogik import GameState
+from BrikLogik import GameState, Piece
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
@@ -151,7 +151,7 @@ Draws the start screen\n
     
 
 
-def drawGame(Input, screen : pygame.surface, grid, gameState:GameState):
+def drawGame(Input, screen : pygame.surface, grid, gameState:GameState, hoveringPiece: Piece | int):
     '''
 Draws the game\n
     '''
@@ -201,6 +201,13 @@ Draws the game\n
                 currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
         except: # the end of the hand and the hover info tile
             pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
+            if hoveringPiece != 0:
+                hoveringPiece.drawMe(screen, (drawXCorner, drawYCorner), grid.getRealLen(gameState.tileSize-1))
+            
+            
+    if gameState.holdingPiece != 0:
+        mousePos = Input.mousePosition
+        gameState.holdingPiece.drawMe(screen, mousePos, grid.getRealLen(gameState.tileSize-0.5))
 
 
 

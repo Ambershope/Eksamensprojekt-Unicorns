@@ -118,16 +118,78 @@ def game():
     \nAlso calls drawGame()
     '''
 
+
+     #hovering detection
+    gridMouse=Grid.getGrid(Input.mousePosition)
+    hoveringHand = -1
+    hoveringPiece = 0
+    isHoveringField = False
+
+
+    if gridMouse[0] <= 7 or gridMouse[0] >= 25: #hand left
+        handTileGrid = 5
+        for i in range (len(gameState.hand)):
+
+            yGrid = (handTileGrid*(i%3)) + (0.45*((i%3)+1)) + 1.1
+            xGrid = 1 + ((i//3)*(18+7))
+
+            if gridMouse[0] >= xGrid and gridMouse[0] <= xGrid + handTileGrid:
+                if gridMouse[1] >= yGrid and gridMouse[1] <= yGrid + handTileGrid:
+
+                    currentPieceValue= gameState.hand[i]
+                    if currentPieceValue != 0:
+                        hoveringHand = i
+                        hoveringPiece = currentPieceValue
+
+    else: #center
+        xField, yField = -1, -1
+        for x in range (gameState.field.fieldSize):
+            xGrid=(x*gameState.tileSize)+7+((x+1)*GRID_BETWEEN_TILES)
+            if gridMouse[0] >= xGrid and gridMouse[0] <= xGrid + gameState.tileSize:
+                xField = x
+                break        
+
+        for y in range (gameState.field.fieldSize):
+            yGrid=(y*gameState.tileSize)+((y+1)*GRID_BETWEEN_TILES)
+            if gridMouse[1] >= yGrid and gridMouse[1] <= yGrid + gameState.tileSize:
+                yField = y
+                break
+        
+        if xField != -1 and yField != -1:
+            isHoveringField = True
+            hoveringPiece=gameState.field.pieceField[xField][yField]
+
     '''since the game has many different things to do, 
-    depending on were on a turncycle the players are,
-    it figures it out in this massive if-elif statement'''
+    depending on were on a turn cycle the players are,
+    it figures it out in this massive case'''
+
     match gameState.turnCycleStep:
         case 0: #you select piece (form hand)
-            pass
+            if not Input.overlayOpen and Input.mouseLeftButtonClick and hoveringHand != -1:
+                Input.isHolding = True
+                gameState.holdingPiece=hoveringPiece
+                gameState.hand[hoveringHand] = 0
+                gameState.newTurnStep()
+            
 
         case  1: #you select tile (from field)
-            if Input.mouseLeftButtonClick:
-                pass
+            if Input.mouseLeftButtonDown == False:
+                Input.isHolding = False
+
+                if isHoveringField and gameState.field.isPlacable((xField,yField)):
+                    gameState.placePiece((xField,yField))
+                    gameState.newTurnStep()
+
+                else:
+                    gameState.turnCycleStep = 0
+                    for i in range (len(gameState.hand)):
+                        if gameState.hand[i] == 0:
+                            gameState.hand[i] = gameState.holdingPiece
+                            gameState.holdingPiece = 0
+                            break
+                    
+
+            
 
         case  2: #send to opponent (send selection to opponent)
             #bjørn plz fiks
@@ -154,23 +216,16 @@ def game():
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
             pass
-    
-    if not Input.overlayOpen:
-        if Input.mouseLeftButtonClick == True:
-            switchScreen("main menu")
 
-    #hovering detection
-    gridMouse=Grid.getGrid(Input.mousePosition)
-    if gridMouse[0] <= 7: #hand left
-        pass
-    elif gridMouse[0] >= 25:#(7+18) #Hand right
-        pass
-    else: #center
-        pass
+
+   
+
         
-    Visuals.drawGame(Input, screen, Grid, gameState)
-    
 
+        
+        
+    Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece)
+    
 def startScreen():
     '''
     Stuff for while on the start screen should
@@ -242,7 +297,8 @@ Knapperne = KnappeDetection()
 gameState=BrikLogik.GameState(GameObjects.Field(2),GameObjects.Pile("Default"))
 
 fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece())
-gameState = fluttersej.placeOnField(gameState, (2,4))
+gameState.holdingPiece = fluttersej
+gameState.placePiece((2,4))
 
 
 main()
