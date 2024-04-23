@@ -154,11 +154,20 @@ def game():
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
             pass
-
+    
     if not Input.overlayOpen:
         if Input.mouseLeftButtonClick == True:
             switchScreen("main menu")
 
+    #hovering detection
+    gridMouse=Grid.getGrid(Input.mousePosition)
+    if gridMouse[0] <= 7: #hand left
+        pass
+    elif gridMouse[0] >= 25:#(7+18) #Hand right
+        pass
+    else: #center
+        pass
+        
     Visuals.drawGame(Input, screen, Grid, gameState)
     
 

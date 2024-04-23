@@ -67,9 +67,9 @@ class Piece:
 
         #constants that shouldent be changed
         edgeSize = pieceSize//20
-        
-        self.powerArrowSurface = pygame.surface.Surface((surfaceSize,surfaceSize), pygame.SRCALPHA)
         surfaceSize=pieceSize+((edgeSize+overlapSize)*2)
+
+        self.powerArrowSurface = pygame.surface.Surface((surfaceSize,surfaceSize), pygame.SRCALPHA)
         pieceCenterX , pieceCenterY = surfaceSize // 2, surfaceSize // 2
         '''the rest of the coordinates are relative, compared to the previous cordinate
         edgecenter is relative to piece center
