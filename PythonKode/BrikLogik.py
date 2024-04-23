@@ -30,11 +30,7 @@ class GameState:
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
     
-    def selectPiece(self):
-        '''
-        
-        '''
-        return
+
         
 
     
