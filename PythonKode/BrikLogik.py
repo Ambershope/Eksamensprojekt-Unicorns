@@ -16,6 +16,7 @@ class GameState:
         self.turnCycleTable=["You Select Piece", "You Select Tile", "Send To Opponent", "Piece ETB (A)", "Test Win(A)", "Draw Card", 
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
         self.holdingPiece = 0
+        self.newestPiece = (-1,-1)
         
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
         
@@ -26,21 +27,16 @@ class GameState:
             self.turnCycleStep += 1
         return self.turnCycleStep
     
+    
     def placePiece(self, fieldPosition : list | tuple):
         self.field.pieceField[fieldPosition[0]][fieldPosition[1]] = self.holdingPiece
         self.holdingPiece = 0
+        self.newestPiece=fieldPosition
 
     def fillHand(self):
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
-    
-    def selectPiece(self):
-        '''
-        
-        '''
-        return
-        
 
     
 class Piece:

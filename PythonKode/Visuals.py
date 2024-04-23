@@ -165,6 +165,7 @@ Draws the game\n
     
     #draw field
     #load in the different tiles 
+
     tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
     tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
@@ -202,7 +203,7 @@ Draws the game\n
         except: # the end of the hand and the hover info tile
             pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
             if hoveringPiece != 0:
-                hoveringPiece.drawMe(screen, (drawXCorner, drawYCorner), grid.getRealLen(gameState.tileSize-1))
+                hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))
             
             
     if gameState.holdingPiece != 0:

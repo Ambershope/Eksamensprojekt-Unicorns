@@ -215,6 +215,7 @@ def game():
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+            
             pass
 
 
