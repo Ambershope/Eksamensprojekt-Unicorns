@@ -146,6 +146,8 @@ Draws the start screen\n
     
     #draws the startscreen art
     screen.blit(Loader.backgroundImg, grid.getReal((0, 0)))
+
+
     
 
 
@@ -206,6 +208,9 @@ Draws the game\n
     if gameState.holdingPiece != 0:
         mousePos = Input.mousePosition
         gameState.holdingPiece.drawMe(screen, mousePos, grid.getRealLen(gameState.tileSize-0.5))
+
+
+
     
 
 def border(screen, grid):
