@@ -56,9 +56,9 @@ class LoadedVariabels:
         self.networksBackgroundSize = grid.getRealLen((10.667, 14.4))
         self.networksBackgroundPos = grid.getReal((20, 1.8))
         self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), self.networksBackgroundSize)
-        self.titleFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((2,0))[0]))
-        self.nameFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((1,0))[0]))
-        self.portFont = pygame.font.SysFont("corbel.ttf", int(grid.getReal((0.5,0))[0]))
+        self.titleFont = pygame.font.SysFont("corbel.ttf", int(grid.getRealLen(2)))
+        self.nameFont = pygame.font.SysFont("corbel.ttf", int(grid.getRealLen(1)))
+        self.portFont = pygame.font.SysFont("corbel.ttf", int(grid.getRealLen(0.5)))
         self.fontColor = (0, 0, 0)
 
 '''We create a loader that can be called from other scirptis to load difrent classes'''
