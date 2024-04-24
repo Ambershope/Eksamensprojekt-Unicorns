@@ -226,7 +226,27 @@ def game():
         case -1: #(select fist player)
             # we gotta make it so the server randomly decides. for now you always start.
             # aka. bjørn plz fiks
-            gameState.newTurnStep()
+            decided=False
+            if network.client: # du er selv host
+                if random.randint(0,1) == 1:
+                    youStart = True
+                else:
+                    youStart = False
+                
+                #send not youStart
+                decided=True
+                    
+            else:#modstanderen vælger hvem der starter
+                if "received stuff" == True:
+                    youStart="received"
+                    decided=True
+
+            if decided:
+                if youStart:
+                    gameState.newTurnStep()
+                else:
+                    gameState.turnCycleStep = 7 #wait for opponent
+        
 
         case -2: #draw start hands of 5 pieces
             gameState.fillHand()
@@ -240,16 +260,14 @@ def game():
     Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece)
 
 def attack():
-    print ("attack from " + str(gameState.newestPiece))
     if gameState.newestPiece != (-1,-1):
         attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
         distance = attackingPiece.persuasionRange #normally 1 sometimes 2
         directionCords =(0*distance,-1*distance)
+
         for direction in range(4):
-            print(direction)
-            print(directionCords)
+
             if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
-                print("continue")
                 directionCords = BrikLogik.tvearVektor(directionCords)
                 continue
 
@@ -257,11 +275,9 @@ def attack():
             if targetPieceValue != 0:
                 if targetPieceValue.isYours == False:
                     if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
-                        print("hit me baby ine more time")
                         gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
 
             directionCords = BrikLogik.tvearVektor(directionCords)
-       
      
  
    
