@@ -27,6 +27,7 @@ class NetConnecter():
         self.openServers = []
         self.serverName = str(self.addr[0] + "|" + str(self.addr[1]))
         self.processFunk = lambda a: print(a)
+        self.foundOpponentFunk = lambda: print("HAIY")
 
     # ----------   General functions   ----------
     
@@ -55,6 +56,7 @@ class NetConnecter():
             self.socketUDP.sendto(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
             sleep(1.5)
         self.socketUDP.sendto(str("C:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
+        self.foundOpponentFunk()
 
     def serverLister(self):
         '''

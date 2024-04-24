@@ -204,6 +204,11 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
                     if not(network.connectTCPPort(tmp[3])):
                         switchScreen("game")
                         print("Joined Game on port: {}".format(tmp[3]))
+            elif tmp[2].find("h")+1:
+                if Knapperne.knap(Input, tmp[0], tmp[1]):
+                    print("Hosting a GAME!!!")
+                    network.leaveServerLister()
+                    network.broadcastServer()
 
 def overlay():
     '''
@@ -234,7 +239,12 @@ def testColision(position: tuple, cornerA: tuple, cornerB: tuple) -> bool:
     return False
 
 def networkingReader(message: str):
+    
     print(message)
+
+def opponentJoinedGame():
+    switchScreen("game")
+    print("An opponent has joined the game at ", network.client)
 
 pygame.init()
 #Initialization.innitialise()
@@ -243,6 +253,7 @@ pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 network = Networking.NetConnecter()
 network.processFunk = networkingReader
+network.foundOpponentFunk = opponentJoinedGame
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector="start"
