@@ -104,11 +104,12 @@ def switchScreen(target: str) -> None:
     global screenSelector
     # Code that runs, when you leave a screen:
     if screenSelector == "gamemode":
-        network.serverLister()
+        network.leaveServerLister()
     screenSelector = target
     # Code that runs, when you enter a screen:
     if screenSelector == "gamemode":
-        network.leaveServerLister()
+        Visuals.Loader.loadGamemodeScreen(Grid)
+        network.serverLister()
 
 
 
@@ -275,10 +276,23 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     Stuff for while on the gamemode selection screen should
     \nhappen within this function, including drawing it
     '''
-    if not Input.overlayOpen:
-        if Input.mouseLeftButtonClick == True:
-            switchScreen("game")
-    Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
+    # if not Input.overlayOpen:
+    #     if Input.mouseLeftButtonClick == True:
+    #         switchScreen("game")
+    interatives = Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
+    for tmp in interatives:
+        if tmp[2].startswith("b"):
+            if tmp[2].find("j")+1:
+                if Knapperne.knap(Input, tmp[0], tmp[1]):
+                    print(tmp[3])
+                    if not(network.connectTCPPort(tmp[3])):
+                        switchScreen("game")
+                        print("Joined Game on port: {}".format(tmp[3]))
+            elif tmp[2].find("h")+1:
+                if Knapperne.knap(Input, tmp[0], tmp[1]):
+                    print("Hosting a GAME!!!")
+                    network.leaveServerLister()
+                    network.broadcastServer()
 
 def overlay():
     '''
@@ -297,6 +311,13 @@ def overlay():
 
 
 
+def networkingReader(message: str):
+    
+    print(message)
+
+def opponentJoinedGame():
+    switchScreen("game")
+    print("An opponent has joined the game at ", network.client)
 
 pygame.init()
 #Initialization.innitialise()
@@ -304,6 +325,8 @@ pygame.init()
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)
 network = Networking.NetConnecter()
+network.processFunk = networkingReader
+network.foundOpponentFunk = opponentJoinedGame
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector="start"
@@ -318,6 +341,12 @@ fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece(),False)
 gameState.holdingPiece = fluttersej
 gameState.placePiece((2,4))
 
+with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
+    while True:
+        setting = settingsFile.readline()
+        if setting == "#!#\n": break
+        elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
+    print("Settings Loaded!")
 
 main()
 pygame.quit()
