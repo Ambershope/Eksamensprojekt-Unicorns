@@ -205,7 +205,48 @@ Draws the game\n
         else: # the end of the hand and the hover info tile
             pygame.draw.rect(screen, (CONTRAST1), (grid.getReal((drawXCorner, drawYCorner)),grid.getRealLen((handInfoSize,handInfoSize))))
             if hoveringPiece != 0:
-                hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))
+                
+                flavortext = hoveringPiece.flavorText
+                flavortextList = flavortext.split()
+                flavortextIteration = 0
+
+
+                x, y = grid.getReal((drawXCorner, drawYCorner))
+                xpos = x
+                ypos = y
+                sentenceWidth = 0
+
+                squareLength = grid.getRealLen(5)
+                flavorFont = pygame.font.SysFont(None,40)
+                spaceWidth = flavorFont.size(" ")[0]
+
+                for flavortextIteration in range (len(flavortextList)):
+                    flavortextRender = flavorFont.render(flavortextList[flavortextIteration],True,"BLACK")
+                    wordWidth = flavortextRender.get_width()
+                    wordHeight= flavortextRender.get_height()
+
+                    if sentenceWidth + wordWidth > squareLength:
+                        xpos = x
+                        sentenceWidth = 0
+                        ypos += wordHeight
+                    
+                    screen.blit(flavortextRender, (xpos + sentenceWidth,ypos))
+                    sentenceWidth += wordWidth + spaceWidth
+                    flavortextIteration += 1
+                
+
+                '''
+                Psudokode :))
+
+                Get size of boks (getReal/getRealLen?)
+
+                Lav en liste med ord fra flavorteksten (det kan man gøre ved at bruge flavortext.split)
+                
+                
+                
+                '''
+
+                #hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))
             
             
     if gameState.holdingPiece != 0:
@@ -218,7 +259,7 @@ Draws the game\n
 
 def border(screen, grid):
     '''
-draws the border around the grid
+    draws the border around the grid
     '''
     if grid.startY != 0:
         pygame.draw.rect(screen, BORDER_COLOR, ((0,0),grid.getReal((GRID_LENGTH_X,0))))
