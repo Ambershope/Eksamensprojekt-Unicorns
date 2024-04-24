@@ -196,6 +196,9 @@ def game():
 
         case  2: #send to opponent (send selection to opponent)
             #bjørn plz fiks
+            def sendThis():
+                pieceCords=gameState.newestPiece #tuple cords
+                gameState.field.pieceField[pieceCords[0]][pieceCords[1]].pieceId #int hopefully
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -204,7 +207,13 @@ def game():
 
         case 6: #wait for opponent
             #bjørn plz fiks
-            pass
+            if "stuff recived" == True:
+                receivedPieceId = int('')
+                receivedPieceCords = tuple('[0,0]')
+                gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
+                gameState.placePiece(receivedPieceCords)
+                gameState.newTurnStep()
+            
 
         case  4 | 8: #test if game is over (test win)
             
@@ -233,18 +242,38 @@ def game():
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+            attack()
+            gameState.newTurnStep()
+            
 
-            pass
-
-
-   
-
-        
-
-        
-        
     Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece)
-    
+
+def attack():
+    print ("attack from " + str(gameState.newestPiece))
+    if gameState.newestPiece != (-1,-1):
+        attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
+        distance = attackingPiece.persuasionRange #normally 1 sometimes 2
+        directionCords =(0*distance,-1*distance)
+        for direction in range(4):
+            print(direction)
+            print(directionCords)
+            if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
+                print("continue")
+                directionCords = BrikLogik.tvearVektor(directionCords)
+                continue
+
+            targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
+            if targetPieceValue != 0:
+                if targetPieceValue.isYours == False:
+                    if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
+                        print("hit me baby ine more time")
+                        gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
+
+            directionCords = BrikLogik.tvearVektor(directionCords)
+       
+     
+ 
+   
 def startScreen():
     '''
     Stuff for while on the start screen should
