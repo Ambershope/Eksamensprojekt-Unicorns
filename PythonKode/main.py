@@ -366,10 +366,6 @@ Knapperne = KnappeDetection()
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("Default"))
 
-fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece(),False)
-gameState.holdingPiece = fluttersej
-gameState.placePiece((2,4))
-
 with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
     while True:
         setting = settingsFile.readline()
