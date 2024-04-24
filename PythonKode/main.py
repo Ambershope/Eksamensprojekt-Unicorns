@@ -195,10 +195,7 @@ def game():
                 
 
         case  2: #send to opponent (send selection to opponent)
-            #bjørn plz fiks
-            def sendThis():
-                pieceCords=gameState.newestPiece #tuple cords
-                gameState.field.pieceField[pieceCords[0]][pieceCords[1]].pieceId #int hopefully
+            network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -206,13 +203,7 @@ def game():
             gameState.newTurnStep()
 
         case 6: #wait for opponent
-            #bjørn plz fiks
-            if "stuff recived" == True:
-                receivedPieceId = int('')
-                receivedPieceCords = tuple('[0,0]')
-                gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
-                gameState.placePiece(receivedPieceCords)
-                gameState.newTurnStep()
+            pass
             
 
         case  4 | 8: #test if game is over (test win)
@@ -341,6 +332,15 @@ def overlay():
 
 
 def networkingReader(message: str):
+    message = message.replace(" ", "")
+    message = message.split(":")
+    if message[0] == "ET":
+        receivedPieceId = message[2]
+        tmp = message[1].split(";")
+        receivedPieceCords = (int(tmp[0]), int(tmp[1]))
+        gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
+        gameState.placePiece(receivedPieceCords)
+        gameState.newTurnStep()
     
     print(message)
 
