@@ -167,6 +167,10 @@ class NetConnecter():
         '''
         This function connects the TCP socket to the port.
         '''
+        threading.Thread(target=self.connectTCPPortThread, args=[portAddress], daemon=True).start()
+
+    def connectTCPPortThread(self, portAddress):
+        print(portAddress)
         try:
             self.socketTCP.connect(portAddress)
             print(portAddress, self.port)
