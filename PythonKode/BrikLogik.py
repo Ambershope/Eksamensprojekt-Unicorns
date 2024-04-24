@@ -43,9 +43,9 @@ class GameState:
 class Piece:
     def __init__ (self, pieceId_, isYours_=True):
         cardData = Database.databaseCardFinder('pieces','pieceId',pieceId_)[0]
-        print(cardData)
+        #print(cardData)
         self.pieceName = cardData[1]
-        print(self.pieceName)
+        #print(self.pieceName)
         self.pieceId = pieceId_
         self.isYours = isYours_
         self.persuasion = [cardData[2], cardData[3], cardData[4], cardData[5]] #N E S W
