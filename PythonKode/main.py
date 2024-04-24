@@ -332,6 +332,7 @@ def overlay():
 
 
 def networkingReader(message: str):
+    print(message)
     message = message.replace(" ", "")
     message = message.split(":")
     if message[0] == "ET":
@@ -341,8 +342,8 @@ def networkingReader(message: str):
         gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
         gameState.placePiece(receivedPieceCords)
         gameState.newTurnStep()
-    
-    print(message)
+    elif message[0] == "SG":
+        pass
 
 def opponentJoinedGame():
     switchScreen("game")
