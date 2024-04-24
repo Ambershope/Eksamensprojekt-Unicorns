@@ -195,7 +195,7 @@ def game():
                 
 
         case  2: #send to opponent (send selection to opponent)
-            #bjørn plz fiks
+            network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -203,8 +203,8 @@ def game():
             gameState.newTurnStep()
 
         case 6: #wait for opponent
-            #bjørn plz fiks
             pass
+            
 
         case  4 | 8: #test if game is over (test win)
             
@@ -226,25 +226,61 @@ def game():
         case -1: #(select fist player)
             # we gotta make it so the server randomly decides. for now you always start.
             # aka. bjørn plz fiks
-            gameState.newTurnStep()
+            decided=False
+            if network.client: # du er selv host
+                if random.randint(0,1) == 1:
+                    youStart = True
+                else:
+                    youStart = False
+                
+                #send not youStart
+                decided=True
+                    
+            else:#modstanderen vælger hvem der starter
+                if "received stuff" == True:
+                    youStart="received"
+                    decided=True
+
+            if decided:
+                if youStart:
+                    gameState.newTurnStep()
+                else:
+                    gameState.turnCycleStep = 7 #wait for opponent
+        
 
         case -2: #draw start hands of 5 pieces
             gameState.fillHand()
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+            attack()
+            gameState.newTurnStep()
+            
 
-            pass
-
-
-   
-
-        
-
-        
-        
     Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece)
-    
+
+def attack():
+    if gameState.newestPiece != (-1,-1):
+        attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
+        distance = attackingPiece.persuasionRange #normally 1 sometimes 2
+        directionCords =(0*distance,-1*distance)
+
+        for direction in range(4):
+
+            if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
+                directionCords = BrikLogik.tvearVektor(directionCords)
+                continue
+
+            targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
+            if targetPieceValue != 0:
+                if targetPieceValue.isYours == False:
+                    if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
+                        gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
+
+            directionCords = BrikLogik.tvearVektor(directionCords)
+     
+ 
+   
 def startScreen():
     '''
     Stuff for while on the start screen should
@@ -312,8 +348,18 @@ def overlay():
 
 
 def networkingReader(message: str):
-    
     print(message)
+    message = message.replace(" ", "")
+    message = message.split(":")
+    if message[0] == "ET":
+        receivedPieceId = message[2]
+        tmp = message[1].split(";")
+        receivedPieceCords = (int(tmp[0]), int(tmp[1]))
+        gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
+        gameState.placePiece(receivedPieceCords)
+        gameState.newTurnStep()
+    elif message[0] == "SG":
+        pass
 
 def opponentJoinedGame():
     switchScreen("game")
@@ -336,10 +382,6 @@ Knapperne = KnappeDetection()
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("Default"))
-
-fluttersej = BrikLogik.Piece(gameState.playerPile.drawPiece(),False)
-gameState.holdingPiece = fluttersej
-gameState.placePiece((2,4))
 
 with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
     while True:
