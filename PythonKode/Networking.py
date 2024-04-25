@@ -31,8 +31,8 @@ class NetConnecter():
 
     # ----------   General functions   ----------
     def shutdown(self):
-        self.socketTCP.shutdown()
-        self.socketUDP.shutdown()
+        self.socketTCP.shutdown(0)
+        self.socketUDP.shutdown(0)
         self.socketTCP.close()
         self.socketUDP.close()
 
