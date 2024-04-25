@@ -12,7 +12,7 @@ class NetConnecter():
     '''
     This class handels Networking in our game, \nHere we can open ports and connect to ports on certain addresses
     '''
-    def __init__(self, port = 69420):
+    def __init__(self, port = 36563):
         self.port = port
         self.socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socketUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -154,6 +154,7 @@ class NetConnecter():
         '''
         try:
             self.addr = (socket.gethostbyname(socket.gethostname()), self.port)
+            print(self.addr)
             self.socketTCP.bind(self.addr)
             print("Server open on", self.addr[0], ":", self.addr[1])
             self.socketTCP.listen()
@@ -243,6 +244,8 @@ if __name__ == "__main__":
     root.mainloop()
     netCon.leaveServerLister()
     netCon.broadcastingUDP = False
+    netCon.socketTCP.close()
+    netCon.socketUDP.close()
     sleep(2)
 
 ''' Code that is no longer used '''
