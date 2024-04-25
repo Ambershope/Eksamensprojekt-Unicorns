@@ -30,7 +30,11 @@ class NetConnecter():
         self.foundOpponentFunk = lambda: print("HAIY")
 
     # ----------   General functions   ----------
-    
+    def shutdown(self):
+        self.socketTCP.shutdown()
+        self.socketUDP.shutdown()
+        self.socketTCP.close()
+        self.socketUDP.close()
 
 
     # ----------   UDP Port functions   ----------
@@ -244,10 +248,7 @@ if __name__ == "__main__":
     root.mainloop()
     netCon.leaveServerLister()
     netCon.broadcastingUDP = False
-    netCon.socketTCP.shutdown()
-    netCon.socketUDP.shutdown()
-    netCon.socketTCP.close()
-    netCon.socketUDP.close()
+    netCon.shutdown()
     sleep(2)
 
 ''' Code that is no longer used '''

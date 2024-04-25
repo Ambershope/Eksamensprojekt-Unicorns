@@ -392,4 +392,5 @@ with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settings
     print("Settings Loaded!")
 
 main()
+network.shutdown()
 pygame.quit()
