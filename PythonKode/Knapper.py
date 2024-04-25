@@ -1,4 +1,3 @@
-import Visuals
 import pygame
 
 

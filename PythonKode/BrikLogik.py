@@ -17,12 +17,11 @@ class GameState:
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
         self.holdingPiece = 0
         self.newestPiece = (-1,-1)
-        self.yourPieces, self.opponentPieces = 0,0
         
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
         
     def newTurnStep(self):
-        if self.turnCycleStep >= len(self.turnCycleTable)+1:
+        if self.turnCycleStep >= len(self.turnCycleTable)-1:
             self.turnCycleStep = 0
         else:
             self.turnCycleStep += 1

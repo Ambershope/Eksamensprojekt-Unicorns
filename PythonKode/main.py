@@ -102,14 +102,23 @@ def main():
 
 def switchScreen(target: str) -> None:
     global screenSelector
+    pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
     # Code that runs, when you leave a screen:
     if screenSelector == "gamemode":
         network.leaveServerLister()
+
+
     screenSelector = target
     # Code that runs, when you enter a screen:
     if screenSelector == "gamemode":
         Visuals.Loader.loadGamemodeScreen(Grid)
         network.serverLister()
+    
+    elif screenSelector == "game":
+        Visuals.Loader.loadGameScreen(Grid, gameState)
+
+    elif screenSelector == "start":
+        Visuals.Loader.loadStartScreen(Grid)
 
 
 
@@ -230,7 +239,7 @@ def game():
             if network.client: # du er selv host
                 if random.randint(0,1) == 1: 
                     messageBool = True
-                    gameState.turnCycleStep = 7 # Enemy starts
+                    gameState.turnCycleStep = 6 # Enemy starts
                 else: 
                     messageBool = False # You start
                     gameState.newTurnStep()
@@ -259,7 +268,7 @@ def game():
             gameState.newTurnStep()
             
 
-    Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece)
+    Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece, hoveringHand)
 
 def attack():
     if gameState.newestPiece != (-1,-1):
@@ -363,7 +372,7 @@ def networkingReader(message: str):
         gameState.newTurnStep()
     elif message[0] == "SG":
         if message[1] == "True": gameState.newTurnStep()
-        else: gameState.turnCycleStep = 7
+        else: gameState.turnCycleStep = 6
 
 def opponentJoinedGame():
     switchScreen("game")
@@ -379,7 +388,8 @@ network.processFunk = networkingReader
 network.foundOpponentFunk = opponentJoinedGame
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
-screenSelector="start"
+screenSelector=""
+
 Input=Inputs()
 Grid=Visuals.Grid(screen)
 Knapperne = KnappeDetection()
@@ -394,6 +404,7 @@ with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settings
         elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
     print("Settings Loaded!")
 
+switchScreen("start")
 main()
 network.shutdown()
 pygame.quit()

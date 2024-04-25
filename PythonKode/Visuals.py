@@ -2,6 +2,7 @@ import pygame
 import Database
 from Constants import *
 from BrikLogik import GameState, Piece
+import Knapper
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
@@ -32,14 +33,26 @@ class Grid:
         return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
     
     def getRealLen(self, gridLength: int | float | tuple | list) -> int | float | list:
-        returnList=[]
+        
         if type(gridLength) == list or type(gridLength) == tuple:
+            returnList=[]
             for i in gridLength:
                 returnList.append(i*self.gridSize)
             return returnList
+        
         else:
             return gridLength*self.gridSize
-    
+        
+    def getGridLen(self, realLength: int | float | tuple | list) -> int | float | list:
+        
+        if type(realLength) == list or type(realLength) == tuple:
+            returnList=[]
+            for i in realLength:
+                returnList.append(i/self.gridSize)
+            return returnList
+        
+        else:
+            return realLength/self.gridSize
 
 class LoadedVariabels:
     '''
@@ -55,6 +68,14 @@ class LoadedVariabels:
         image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
         self.backgroundImg = pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
         self.currentScreenLoaded = "start"
+
+    def loadGameScreen(self, grid : Grid, gameState : GameState):
+        tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
+        self.tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
+
+        tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
+        self.tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
+        self.currentScreenLoaded = "game"
 
     def loadGamemodeScreen(self, grid: Grid):
         self.networksBackgroundText = "Hello World!"
@@ -123,7 +144,6 @@ def overlayDraw(Input, screen, grid):
 
     screen.blit(scaledImage, grid.getReal((31, 0)))
 
-
     if Input.overlayOpen:
         #creates a dark seethroug layer that covers the entire screen
         alfaSurface=pygame.Surface(grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
@@ -135,7 +155,7 @@ def overlayDraw(Input, screen, grid):
         pygame.draw.rect(screen, OPTIONS_BACKGROUND, (grid.getReal((10,4)),grid.getReal((GRID_LENGTH_X-20,GRID_LENGTH_Y-8))), border_radius=round(grid.gridSize*0.5))
 
         #creates the quit game button
-        exitTextFont=pygame.font.SysFont(None, 72)
+        exitTextFont=pygame.font.SysFont(FONT, int(grid.gridSize*2))
         exitTextImage=exitTextFont.render("Exit?", True, "BLUE")
         exitImage=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
         scaledImage=pygame.transform.scale(exitImage, grid.getRealLen((8,1)))
@@ -147,9 +167,7 @@ def overlayDraw(Input, screen, grid):
 def drawStartScreen(screen, grid):
     '''
 Draws the start screen\n
-    '''
-    if Loader.currentScreenLoaded != "start":
-        Loader.loadStartScreen(grid)
+    '''  
     #clears the screen
     screen.fill((0,0,0))
     
@@ -160,10 +178,11 @@ Draws the start screen\n
     
 
 
-def drawGame(Input, screen : pygame.surface, grid, gameState:GameState, hoveringPiece: Piece | int):
+def drawGame(Input, screen : pygame.surface, grid, gameState:GameState, hoveringPiece: Piece | int, hoveringHand : int):
     '''
 Draws the game\n
     '''
+
     screen.fill(SUNSHINE)
 
     #draw the facy top infobar
@@ -173,13 +192,6 @@ Draws the game\n
 
     
     #draw field
-    #load in the different tiles 
-
-    tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
-    tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
-
-    tile1ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TilePlaceble", ".png"))
-    tile1Img=pygame.transform.scale( tile1ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
     #for each location on the field, 
     for xField in range (gameState.field.fieldSize):
@@ -193,11 +205,11 @@ Draws the game\n
 
             #place the appropriate tile
             if currentTileValue==0:
-                screen.blit(tile0Img, grid.getReal((xGrid, yGrid)))
+                screen.blit(Loader.tile0Img, grid.getReal((xGrid, yGrid)))
             else:
-                screen.blit(tile1Img, grid.getReal((xGrid, yGrid)))
+                screen.blit(Loader.tile1Img, grid.getReal((xGrid, yGrid)))
 
-            #place the appropiate piece
+            #Draw the appropiate piece
             if currentPieceValue != 0:
                 currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
     #draw the hand
@@ -251,16 +263,43 @@ Draws the game\n
 
                 Lav en liste med ord fra flavorteksten (det kan man gøre ved at bruge flavortext.split)
                 
-                
-                
-                '''
-
                 #hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))
+                '''
+    
+    pieceCountTextFont=pygame.font.SysFont(FONT, int(grid.gridSize*1.8))
+    yoursImage=pieceCountTextFont.render(str(gameState.field.yourPieces), True, YOUR_COLOR)
+    opponentsImage=pieceCountTextFont.render(str(gameState.field.opponentPieces), True, OPPONENT_COLOR)
+    
+    screen.blit(yoursImage, grid.getReal((3-grid.getGridLen(yoursImage.get_width()),0)))
+    screen.blit(opponentsImage, grid.getReal((6.5-grid.getGridLen(opponentsImage.get_width()),0)))
+
             
-            
+    #draws the piece in hand at the center of the cursor position         
     if gameState.holdingPiece != 0:
-        mousePos = Input.mousePosition
-        gameState.holdingPiece.drawMe(screen, mousePos, grid.getRealLen(gameState.tileSize-0.5))
+        gameState.holdingPiece.drawMe(screen, (Input.mousePosition[0]-(grid.getRealLen(gameState.tileSize-0.5)//2),Input.mousePosition[1]-(grid.getRealLen(gameState.tileSize-0.5)//2)), grid.getRealLen(gameState.tileSize-0.5))
+
+
+    '''changes the cursor'''
+    #if the user is holding a piece in hand
+    if Input.isHolding:
+
+        holdingCursor= pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_SIZEALL)
+        pygame.mouse.set_cursor(holdingCursor)
+
+    elif gameState.turnCycleStep == 0 : #if its the users turn to select a piece
+        #If they are hovering a piece in hand
+        if hoveringHand != -1: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
+        
+        else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
+
+    #the cursor when it isn't the users turn
+    else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_CROSSHAIR))
+
+    
+
+    
+  
+        
 
 
 
