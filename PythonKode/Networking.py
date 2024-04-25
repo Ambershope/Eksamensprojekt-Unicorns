@@ -12,7 +12,7 @@ class NetConnecter():
     '''
     This class handels Networking in our game, \nHere we can open ports and connect to ports on certain addresses
     '''
-    def __init__(self, port = 36563):
+    def __init__(self, port = 69420):
         self.port = port
         self.socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socketUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -167,9 +167,6 @@ class NetConnecter():
         '''
         This function connects the TCP socket to the port.
         '''
-        threading.Thread(target=self.connectTCPPortThread, args=[portAddress], daemon=True).start()
-
-    def connectTCPPortThread(self, portAddress):
         print(portAddress)
         try:
             self.socketTCP.connect(portAddress)
@@ -179,6 +176,18 @@ class NetConnecter():
         except:
             print("Port not open on", portAddress)
             return 1
+        # threading.Thread(target=self.connectTCPPortThread, args=[portAddress], daemon=True).start()
+
+    # def connectTCPPortThread(self, portAddress):
+    #     print(portAddress)
+    #     try:
+    #         self.socketTCP.connect(portAddress)
+    #         print(portAddress, self.port)
+    #         self.reciveTCPMessage()
+    #         return 0
+    #     except:
+    #         print("Port not open on", portAddress)
+    #         return 1
 
 
 

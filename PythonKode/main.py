@@ -262,6 +262,7 @@ def game():
 def attack():
     if gameState.newestPiece != (-1,-1):
         attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
+        print(attackingPiece)
         distance = attackingPiece.persuasionRange #normally 1 sometimes 2
         directionCords =(0*distance,-1*distance)
 
