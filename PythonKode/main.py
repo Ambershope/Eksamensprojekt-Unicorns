@@ -226,26 +226,28 @@ def game():
         case -1: #(select fist player)
             # we gotta make it so the server randomly decides. for now you always start.
             # aka. bjørn plz fiks
-            decided=False
+            # decided=False
             if network.client: # du er selv host
-                if random.randint(0,1) == 1:
-                    youStart = True
-                else:
-                    youStart = False
+                if random.randint(0,1) == 1: 
+                    messageBool = True
+                    gameState.turnCycleStep = 7 # Enemy starts
+                else: 
+                    messageBool = False # You start
+                    gameState.newTurnStep()
                 
                 #send not youStart
-                decided=True
+                network.sendTCPMessage("GS:" + str(messageBool))
+                
+                # decided=True
                     
-            else:#modstanderen vælger hvem der starter
-                if "received stuff" == True:
-                    youStart="received"
-                    decided=True
+            # else: #modstanderen vælger hvem der starter
+            #     if "received stuff" == True:
+            #         youStart="received"
+            #         decided=True
 
-            if decided:
-                if youStart:
-                    gameState.newTurnStep()
-                else:
-                    gameState.turnCycleStep = 7 #wait for opponent
+            # if decided:
+            #     if youStart: gameState.newTurnStep()
+            #     else: gameState.turnCycleStep = 7 #wait for opponent
         
 
         case -2: #draw start hands of 5 pieces
@@ -360,7 +362,8 @@ def networkingReader(message: str):
         gameState.placePiece(receivedPieceCords)
         gameState.newTurnStep()
     elif message[0] == "SG":
-        pass
+        if message[1] == "True": gameState.newTurnStep()
+        else: gameState.turnCycleStep = 7
 
 def opponentJoinedGame():
     switchScreen("game")

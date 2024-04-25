@@ -143,6 +143,7 @@ class Piece:
             borderColor = OPPONENT_COLOR
         #draws the border
         pygame.draw.rect(gameScreen, borderColor, (realCords, (int(realSize), int(realSize))),int(realSize/20))
+        
 
         scaledTriangels=pygame.transform.scale(self.powerArrowSurface,(realSize+realSize//16,realSize+realSize//16))
         gameScreen.blit(scaledTriangels, (realCords[0]-realSize//32,realCords[1]-realSize//32))
