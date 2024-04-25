@@ -244,6 +244,8 @@ if __name__ == "__main__":
     root.mainloop()
     netCon.leaveServerLister()
     netCon.broadcastingUDP = False
+    netCon.socketTCP.shutdown()
+    netCon.socketUDP.shutdown()
     netCon.socketTCP.close()
     netCon.socketUDP.close()
     sleep(2)
