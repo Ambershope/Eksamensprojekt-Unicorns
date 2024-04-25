@@ -274,7 +274,7 @@ def attack():
 
             targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
             if targetPieceValue != 0:
-                if targetPieceValue.isYours == False:
+                if targetPieceValue.isYours != attackingPiece.isYours:
                     if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
                         gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
 
