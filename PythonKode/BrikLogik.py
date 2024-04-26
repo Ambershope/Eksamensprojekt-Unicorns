@@ -6,6 +6,18 @@ from Constants import *
 def tvearVektor(v:tuple | list):
     return (-v[1],v[0])
 
+def imageColorAdd(image: pygame.Surface, colorTarget: tuple[int]):
+    '''
+    Add color to a black and white image
+    '''
+    pixels = pygame.PixelArray(image)
+    for x in range(image.get_width()):
+        for y in range(image.get_height()):
+            colorBW = pygame.Color(*image.unmap_rgb(pixels[x][y]))
+            percentile = ((colorBW.r + colorBW.g + colorBW.b)/3)/255
+            pixels[x][y] = pygame.Color(int(colorTarget[0] * percentile), int(colorTarget[1] * percentile), int(colorTarget[2] * percentile))
+    pixels.close()
+
 class GameState:
     def __init__(self, field_, playerPile_):
         self.field=field_
@@ -50,6 +62,9 @@ class Piece:
         self.persuasion = [cardData[2], cardData[3], cardData[4], cardData[5]] #N E S W
         self.artworkPath = Database.pathToGameDataFile("Visuals\PieceArtwork", cardData[6], ".png")
         self.artwork = pygame.image.load(self.artworkPath)
+        self.Border = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Grey", ".png")).convert_alpha()
+        self.hueBorderAlly = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Blue_Turquise", ".png")).convert_alpha()
+        self.hueBorderOpponent = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Red_Green", ".png")).convert_alpha()
         self.effectId = cardData[7]
         self.flavorText = cardData[8]
         self.calculatePowerArrowSurface()
@@ -131,17 +146,19 @@ class Piece:
     def drawMe(self, gameScreen:pygame.Surface, realCords:tuple, realSize:float|int, neutralBorder:bool = False):
         #draws the artwork
         scaledArt=pygame.transform.scale(self.artwork,(realSize,realSize))
-        gameScreen.blit(scaledArt, realCords)
         
         #Decides the color of the border
         if neutralBorder:
-            borderColor = NEUTRAL_COLOR
+            border = self.Border
         elif self.isYours:
-            borderColor = YOUR_COLOR
+            border = self.hueBorderAlly
         else:
-            borderColor = OPPONENT_COLOR
-        #draws the border
-        pygame.draw.rect(gameScreen, borderColor, (realCords, (int(realSize), int(realSize))),int(realSize/20))
+            border = self.hueBorderOpponent
+
+        border = pygame.transform.scale(border, (realSize, realSize))
+        scaledArt.blit(border, (0, 0))
+        gameScreen.blit(scaledArt, realCords)
+        
         
 
         scaledTriangels=pygame.transform.scale(self.powerArrowSurface,(realSize+realSize//16,realSize+realSize//16))

@@ -298,11 +298,9 @@ Draws the game\n
     #the cursor when it isn't the users turn
     else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_CROSSHAIR))
 
-    
 
-    
-  
-        
+
+
 
 
 
