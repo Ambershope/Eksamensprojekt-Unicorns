@@ -25,7 +25,7 @@ def innitialise():
 
     cursor.execute('''INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES
                 (1, 'Totally unicorn', 3, 1, 0, 1, 'totallyUnicorn', 0, 'You can be anything you want to be!'),
-                (2, 'Fire Breathing Unicorn', 1, 3, 1, 2, 'FireBreathingUnicorn', 3, 'Refreshing in winter'),
+                (2, 'Fire Breathing Unicorn', 1, 3, 1, 2, 'FireBreathingUnicorn', 3, 'Attacks 2 tiles away'),
                 (3, 'Normie', 0, 0, 0, 0, 'Normiecorn', 1, 'Wait, jeg troede dette var lol'), 
                 (4, 'Coolicorn', 0, 1, 3, 1, 'CoolUnicorn', 0, '(⌐■_■)'), 
                 (5, 'Ice breathing Unicorn', 1, 2, 1, 3, 'FrostUnicorn', 0, 'Refreshing in summer'), 
