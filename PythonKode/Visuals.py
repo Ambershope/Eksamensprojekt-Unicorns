@@ -90,7 +90,7 @@ class LoadedVariabels:
         self.portFont = pygame.font.SysFont("corbel.ttf", int(grid.getRealLen(0.5)))
         self.fontColor = (0, 0, 0)
 
-'''We create a loader that can be called from other scirptis to load difrent classes'''
+'''We create a loader that can be called from other scripts to load different classes'''
 Loader = LoadedVariabels()
 
 def mainMenuDraw(Input, screen, grid):
@@ -144,6 +144,12 @@ def overlayDraw(Input, screen, grid):
 
     screen.blit(scaledImage, grid.getReal((31, 0)))
 
+<<<<<<< Updated upstream
+=======
+    
+
+
+>>>>>>> Stashed changes
     if Input.overlayOpen:
         #creates a dark seethroug layer that covers the entire screen
         alfaSurface=pygame.Surface(grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
