@@ -1,6 +1,6 @@
 import pygame
 import random
-import AiOpponent
+import PythonKode.Animations as Animations
 import BrikLogik
 import GameObjects
 import Database
@@ -72,6 +72,7 @@ def main():
         if screenSelector != "start" and screenSelector != "main menu":
             if overlay() == "close game":
                 return "close game"
+            
         if Input.quit == True:
             return "close game"
         
@@ -86,6 +87,8 @@ def main():
         else:
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
+        
+
 
         #draws the overlay on most screens
         if screenSelector != "start" and screenSelector != "main menu":
