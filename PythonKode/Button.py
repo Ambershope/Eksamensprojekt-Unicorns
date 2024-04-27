@@ -1,7 +1,7 @@
 import pygame
 
 
-class KnappeDetection:
+class ButtonDetection:
     def __init__(self):
         self.buttonCollisionTest
         self.knap

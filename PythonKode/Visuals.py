@@ -2,7 +2,7 @@ import pygame
 import Database
 from Constants import *
 from BrikLogik import GameState, Piece
-import Knapper
+import Button as Button
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
