@@ -1,6 +1,6 @@
 import pygame
 import random
-import PythonKode.Animations as Animations
+#import PythonKode.Animations as Animations
 import BrikLogik
 import GameObjects
 import Database

@@ -65,7 +65,7 @@ class LoadedVariabels:
         self.currentScreenLoaded = "none"
         pass
     def loadStartScreen(self, grid : Grid):
-        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
+        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","StartScreen", ".png"))
         self.backgroundImg = pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
         self.currentScreenLoaded = "start"
 
