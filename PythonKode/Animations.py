@@ -15,14 +15,15 @@ class Animation:
 
         if self.name == "ETB":
             self.maxTick = FPS*3
-            circleMoveAmmountMax=0.2
-            self.circleInfo = []
+            moveAmmountMax=0.35
+            self.heartInfo = []
             if self.customVariable:
-                self.color = pygame.color.Color(YOUR_COLOR)
+                self.image = pygame.image.load(pathToGameDataFile("Visuals\DevArt", "Heart", ".png")).convert_alpha()
             else:
-                self.color = pygame.color.Color(OPPONENT_COLOR)
-            for i in range (24):
-                self.circleInfo.append(((random.uniform(-1.0, 1.0), random.uniform(-1.0, 1.0)),(random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax), random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax))))
+                self.image = pygame.image.load(pathToGameDataFile("Visuals\DevArt", "Heart_red", ".png")).convert_alpha()
+            self.startHearts = 24
+            for i in range (self.startHearts):
+                self.heartInfo.append(((random.uniform(-1.0, 1.0), random.uniform(-1.0, 1.0)),(random.uniform(-moveAmmountMax, moveAmmountMax), random.uniform(-moveAmmountMax, moveAmmountMax))))
 
         elif self.name == "endGamePopUp":
             self.maxTick = FPS*8
@@ -61,17 +62,14 @@ class Animation:
         self.currentTick += 1
 
     def ETB(self, surface: pygame.surface, grid):
-        
-        circleRadius = grid.getRealLen(self.size)*0.125
-        self.color.a = self.linearFadeOf()
             
-        intermediateSurface= pygame.surface.Surface(surface.get_size(), pygame.SRCALPHA)
-        for circle in self.circleInfo:
-            pygame.draw.circle(intermediateSurface, self.color, (   (grid.getReal(self.gridCenter)[0] + (circle[0][0] + (circle[1][0] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5),     
-                                                                       (grid.getReal(self.gridCenter)[1] + (circle[0][1] + (circle[1][1] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5)), 
-                                                                    circleRadius)
-        surface.blit(intermediateSurface, (0,0))
-
+        imgScaled = pygame.transform.scale(self.image, grid.getRealLen((self.size*0.25, self.size*0.25)))
+        for heart in self.heartInfo:
+            for i in range (3):
+                surface.blit(imgScaled, (   (grid.getReal(self.gridCenter)[0] - grid.getRealLen(0) + (heart[0][0] + (heart[1][0] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5),     
+                                            (grid.getReal(self.gridCenter)[1] - grid.getRealLen(0) + (heart[0][1] + (heart[1][1] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5)) )
+        if self.startHearts-len(self.heartInfo) < self.currentTick *(self.startHearts/self.maxTick):
+            self.heartInfo.pop(0)
     def heartCloud(self, surface: pygame.surface, grid):
         modifier, type = self.heartSizeAndType()
         if type == 0:
@@ -101,7 +99,7 @@ class Animation:
         
 
     def linearFadeOf(self):
-        return int(self.currentTick*(255/self.maxTick))
+        return int(-self.currentTick*(255/self.maxTick)+255)
     
     def heartSizeAndType(self):
         type = self.currentTick//(self.maxTick/3)
