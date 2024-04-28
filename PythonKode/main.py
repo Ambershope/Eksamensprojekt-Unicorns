@@ -88,9 +88,17 @@ def main():
         else:
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
+
+        #draw animations
+        removeList=[]
+        for i in range(len(animationList)):
+            animationList[i].drawMe(screen, Grid)
+            if animationList[i].isOver():
+                removeList.append(i)
         
-        for animations in animationList:
-            animations.drawMe(screen, Grid)
+        for i in range (len(removeList)):
+            animationList.pop(removeList[i]+i)
+                
 
 
         #draws the overlay on most screens
