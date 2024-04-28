@@ -98,7 +98,7 @@ def main():
                 removeList.append(i)
         
         for i in range (len(removeList)):
-            del animationList.pop(removeList[i]-i)
+            animationList.pop(removeList[i]-i)
                 
 
 
@@ -128,6 +128,7 @@ def switchScreen(target: str) -> None:
     if screenSelector == "gamemode":
         Visuals.Loader.loadGamemodeScreen(Grid)
         network.serverLister()
+        
     
     elif screenSelector == "game":
         Visuals.Loader.loadGameScreen(Grid, gameState)
@@ -237,20 +238,25 @@ def game():
 
             else:
                 if gameState.field.yourPieces > gameState.field.opponentPieces:
+                    winState= "youWin"
                     #youWin
-                    pass
+                    
                 elif gameState.field.opponentPieces < gameState.field.yourPieces:
                     #opponentWins
-                    pass
+                    winState= "opponentWin"
+                    
                 else:
                     #no one wins
-                    pass
+                    winState= "draw"
+                
+                global animationList
+                animationList.append(Animations.Animation("endGamePopUp", winState, 6, (16,9)))
+                    
                 
 
-        case -1: #(select fist player)
-            # we gotta make it so the server randomly decides. for now you always start.
-            # aka. bjørn plz fiks
-            # decided=False
+        case -1: #(select first player)
+            
+
             if network.client: # du er selv host
                 if random.randint(0,1) == 1: 
                     messageBool = True
@@ -261,17 +267,6 @@ def game():
                 
                 #send not youStart
                 network.sendTCPMessage("GS:" + str(messageBool))
-                
-                # decided=True
-                    
-            # else: #modstanderen vælger hvem der starter
-            #     if "received stuff" == True:
-            #         youStart="received"
-            #         decided=True
-
-            # if decided:
-            #     if youStart: gameState.newTurnStep()
-            #     else: gameState.turnCycleStep = 7 #wait for opponent
         
 
         case -2: #draw start hands of 5 pieces
@@ -279,8 +274,6 @@ def game():
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
-            global animationList
-            animationList.append(Animations.Animation("ETB", [], gameState.tileSize, (Visuals.getGridTopLeftFromField(gameState.newestPiece)[0]+gameState.tileSize*0.5, Visuals.getGridTopLeftFromField(gameState.newestPiece)[1]+gameState.tileSize*0.5)))
             attack()
             gameState.newTurnStep()
             
@@ -288,25 +281,37 @@ def game():
     Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece, hoveringHand)
 
 def attack():
-    if gameState.newestPiece != (-1,-1):
-        attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
-        print(attackingPiece)
-        distance = attackingPiece.persuasionRange #normally 1 sometimes 2
-        directionCords =(0*distance,-1*distance)
+    global animationList
+    if gameState.newestPiece == (-1,-1): return False
 
-        for direction in range(4):
+    attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
+    
+    animationList.append(Animations.Animation("ETB", attackingPiece.isYours, gameState.tileSize, (Visuals.getGridTopLeftFromField(gameState.newestPiece, gameState.tileSize)[0]+(gameState.tileSize*0.5), Visuals.getGridTopLeftFromField(gameState.newestPiece, gameState.tileSize)[1]+(gameState.tileSize*0.5))))
 
-            if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
-                directionCords = BrikLogik.tvearVektor(directionCords)
-                continue
+    distance = attackingPiece.persuasionRange #normally 1 sometimes 2
+    directionCords =(0*distance,-1*distance)
 
-            targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
-            if targetPieceValue != 0:
-                if targetPieceValue.isYours != attackingPiece.isYours:
-                    if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
-                        gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
+    for direction in range(4):
 
+        if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
             directionCords = BrikLogik.tvearVektor(directionCords)
+            continue
+
+        targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
+        if targetPieceValue != 0:
+            if targetPieceValue.isYours != attackingPiece.isYours:
+                if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
+                    gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
+
+                    #animation "creation"
+                    if attackingPiece.isYours:
+                        fadeDirection="fadeToOpponent"
+                    else:
+                        fadeDirection="fadeToYou"
+                    topLeftCorner=Visuals.getGridTopLeftFromField((gameState.newestPiece[0]+directionCords[0],gameState.newestPiece[1]+directionCords[1] ), gameState.tileSize)
+                    animationList.append(Animations.Animation("heartCloud", fadeDirection, gameState.tileSize, (topLeftCorner[0]+(0.5*gameState.tileSize), topLeftCorner[1]+(0.5*gameState.tileSize) )))
+
+        directionCords = BrikLogik.tvearVektor(directionCords)
      
  
    
@@ -315,9 +320,8 @@ def startScreen():
     Stuff for while on the start screen should
     \nhappen within this function, including drawing it
     '''
-    if not Input.overlayOpen:
-        if Input.mouseLeftButtonClick == True:
-            switchScreen("main menu")
+    if Input.mouseLeftButtonClick == True:
+        switchScreen("main menu")
 
     Visuals.drawStartScreen(screen, Grid)
    
@@ -328,10 +332,9 @@ def mainMenu():
     Stuff for while on the main menu should
     \nhappen within this function, including drawing it
     '''
-    if not Input.overlayOpen:
-        if Input.mouseLeftButtonClick == True:
-            switchScreen("gamemode")
-    
+
+    if Input.mouseLeftButtonClick == True:
+        switchScreen("gamemode")
 
     Visuals.mainMenuDraw(Input, screen, Grid)
     
@@ -398,7 +401,6 @@ def opponentJoinedGame():
     print("An opponent has joined the game at ", network.client)
 
 pygame.init()
-#Initialization.innitialise()
 
 
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN, pygame.SRCALPHA)

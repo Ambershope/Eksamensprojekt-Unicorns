@@ -8,16 +8,37 @@ class Animation:
         self.name = name
         self.customVariable = customVariable
         self.gridCenter = gridCenter
+        self.currentTick = 1
+
+
+
         if self.name == "ETB":
-            self.maxTick = FPS*1
+            self.maxTick = FPS*1.5
+            circleMoveAmmountMax=0.2
+            self.circleInfo = []
+            if self.customVariable:
+                self.color = pygame.color.Color(YOUR_COLOR)
+            else:
+                self.color = pygame.color.Color(OPPONENT_COLOR)
+            for i in range (24):
+                self.circleInfo.append(((random.uniform(-1.0, 1.0), random.uniform(-1.0, 1.0)),(random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax), random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax))))
 
         elif self.name == "endGamePopUp":
             self.maxTick = FPS*8
-        elif self.name == "heartCloud":
-            self.maxTick = int(FPS*1.5)
-        self.currentTick = 1
+            if self.customVariable == "youWin":
+                self.image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "WinImage", ".png")).convert_alpha()
+            elif self.customVariable == "opponentWin":
+                self.image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "LoseImage", ".png")).convert_alpha()
+            elif self.customVariable == "draw":
+                self.image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "DrawImage", ".png")).convert_alpha()
+            width, height=self.image.get_size()
+            self.relation = width/height
+            self.scaledImage = 0
 
-    def drawStep(self, surface: pygame.surface, grid):
+        elif self.name == "heartCloud":
+            self.maxTick = int(FPS*2)
+
+    def drawMe(self, surface: pygame.surface, grid):
         match self.name:
             case "ETB": self.ETB(surface, grid)
             case "heartCloud": self.heartCloud(surface, grid)
@@ -26,18 +47,16 @@ class Animation:
         self.currentTick += 1
 
     def ETB(self, surface: pygame.surface, grid):
-        circleMoveAmmountMax=0.2
+        
         circleRadius = grid.getRealLen(self.size)*0.125
-        colorThisTick = (0,0,255, self.linearFadeOf()) 
-        if self.currentTick == 1:
-            for i in range (16):
-                self.customVariable.append((random.uniform(-1.0, 1.0), random.uniform(-1.0, 1.0)),(random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax), random.uniform(-circleMoveAmmountMax, circleMoveAmmountMax)))
-        for circleInfo in self.customVariable:
-            pygame.draw.circle(surface, colorThisTick, (   (grid.getReal(self.gridCenter)[0] + (circleInfo[0][0] + (circleInfo[1][0] * self.currentTick / self.maxTick) )*self.size*0.5),     
-                                                           (grid.getReal(self.gridCenter)[1] + (circleInfo[0][1] + (circleInfo[1][1] * self.currentTick / self.maxTick) )*self.size*0.5)), 
-                                                           circleRadius)
-
-    
+        self.color.a = self.linearFadeOf()
+            
+        intermediateSurface= pygame.surface.Surface(surface.get_size(), pygame.SRCALPHA)
+        for circle in self.circleInfo:
+            pygame.draw.circle(intermediateSurface, self.color, (   (grid.getReal(self.gridCenter)[0] + (circle[0][0] + (circle[1][0] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5),     
+                                                                       (grid.getReal(self.gridCenter)[1] + (circle[0][1] + (circle[1][1] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5)), 
+                                                                    circleRadius)
+        surface.blit(intermediateSurface, (0,0))
 
     def heartCloud(self, surface: pygame.surface, grid):
         if self.customVariable == "fadeToOpponent":
@@ -46,20 +65,14 @@ class Animation:
             pass
     
     def endGamePopUp(self, surface: pygame.surface, grid):
-        if self.customVariable == "youWin":
-            image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "WinImage", ".png")).convert_alpha()
-        elif self.customVariable == "opponentWin":
-            image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "LoseImage", ".png")).convert_alpha()
-        elif self.customVariable == "draw":
-            image=pygame.image.load(pathToGameDataFile("Visuals\DevArt", "DrawImage", ".png")).convert_alpha()
-        height, width=image.get_size()
-        relation = width/height
-
-        scaledImage = pygame.transform.scale(image, grid.getRealLen((self.size, self.size*relation)))
-        surface.blit(scaledImage, grid.getReal((self.gridCenter[0]-(self.size*0.5), self.gridCenter[1]-(self.size*relation*0.5))))
+        if self.scaledImage:
+            surface.blit(self.scaledImage, grid.getReal((self.gridCenter[0]-(self.size*self.relation*0.5), self.gridCenter[1]-(self.size*0.5))))
+        else:
+            self.scaledImage = pygame.transform.scale(self.image, grid.getRealLen((self.size*self.relation, self.size)))
+        
 
     def linearFadeOf(self):
-        return int((self.currentTick/self.maxTick)*255)
+        return int((self.maxTick/self.currentTick)*(255/self.maxTick))
     
     def ETBalfa(self):
         if self.currentTick >= self.maxTick/10*8:

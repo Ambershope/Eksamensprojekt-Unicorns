@@ -203,7 +203,7 @@ Draws the game\n
     for xField in range (gameState.field.fieldSize):
 
         for yField in range (gameState.field.fieldSize):
-            gridCords=getGridTopLeftFromField(xField, yField)
+            gridCords=getGridTopLeftFromField((xField, yField), gameState.tileSize)
             
             currentTileValue=gameState.field.tileField[xField][yField]
             currentPieceValue=gameState.field.pieceField[xField][yField]
