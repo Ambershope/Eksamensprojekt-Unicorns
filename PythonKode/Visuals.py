@@ -104,7 +104,10 @@ Draws the start screen\n
     
     screen.blit(img, ((grid.getRealLen(32) - img.get_width())/2, grid.getReal((0,1.5))[1]))
 
-
+def getGridTopLeftFromField(fieldCords: tuple | list, tileSize: int|float):
+    xGrid=(fieldCords[0]*tileSize)+7+((fieldCords[0]+1)*GRID_BETWEEN_TILES)
+    yGrid=(fieldCords[1]*tileSize)+((fieldCords[1]+1)*GRID_BETWEEN_TILES)
+    return (xGrid, yGrid)
 
 
 def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, servers: list[tuple]) -> list[tuple]:
@@ -198,23 +201,22 @@ Draws the game\n
 
     #for each location on the field, 
     for xField in range (gameState.field.fieldSize):
-        xGrid=(xField*gameState.tileSize)+7+((xField+1)*GRID_BETWEEN_TILES)
 
         for yField in range (gameState.field.fieldSize):
-            yGrid=(yField*gameState.tileSize)+((yField+1)*GRID_BETWEEN_TILES)
-
+            gridCords=getGridTopLeftFromField(xField, yField)
+            
             currentTileValue=gameState.field.tileField[xField][yField]
             currentPieceValue=gameState.field.pieceField[xField][yField]
 
             #place the appropriate tile
             if currentTileValue==0:
-                screen.blit(Loader.tile0Img, grid.getReal((xGrid, yGrid)))
+                screen.blit(Loader.tile0Img, grid.getReal(gridCords))
             else:
-                screen.blit(Loader.tile1Img, grid.getReal((xGrid, yGrid)))
+                screen.blit(Loader.tile1Img, grid.getReal(gridCords))
 
             #Draw the appropiate piece
             if currentPieceValue != 0:
-                currentPieceValue.drawMe(screen, grid.getReal((xGrid+0.25, yGrid+0.25)),grid.getRealLen(gameState.tileSize-0.5))
+                currentPieceValue.drawMe(screen, grid.getReal((gridCords[0]+0.25, gridCords[1]+0.25)),grid.getRealLen(gameState.tileSize-0.5))
     #draw the hand
     handInfoSize = 5
     for i in range (len(gameState.hand)+1):

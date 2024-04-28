@@ -87,17 +87,18 @@ def main():
             gamemodeSelect()
         else:
             #this should NOT happen
-            print("Error: screenSelector variable =",screenSelector)
+            print("Error: screenSelector variable =", screenSelector)
 
-        #draw animations
+        #draw animations, and remove animations that are over form the animationlist
         removeList=[]
         for i in range(len(animationList)):
             animationList[i].drawMe(screen, Grid)
+
             if animationList[i].isOver():
                 removeList.append(i)
         
         for i in range (len(removeList)):
-            animationList.pop(removeList[i]+i)
+            del animationList.pop(removeList[i]-i)
                 
 
 
@@ -278,6 +279,8 @@ def game():
             gameState.newTurnStep()
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+            global animationList
+            animationList.append(Animations.Animation("ETB", [], gameState.tileSize, (Visuals.getGridTopLeftFromField(gameState.newestPiece)[0]+gameState.tileSize*0.5, Visuals.getGridTopLeftFromField(gameState.newestPiece)[1]+gameState.tileSize*0.5)))
             attack()
             gameState.newTurnStep()
             
