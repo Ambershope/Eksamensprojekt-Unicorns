@@ -86,8 +86,8 @@ class Animation:
         heartScaled=pygame.transform.scale(heart, grid.getRealLen((self.size*modifier, self.size*modifier)))
         for heartInf in self.heartInfo:
             
-            cordsLeftCorner=(grid.getRealLen(heartInf[0][0]*self.size) - heartScaled.get_width()*0.5  + grid.getReal(self.gridCenter)[0] + grid.getRealLen(heartInf[1][0]*self.currentTick/self.maxTick),
-                             grid.getRealLen(heartInf[0][1]*self.size) - heartScaled.get_height()*0.5 + grid.getReal(self.gridCenter)[1] + grid.getRealLen(heartInf[1][1]*self.currentTick/self.maxTick))
+            cordsLeftCorner=(grid.getRealLen(heartInf[0][0]*self.size) - heartScaled.get_width()*0.5  + (grid.getReal(self.gridCenter)[0]-grid.getRealLen(self.size*0.5)) + grid.getRealLen(heartInf[1][0]*self.currentTick/self.maxTick),
+                             grid.getRealLen(heartInf[0][1]*self.size) - heartScaled.get_height()*0.5 + (grid.getReal(self.gridCenter)[1]-grid.getRealLen(self.size*0.5)) + grid.getRealLen(heartInf[1][1]*self.currentTick/self.maxTick))
             surface.blit(heartScaled, cordsLeftCorner)
             surface.blit(heartScaled, cordsLeftCorner)
             surface.blit(heartScaled, cordsLeftCorner)

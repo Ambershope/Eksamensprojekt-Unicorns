@@ -143,6 +143,7 @@ def game():
     Core game logic, called every frame while in game
     \nAlso calls drawGame()
     '''
+    global gameState
 
 
      #hovering detection
@@ -271,7 +272,7 @@ def game():
         
 
         case -2: #draw start hands of 5 pieces
-            global gameState
+            
             gameState = BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))
             gameState.fillHand()
             gameState.newTurnStep()
@@ -308,9 +309,9 @@ def attack():
 
                     #animation "creation"
                     if attackingPiece.isYours:
-                        fadeDirection="fadeToOpponent"
-                    else:
                         fadeDirection="fadeToYou"
+                    else:
+                        fadeDirection="fadeToOpponent"
                     topLeftCorner=Visuals.getGridTopLeftFromField((gameState.newestPiece[0]+directionCords[0],gameState.newestPiece[1]+directionCords[1] ), gameState.tileSize)
                     animationList.append(Animations.Animation("heartCloud", fadeDirection, gameState.tileSize, (topLeftCorner[0]+(0.5*gameState.tileSize), topLeftCorner[1]+(0.5*gameState.tileSize) )))
 
