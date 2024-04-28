@@ -88,6 +88,8 @@ def main():
             #this should NOT happen
             print("Error: screenSelector variable =",screenSelector)
         
+        for animations in animationList:
+            animations.drawMe(screen, Grid)
 
 
         #draws the overlay on most screens
@@ -406,7 +408,7 @@ with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settings
         if setting == "#!#\n": break
         elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
     print("Settings Loaded!")
-
+animationList = []
 switchScreen("start")
 main()
 network.shutdown()
