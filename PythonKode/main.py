@@ -1,12 +1,13 @@
 import pygame
 import random
-import PythonKode.Animations as Animations
+#import PythonKode.Animations as Animations
+import Animations
 import BrikLogik
 import GameObjects
 import Database
 import Networking
 import Initialization
-from Knapper import KnappeDetection
+from Button import ButtonDetection
 import Visuals
 from Constants import *
 
@@ -367,6 +368,7 @@ def overlay():
 def networkingReader(message: str):
     print(message)
     message = message.replace(" ", "")
+    message = message.strip()
     message = message.split(":")
     if message[0] == "ET":
         receivedPieceId = message[2]
@@ -375,7 +377,8 @@ def networkingReader(message: str):
         gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
         gameState.placePiece(receivedPieceCords)
         gameState.newTurnStep()
-    elif message[0] == "SG":
+    elif message[0] == "GS":
+        print(message[1])
         if message[1] == "True": gameState.newTurnStep()
         else: gameState.turnCycleStep = 6
 
@@ -397,7 +400,7 @@ screenSelector=""
 
 Input=Inputs()
 Grid=Visuals.Grid(screen)
-Knapperne = KnappeDetection()
+Knapperne = ButtonDetection()
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))

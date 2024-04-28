@@ -2,7 +2,7 @@ import pygame
 import Database
 from Constants import *
 from BrikLogik import GameState, Piece
-import Knapper
+import Button as Button
 class Grid:
     '''
     defines and calculates the size and location of the grid on a screen
@@ -65,7 +65,7 @@ class LoadedVariabels:
         self.currentScreenLoaded = "none"
         pass
     def loadStartScreen(self, grid : Grid):
-        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","PiceTest1", ".png"))
+        image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","StartScreen", ".png"))
         self.backgroundImg = pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
         self.currentScreenLoaded = "start"
 
@@ -160,7 +160,7 @@ def overlayDraw(Input, screen, grid):
         #creates the quit game button
         exitTextFont=pygame.font.SysFont(FONT, int(grid.gridSize*2))
         exitTextImage=exitTextFont.render("Exit?", True, "BLUE")
-        exitImage=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
+        exitImage=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitGameLarge", ".png"))
         scaledImage=pygame.transform.scale(exitImage, grid.getRealLen((8,1)))
         screen.blit(scaledImage, grid.getReal((12, 12)))
         screen.blit(exitTextImage, grid.getReal((14.5,8)))
@@ -298,11 +298,9 @@ Draws the game\n
     #the cursor when it isn't the users turn
     else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_CROSSHAIR))
 
-    
 
-    
-  
-        
+
+
 
 
 
