@@ -251,6 +251,7 @@ def game():
                 
                 global animationList
                 animationList.append(Animations.Animation("endGamePopUp", winState, 6, (16,9)))
+                switchScreen("main menu")
                     
                 
 
@@ -270,6 +271,8 @@ def game():
         
 
         case -2: #draw start hands of 5 pieces
+            global gameState
+            gameState = BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))
             gameState.fillHand()
             gameState.newTurnStep()
 
@@ -427,5 +430,8 @@ with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settings
 animationList = []
 switchScreen("start")
 main()
-network.shutdown()
+
+try:    network.shutdown()
+except: pass
+
 pygame.quit()

@@ -2,6 +2,7 @@ from Constants import *
 import pygame
 from Database import pathToGameDataFile
 import random
+import math
 class Animation:
     def __init__(self, name: str, customVariable, size: int | float, gridCenter : tuple | list) -> None:
         self.size = int(size)
@@ -13,7 +14,7 @@ class Animation:
 
 
         if self.name == "ETB":
-            self.maxTick = FPS*1.5
+            self.maxTick = FPS*3
             circleMoveAmmountMax=0.2
             self.circleInfo = []
             if self.customVariable:
@@ -36,7 +37,20 @@ class Animation:
             self.scaledImage = 0
 
         elif self.name == "heartCloud":
-            self.maxTick = int(FPS*2)
+            self.maxTick = int(FPS*4)
+
+            self.startHeart = pygame.image.load(pathToGameDataFile("Visuals\DevArt", "Heart", ".png")).convert_alpha() #it ryhmes lol
+            self.inbetweenHeart = pygame.image.load(pathToGameDataFile("Visuals\DevArt", "Heart_purpel", ".png")).convert_alpha()
+            self.endHeart =  pygame.image.load(pathToGameDataFile("Visuals\DevArt", "Heart_red", ".png")).convert_alpha()
+            if self.customVariable == "fadeToYou":
+                self.startHeart, self.endHeart = self.endHeart, self.startHeart
+
+            self.heartInfo=[]
+            for i in range (32):
+                offset=(random.uniform(0.0, 1.0), random.uniform(0.0, 1.0))
+                direction = (1/(0.5-offset[0])*0.2, 1/(0.5-offset[1])*0.2)
+                self.heartInfo.append((offset, direction)) 
+                                        
 
     def drawMe(self, surface: pygame.surface, grid):
         match self.name:
@@ -59,10 +73,25 @@ class Animation:
         surface.blit(intermediateSurface, (0,0))
 
     def heartCloud(self, surface: pygame.surface, grid):
-        if self.customVariable == "fadeToOpponent":
-            pass
-        elif self.customVariable == "fadeToYou":
-            pass
+        modifier, type = self.heartSizeAndType()
+        if type == 0:
+            heart = self.startHeart
+        elif type == 1:
+            heart = self.inbetweenHeart
+        elif type == 2:
+            heart = self.endHeart
+        else:
+            return False
+        
+        heartScaled=pygame.transform.scale(heart, grid.getRealLen((self.size*modifier, self.size*modifier)))
+        for heartInf in self.heartInfo:
+            
+            cordsLeftCorner=(grid.getRealLen(heartInf[0][0]*self.size) - heartScaled.get_width()*0.5  + grid.getReal(self.gridCenter)[0] + grid.getRealLen(heartInf[1][0]*self.currentTick/self.maxTick),
+                             grid.getRealLen(heartInf[0][1]*self.size) - heartScaled.get_height()*0.5 + grid.getReal(self.gridCenter)[1] + grid.getRealLen(heartInf[1][1]*self.currentTick/self.maxTick))
+            surface.blit(heartScaled, cordsLeftCorner)
+            surface.blit(heartScaled, cordsLeftCorner)
+            surface.blit(heartScaled, cordsLeftCorner)
+
     
     def endGamePopUp(self, surface: pygame.surface, grid):
         if self.scaledImage:
@@ -72,12 +101,15 @@ class Animation:
         
 
     def linearFadeOf(self):
-        return int((self.maxTick/self.currentTick)*(255/self.maxTick))
+        return int(self.currentTick*(255/self.maxTick))
     
-    def ETBalfa(self):
-        if self.currentTick >= self.maxTick/10*8:
-            return (1/self.currentTick)*255
-        else: return ((1/self.currentTick)*255)*1/abs(self.currentTick-self.maxTick)
+    def heartSizeAndType(self):
+        type = self.currentTick//(self.maxTick/3)
+        sizeMin, sizeMax = 0.2, 0.3
+        if type >=2:
+            sizeMin = 0
+        size = (sizeMax-sizeMin)*1/(self.currentTick%(self.maxTick/3)+1) + sizeMin 
+        return (size, type) 
     
     def isOver(self):
         if self.currentTick > self.maxTick:    
