@@ -65,9 +65,9 @@ class Animation:
             
         imgScaled = pygame.transform.scale(self.image, grid.getRealLen((self.size*0.25, self.size*0.25)))
         for heart in self.heartInfo:
-            for i in range (3):
-                surface.blit(imgScaled, (   (grid.getReal(self.gridCenter)[0] - grid.getRealLen(0) + (heart[0][0] + (heart[1][0] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5),     
-                                            (grid.getReal(self.gridCenter)[1] - grid.getRealLen(0) + (heart[0][1] + (heart[1][1] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5)) )
+            
+            surface.blit(imgScaled, (   (grid.getReal(self.gridCenter)[0] - grid.getRealLen(0) + (heart[0][0] + (heart[1][0] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5),     
+                                        (grid.getReal(self.gridCenter)[1] - grid.getRealLen(0) + (heart[0][1] + (heart[1][1] * self.currentTick / self.maxTick) )*grid.getRealLen(self.size)*0.5)) )
         if self.startHearts-len(self.heartInfo) < self.currentTick *(self.startHearts/self.maxTick):
             self.heartInfo.pop(0)
     def heartCloud(self, surface: pygame.surface, grid):
@@ -86,8 +86,6 @@ class Animation:
             
             cordsLeftCorner=(grid.getRealLen(heartInf[0][0]*self.size) - heartScaled.get_width()*0.5  + (grid.getReal(self.gridCenter)[0]-grid.getRealLen(self.size*0.5)) + grid.getRealLen(heartInf[1][0]*self.currentTick/self.maxTick),
                              grid.getRealLen(heartInf[0][1]*self.size) - heartScaled.get_height()*0.5 + (grid.getReal(self.gridCenter)[1]-grid.getRealLen(self.size*0.5)) + grid.getRealLen(heartInf[1][1]*self.currentTick/self.maxTick))
-            surface.blit(heartScaled, cordsLeftCorner)
-            surface.blit(heartScaled, cordsLeftCorner)
             surface.blit(heartScaled, cordsLeftCorner)
 
     
