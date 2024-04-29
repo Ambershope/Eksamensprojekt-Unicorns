@@ -31,11 +31,14 @@ class NetConnecter():
 
     # ----------   General functions   ----------
     def shutdown(self):
-        self.socketTCP.close()
-        self.socketUDP.close()
+        self.listerUDP = False
         try:  self.socketTCP.shutdown(0)
         except: pass
         try: self.socketUDP.shutdown(0)
+        except: pass
+        try: self.socketTCP.close()
+        except: pass
+        try: self.socketUDP.close()
         except: pass
 
 
