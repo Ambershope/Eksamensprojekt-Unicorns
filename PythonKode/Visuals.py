@@ -23,17 +23,20 @@ class Grid:
 
 
     
-    def getReal(self, gridCord=(0,0)):
+    def getReal(self, gridCord:tuple|list) -> tuple:
         '''
-        Turns a grid cordinate (0,0) into a real screen cordinate \nuses a tuple/list as input
+        Turns a grid coordinate (x, y) into a screen coordinate \nuses a tuple/list as input
         '''
         return ((gridCord[0] * self.gridSize + self.startX , gridCord[1] * self.gridSize + self.startY))
     
-    def getGrid(self, realCord=(0,0)):
+    def getGrid(self, realCord:tuple|list) -> tuple:
+        '''
+        Turns a screen coordinate (x, y) into a grid coordinate \nuses a tuple/list as input
+        '''
         return ((realCord[0]-self.startX)/self.gridSize,(realCord[1]-self.startY)/self.gridSize)
     
     def getRealLen(self, gridLength: int | float | tuple | list) -> int | float | list:
-        
+        '''returns the real length of any amount of grid lengths'''
         if type(gridLength) == list or type(gridLength) == tuple:
             returnList=[]
             for i in gridLength:
@@ -44,7 +47,7 @@ class Grid:
             return gridLength*self.gridSize
         
     def getGridLen(self, realLength: int | float | tuple | list) -> int | float | list:
-        
+        '''returns the grid length of any amount of real lengths'''
         if type(realLength) == list or type(realLength) == tuple:
             returnList=[]
             for i in realLength:
@@ -57,19 +60,21 @@ class Grid:
 class LoadedVariabels:
     '''
     A class for loading pictures into the game.
-    \n This allows us to optimize loading, so that we don't load every picture -
+    \nThis allows us to optimize loading, so that we don't load every picture -
     \nevery frame or store every picture in memory
     '''
     def __init__(self):
         '''This class doesn't need anything to be intizialised'''
         self.currentScreenLoaded = "none"
-        pass
+
     def loadStartScreen(self, grid : Grid):
+        '''loads the starting screen'''
         image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","StartScreen", ".png"))
         self.backgroundImg = pygame.transform.scale(image, grid.getRealLen((GRID_LENGTH_X,GRID_LENGTH_Y)))
         self.currentScreenLoaded = "start"
 
     def loadGameScreen(self, grid : Grid, gameState : GameState):
+        '''loads the game screen'''
         tile0ImgUnscaled=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt", "TileNotPlaceble", ".png"))
         self.tile0Img=pygame.transform.scale( tile0ImgUnscaled, grid.getRealLen((gameState.tileSize,gameState.tileSize)))
 
@@ -78,6 +83,7 @@ class LoadedVariabels:
         self.currentScreenLoaded = "game"
 
     def loadGamemodeScreen(self, grid: Grid):
+        '''loads the gamemode screen'''
         self.networksBackgroundText = "Hello World!"
         self.networksBackgroundSize = grid.getRealLen((10.667, 14.4))
         self.networksBackgroundPos = grid.getReal((20, 1.8))
@@ -101,10 +107,10 @@ Draws the start screen\n
     titleFont = pygame.font.SysFont(TITLE_FONT, int(grid.getRealLen(2)))
     img = titleFont.render(GAME_NAME, True, "white")
     
-    
     screen.blit(img, ((grid.getRealLen(32) - img.get_width())/2, grid.getReal((0,1.5))[1]))
 
 def getGridTopLeftFromField(fieldCords: tuple | list, tileSize: int|float):
+    '''returns the grid coordinate of a field position'''
     xGrid=(fieldCords[0]*tileSize)+7+((fieldCords[0]+1)*GRID_BETWEEN_TILES)
     yGrid=(fieldCords[1]*tileSize)+((fieldCords[1]+1)*GRID_BETWEEN_TILES)
     return (xGrid, yGrid)

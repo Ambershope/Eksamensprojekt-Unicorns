@@ -1,6 +1,5 @@
 import pygame
 import random
-#import PythonKode.Animations as Animations
 import Animations
 import BrikLogik
 import GameObjects
@@ -26,6 +25,9 @@ class Inputs:
         self.isHolding = False
 
     def update(self):
+        '''
+        gets new user inputs, and updates this class
+        '''
         self.frameCounter += 1
         self.mouseLeftButtonClick=False
         self.mousePosition=pygame.mouse.get_pos()
@@ -65,8 +67,10 @@ class Inputs:
 
 
 def main():
-    #main program loop
-    #Updates the input and calls either game() or startscreen() every frame
+    '''
+    main program loop
+    Updates the input and calls either game() or startscreen() every frame
+    '''
     while True:
         Input.update()
 
@@ -116,6 +120,10 @@ def main():
         pygame.display.update()
 
 def switchScreen(target: str) -> None:
+    '''
+    switches the active screen.
+    runs code for when leaving or entering
+    '''
     global screenSelector
     pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
     # Code that runs, when you leave a screen:
@@ -143,10 +151,9 @@ def game():
     Core game logic, called every frame while in game
     \nAlso calls drawGame()
     '''
-    global gameState
+    global gameState; global animationList
 
-
-     #hovering detection
+    #hovering detection
     gridMouse=Grid.getGrid(Input.mousePosition)
     hoveringHand = -1
     hoveringPiece = 0
@@ -250,7 +257,8 @@ def game():
                     #no one wins
                     winState= "draw"
                 
-                global animationList
+                
+                animationList=[]
                 animationList.append(Animations.Animation("endGamePopUp", winState, 6, (16,9)))
                 switchScreen("main menu")
                     
@@ -285,7 +293,12 @@ def game():
     Visuals.drawGame(Input, screen, Grid, gameState, hoveringPiece, hoveringHand)
 
 def attack():
+    '''
+    the code for a piece attacking its neighbors.
+    it also creates the animations
+    '''
     global animationList
+    #test if there is a new piece
     if gameState.newestPiece == (-1,-1): return False
 
     attackingPiece = gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]]
@@ -293,18 +306,19 @@ def attack():
     animationList.append(Animations.Animation("ETB", attackingPiece.isYours, gameState.tileSize, (Visuals.getGridTopLeftFromField(gameState.newestPiece, gameState.tileSize)[0]+(gameState.tileSize*0.5), Visuals.getGridTopLeftFromField(gameState.newestPiece, gameState.tileSize)[1]+(gameState.tileSize*0.5))))
 
     distance = attackingPiece.persuasionRange #normally 1 sometimes 2
-    directionCords =(0*distance,-1*distance)
+    directionCords =(0*distance,-1*distance) #the vektor for the attacking piece. starting direction is north
 
     for direction in range(4):
-
+        #if attacking over the edge of the map, pass to new direction
         if directionCords[0]+gameState.newestPiece[0] < 0 or directionCords[0]+gameState.newestPiece[0] >= gameState.field.fieldSize or directionCords[1]+gameState.newestPiece[1]< 0 or directionCords[1]+gameState.newestPiece[1] >= gameState.field.fieldSize:
             directionCords = BrikLogik.tvearVektor(directionCords)
             continue
 
         targetPieceValue = gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]]
-        if targetPieceValue != 0:
-            if targetPieceValue.isYours != attackingPiece.isYours:
-                if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]:
+        if targetPieceValue != 0: #if there is a piece on the target tile
+            if targetPieceValue.isYours != attackingPiece.isYours: #if the attacked piece is not on the same team as the attacker
+                if targetPieceValue.persuasion[direction-2] <= attackingPiece.persuasion[direction]: #check persuasion
+                    #change tile value
                     gameState.field.pieceField[gameState.newestPiece[0]+directionCords[0]][gameState.newestPiece[1]+directionCords[1]].isYours = attackingPiece.isYours
 
                     #animation "creation"

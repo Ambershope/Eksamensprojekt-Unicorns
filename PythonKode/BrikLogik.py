@@ -4,12 +4,15 @@ import pygame
 from Constants import *
 
 def tvearVektor(v:tuple | list):
+    '''
+    finder tværvektoren til en given vektor
+    '''
     return (-v[1],v[0])
-
+'''
 def imageColorAdd(image: pygame.Surface, colorTarget: tuple[int]):
-    '''
+    """
     Add color to a black and white image
-    '''
+    """
     pixels = pygame.PixelArray(image)
     for x in range(image.get_width()):
         for y in range(image.get_height()):
@@ -17,7 +20,7 @@ def imageColorAdd(image: pygame.Surface, colorTarget: tuple[int]):
             percentile = ((colorBW.r + colorBW.g + colorBW.b)/3)/255
             pixels[x][y] = pygame.Color(int(colorTarget[0] * percentile), int(colorTarget[1] * percentile), int(colorTarget[2] * percentile))
     pixels.close()
-
+'''
 class GameState:
     def __init__(self, field_, playerPile_):
         self.field=field_
@@ -33,6 +36,9 @@ class GameState:
         self.tileSize = (GRID_LENGTH_Y-1-((self.field.fieldSize-1)*GRID_BETWEEN_TILES))/self.field.fieldSize
         
     def newTurnStep(self):
+        '''
+        increments the turnCycleStep by 1
+        '''
         if self.turnCycleStep >= len(self.turnCycleTable)-1:
             self.turnCycleStep = 0
         else:
@@ -41,11 +47,18 @@ class GameState:
     
     
     def placePiece(self, fieldPosition : list | tuple):
+        '''
+        places the held piece on the specified field position,
+        also updates newestPiece 
+        '''
         self.field.pieceField[fieldPosition[0]][fieldPosition[1]] = self.holdingPiece
         self.holdingPiece = 0
         self.newestPiece=fieldPosition
 
     def fillHand(self):
+        '''
+        fills the players hand by drawing cards from the deck
+        '''
         for i in range (len(self.hand)):
             if self.hand[i] == 0:
                 self.hand[i] = Piece(self.playerPile.drawPiece())
@@ -59,7 +72,7 @@ class Piece:
         #print(self.pieceName)
         self.pieceId = pieceId_
         self.isYours = isYours_
-        self.persuasion = [cardData[2], cardData[3], cardData[4], cardData[5]] #N E S W
+        self.persuasion = [cardData[2], cardData[5], cardData[4], cardData[3]] #N W S E
         self.artworkPath = Database.pathToGameDataFile("Visuals\PieceArtwork", cardData[6], ".png")
         self.artwork = pygame.image.load(self.artworkPath)
         self.Border = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Grey", ".png")).convert_alpha()
@@ -79,7 +92,11 @@ class Piece:
         return str(self.pieceId)
     
     def calculatePowerArrowSurface(self):
-        
+        '''
+        Calculates the persuasion displaying triangles.\n 
+        It dose so by make-ing a surface, and stores it, so it can be displayed each turn, by drawMe().\n
+        If persuasion is updated, update this
+        '''
         #constants that can be changed
         triangleColor = LUKEWARM_PINK
         triangleSize = 16*4
@@ -103,7 +120,7 @@ class Piece:
         edgeCenterY = -(0.5*(pieceSize+edgeSize))
         edgeCenterX = 0
 
-    #actually calculete the triangle
+        #actually calculete the triangles
         self.listOfAllTriangles=[]
         #for each direction find the number of triangles needed
         for direction in range (len(self.persuasion)):
@@ -144,6 +161,9 @@ class Piece:
             pygame.draw.polygon(self.powerArrowSurface, "black", tri, 4)
     
     def drawMe(self, gameScreen:pygame.Surface, realCords:tuple, realSize:float|int, neutralBorder:bool = False):
+        '''
+        draws the piece on the given surface
+        '''
         #draws the artwork
         scaledArt=pygame.transform.scale(self.artwork,(realSize,realSize))
         
