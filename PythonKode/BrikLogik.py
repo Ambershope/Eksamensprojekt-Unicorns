@@ -8,19 +8,7 @@ def tvearVektor(v:tuple | list):
     finder tværvektoren til en given vektor
     '''
     return (-v[1],v[0])
-'''
-def imageColorAdd(image: pygame.Surface, colorTarget: tuple[int]):
-    """
-    Add color to a black and white image
-    """
-    pixels = pygame.PixelArray(image)
-    for x in range(image.get_width()):
-        for y in range(image.get_height()):
-            colorBW = pygame.Color(*image.unmap_rgb(pixels[x][y]))
-            percentile = ((colorBW.r + colorBW.g + colorBW.b)/3)/255
-            pixels[x][y] = pygame.Color(int(colorTarget[0] * percentile), int(colorTarget[1] * percentile), int(colorTarget[2] * percentile))
-    pixels.close()
-'''
+
 class GameState:
     def __init__(self, field_, playerPile_):
         self.field=field_

@@ -175,7 +175,7 @@ class NetConnecter():
             self.reciveTCPMessage()
         except: print("Server already open!")
 
-    def connectTCPPort(self, portAddress: tuple[str | int]):
+    def connectTCPPort(self, portAddress: tuple[str, int]):
         '''
         This function connects the TCP socket to the port.
         '''
@@ -188,19 +188,6 @@ class NetConnecter():
         except:
             print("Port not open on", portAddress)
             return 1
-        # threading.Thread(target=self.connectTCPPortThread, args=[portAddress], daemon=True).start()
-
-    # def connectTCPPortThread(self, portAddress):
-    #     print(portAddress)
-    #     try:
-    #         self.socketTCP.connect(portAddress)
-    #         print(portAddress, self.port)
-    #         self.reciveTCPMessage()
-    #         return 0
-    #     except:
-    #         print("Port not open on", portAddress)
-    #         return 1
-
 
 
 
@@ -257,26 +244,3 @@ if __name__ == "__main__":
     netCon.broadcastingUDP = False
     netCon.shutdown()
     sleep(2)
-
-''' Code that is no longer used '''
-
-# def connectTest(sock, addr, port):
-#     try:
-#         sock.connect((addr, port))
-#         print("Port " + str(port) + " open on address: " + addr)
-#     except:
-#         pass
-
-
-# def findPorts(port=35565):
-#     '''
-#     Finds a list of open ports on current internet
-#     \n*port is the port to search on. Default 35565.
-#     '''
-#     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#     ipconst = socket.gethostbyname(socket.gethostname()).split(".")
-#     ipconst = ipconst[0] + "." + ipconst[1]
-#     for i in range(256):
-#         for j in range(256):
-#             threading.Thread(target=connectTest, args=(sock, ipconst + ".{}.{}".format(i, j), port)).start()
-#     pass
