@@ -148,8 +148,8 @@ def switchScreen(target: str) -> None:
 
 def game():
     '''
-    Core game logic, called every frame while in game
-    \nAlso calls drawGame()
+Core game logic, called every frame while in game
+\nAlso calls drawGame()
     '''
     global gameState; global animationList
 
@@ -160,7 +160,7 @@ def game():
     isHoveringField = False
 
 
-    if gridMouse[0] <= 7 or gridMouse[0] >= 25: #hand left
+    if gridMouse[0] <= 7 or gridMouse[0] >= 25: # checks if player hand is left or right of the board
         handTileGrid = 5
         for i in range (len(gameState.hand)):
 
