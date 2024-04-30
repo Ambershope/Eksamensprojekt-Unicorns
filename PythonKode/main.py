@@ -428,6 +428,7 @@ network.foundOpponentFunk = opponentJoinedGame
 pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector=""
+animationList = []
 
 Input=Inputs()
 Grid=Visuals.Grid(screen)
@@ -436,13 +437,14 @@ Knapperne = ButtonDetection()
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))
 
+
 with open(Database.pathToGameDataFile("Databases", "Settings"), "r") as settingsFile:
     while True:
         setting = settingsFile.readline()
         if setting == "#!#\n": break
         elif setting.startswith("Name"): network.serverName = setting.split(":")[1].strip()
     print("Settings Loaded!")
-animationList = []
+
 switchScreen("start")
 main()
 
