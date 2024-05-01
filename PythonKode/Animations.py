@@ -38,6 +38,7 @@ class Animation:
             self.relation = width/height
             self.scaledImage = 0
 
+
         elif self.name == "heartCloud":
             self.maxTick = int(FPS*4)
 

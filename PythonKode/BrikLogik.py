@@ -1,5 +1,4 @@
 import Database
-from GameObjects import Field
 import pygame
 from Constants import *
 
@@ -8,16 +7,30 @@ def tvearVektor(v:tuple | list):
     finder tværvektoren til en given vektor
     '''
     return (-v[1],v[0])
-
+'''
+def imageColorAdd(image: pygame.Surface, colorTarget: tuple[int]):
+    """
+    Add color to a black and white image
+    """
+    pixels = pygame.PixelArray(image)
+    for x in range(image.get_width()):
+        for y in range(image.get_height()):
+            colorBW = pygame.Color(*image.unmap_rgb(pixels[x][y]))
+            percentile = ((colorBW.r + colorBW.g + colorBW.b)/3)/255
+            pixels[x][y] = pygame.Color(int(colorTarget[0] * percentile), int(colorTarget[1] * percentile), int(colorTarget[2] * percentile))
+    pixels.close()
+'''
 class GameState:
     def __init__(self, field_, playerPile_):
         self.field=field_
         self.playerPile=playerPile_
         self.turnCycleStep=-2
         self.hand=[0,0,0,0,0]
+        '''
         self.startCycle=["Draw Start Hands", "Select First Player"]
         self.turnCycleTable=["You Select Piece", "You Select Tile", "Send To Opponent", "Piece ETB (A)", "Test Win(A)", "Draw Card", 
                              "Wait For Opponent", "Piece ETB (B)", "Test Win (B)"]
+        '''
         self.holdingPiece = 0
         self.newestPiece = (-1,-1)
         
@@ -27,7 +40,7 @@ class GameState:
         '''
         increments the turnCycleStep by 1
         '''
-        if self.turnCycleStep >= len(self.turnCycleTable)-1:
+        if self.turnCycleStep >= 8:
             self.turnCycleStep = 0
         else:
             self.turnCycleStep += 1
@@ -63,7 +76,7 @@ class Piece:
         self.persuasion = [cardData[2], cardData[5], cardData[4], cardData[3]] #N W S E
         self.artworkPath = Database.pathToGameDataFile("Visuals\PieceArtwork", cardData[6], ".png")
         self.artwork = pygame.image.load(self.artworkPath)
-        self.Border = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Grey", ".png")).convert_alpha()
+        self.border = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Grey", ".png")).convert_alpha()
         self.hueBorderAlly = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Blue_Turquise", ".png")).convert_alpha()
         self.hueBorderOpponent = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Red_Green", ".png")).convert_alpha()
         self.effectId = cardData[7]
@@ -157,7 +170,7 @@ class Piece:
         
         #Decides the color of the border
         if neutralBorder:
-            border = self.Border
+            border = self.border
         elif self.isYours:
             border = self.hueBorderAlly
         else:
@@ -168,7 +181,6 @@ class Piece:
         gameScreen.blit(scaledArt, realCords)
         
         
-
         scaledTriangels=pygame.transform.scale(self.powerArrowSurface,(realSize+realSize//16,realSize+realSize//16))
         gameScreen.blit(scaledTriangels, (realCords[0]-realSize//32,realCords[1]-realSize//32))
 

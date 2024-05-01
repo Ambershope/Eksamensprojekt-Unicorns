@@ -287,7 +287,7 @@ Core game logic, called every frame while in game
 
         case -2: #draw start hands of 5 pieces
             
-            gameState = BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))
+            gameState = BrikLogik.GameState(GameObjects.Field(4),GameObjects.Pile("5 of everything"))
             gameState.fillHand()
             gameState.newTurnStep()
 
