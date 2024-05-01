@@ -230,9 +230,9 @@ Core game logic, called every frame while in game
         case  2: #send to opponent (send selection to opponent)
             network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
             if youStart == True:
-                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile " + str(gameState.newestPiece))
+                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
             else:
-                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile " + str(gameState.newestPiece))
+                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
 
             gameState.newTurnStep()
 
@@ -254,7 +254,7 @@ Core game logic, called every frame while in game
                     winState= "youWin"
                     #youWin
                     
-                elif gameState.field.opponentPieces < gameState.field.yourPieces:
+                elif gameState.field.yourPieces < gameState.field.opponentPieces:
                     #opponentWins
                     winState= "opponentWin"
                     
@@ -418,13 +418,12 @@ def networkingReader(message: str):
         receivedPieceCords = (int(tmp[0]), int(tmp[1]))
         gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
         gameState.placePiece(receivedPieceCords)
+        if youStart == False:
+            writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
+        else:
+            writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
         gameState.newTurnStep()
     elif message[0].find("GS")+1:
-        # if youStart == True:
-        #     writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
-        # else:
-        #     writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
-
         print(message[1])
         if message[1] == "True": 
             print("WHAT")
