@@ -229,11 +229,8 @@ Core game logic, called every frame while in game
 
         case  2: #send to opponent (send selection to opponent)
             network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
-            if youStart == True:
-                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
-            else:
-                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
-
+            writePieceETBToGamelog(True)
+            
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -418,10 +415,7 @@ def networkingReader(message: str):
         receivedPieceCords = (int(tmp[0]), int(tmp[1]))
         gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
         gameState.placePiece(receivedPieceCords)
-        if youStart == False:
-            writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
-        else:
-            writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
+        writePieceETBToGamelog(False)
         gameState.newTurnStep()
     elif message[0].find("GS")+1:
         print(message[1])
@@ -452,7 +446,14 @@ def createNewGamelog():
                 #gamelogNumber += 1
             #print("ikke fundet gamelog, men der var en fil der hed det")
             #"Game" + str(gamelogNumber)
-
+            
+def  writePieceETBToGamelog(boolValue):
+    global youStart
+    if youStart == boolValue:
+        player = "Player 1"
+    else:
+        player = "Player 2"
+    writeToGamelog(player+" places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
 
 def writeToGamelog(message : str):
     global currentGamelog
