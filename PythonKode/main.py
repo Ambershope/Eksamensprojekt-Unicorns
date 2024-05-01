@@ -230,9 +230,9 @@ Core game logic, called every frame while in game
         case  2: #send to opponent (send selection to opponent)
             network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
             if youStart == True:
-                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
             else:
-                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -290,7 +290,9 @@ Core game logic, called every frame while in game
             
             gameState = BrikLogik.GameState(GameObjects.Field(4),GameObjects.Pile("5 of everything"))
             gameState.fillHand()
+            createNewGamelog()
             gameState.newTurnStep()
+            
 
         case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
             attack()
@@ -418,9 +420,9 @@ def networkingReader(message: str):
         gameState.newTurnStep()
     elif message[0] == "GS":
         if youStart == True:
-            writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+            writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
         else:
-            writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+            writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
         print(message[1])
         if message[1] == "True": gameState.newTurnStep()
         else: gameState.turnCycleStep = 6
@@ -452,6 +454,7 @@ def createNewGamelog():
 
 
 def writeToGamelog(message : str):
+    global currentGamelog
     gamelog = open(currentGamelog, "w")
     gamelog.write(message + "\n")
     gamelog.close()
