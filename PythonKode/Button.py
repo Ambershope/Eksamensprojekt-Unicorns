@@ -25,8 +25,3 @@ class ButtonDetection:
         if input.mouseLeftButtonClick and not self.buttonCollisionTest(cornorButtonPositionA = CornerA, cornorButtonPositionB = CornerB):
             return ReturnValue
         return False
-    
-
-
-    
-        
