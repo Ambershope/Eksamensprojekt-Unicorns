@@ -16,7 +16,8 @@ def pathToGameFolder(folder):
     relativePath = "\GameData\\" + folder
     return path + relativePath
 
-def databaseCardFinder(table, identifier, cardId):
+# find noget i databasen
+def databaseCardFinder(table, identifier : str, cardId : int | str):
     conn = sqlite3.connect(pathToGameFolder('Databases')+'/Database.db')
 
     # Create a cursor object
@@ -28,4 +29,3 @@ def databaseCardFinder(table, identifier, cardId):
     return rows
 
 
-# find noget i databasen

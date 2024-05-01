@@ -229,6 +229,10 @@ Core game logic, called every frame while in game
 
         case  2: #send to opponent (send selection to opponent)
             network.sendTCPMessage("ET:" + str(gameState.newestPiece[0]) + ";" + str(gameState.newestPiece[1]) + ":" + str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))
+            if youStart == True:
+                writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+            else:
+                writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
             gameState.newTurnStep()
 
         case  5: #draw back too 5 pieces (draw missing pieces at the end of turn)
@@ -266,15 +270,17 @@ Core game logic, called every frame while in game
 
         case -1: #(select first player)
             
-
             if network.client: # du er selv host
                 if random.randint(0,1) == 1: 
                     messageBool = True
                     gameState.turnCycleStep = 6 # Enemy starts
+                    youStart = False
                 else: 
                     messageBool = False # You start
+                    youStart = True
                     gameState.newTurnStep()
-                
+
+
                 #send not youStart
                 network.sendTCPMessage("GS:" + str(messageBool))
         
@@ -410,6 +416,10 @@ def networkingReader(message: str):
         gameState.placePiece(receivedPieceCords)
         gameState.newTurnStep()
     elif message[0] == "GS":
+        if youStart == True:
+            writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
+        else:
+            writeToGamelog("Player 1 places" + str(Database.databaseCardFinder("pieces", "pieceId",gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId)) + "on tile" + str(gameState.newestPiece[0],gameState.newestPiece[1]))
         print(message[1])
         if message[1] == "True": gameState.newTurnStep()
         else: gameState.turnCycleStep = 6
@@ -417,6 +427,30 @@ def networkingReader(message: str):
 def opponentJoinedGame():
     switchScreen("game")
     print("An opponent has joined the game at ", network.client)
+
+def writeToGamelog(message : str):
+    gamelog = open(currentGamelog, "w")
+    gamelog.write(message + "\n")
+    gamelog.close()
+    
+
+def createNewGamelog():
+    global currentGamelog
+    gamelogNumber = 1
+    while True:
+        if Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)):
+            gamelogNumber += 1
+        else:
+            try:
+                gamelogCreation = open("Game" + str(gamelogNumber),"x")
+                currentGamelog = gamelogCreation
+                gamelogCreation.close()
+                break
+            except:
+                print("ikke fundet gamelog, men der var en fil der hed det")
+
+
+
 
 pygame.init()
 
@@ -429,6 +463,8 @@ pygame.display.set_caption(CAPTION)
 clock = pygame.time.Clock()
 screenSelector=""
 animationList = []
+currentGamelog = ""
+youStart = True
 
 Input=Inputs()
 Grid=Visuals.Grid(screen)
