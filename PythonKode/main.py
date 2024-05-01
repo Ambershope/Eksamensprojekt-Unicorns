@@ -454,16 +454,16 @@ def createNewGamelog():
     global currentGamelog
     gamelogNumber = 1
     while True:
-        if Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)):
+        try:
+            gamelogCreation = open("Game" + str(gamelogNumber),"x")
+            currentGamelog = gamelogCreation
+            gamelogCreation.close()
+            break
+        except:
             gamelogNumber += 1
-        else:
-            try:
-                gamelogCreation = open("Game" + str(gamelogNumber),"x")
-                currentGamelog = gamelogCreation
-                gamelogCreation.close()
-                break
-            except:
-                print("ikke fundet gamelog, men der var en fil der hed det")
+            #if Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)):
+                #gamelogNumber += 1
+            #print("ikke fundet gamelog, men der var en fil der hed det")
 
 
 def writeToGamelog(message : str):
