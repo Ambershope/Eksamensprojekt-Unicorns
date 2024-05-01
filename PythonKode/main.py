@@ -455,7 +455,7 @@ def createNewGamelog():
     gamelogNumber = 1
     while True:
         try:
-            gamelogCreation = open("Game" + str(gamelogNumber),"x")
+            gamelogCreation = open(Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)),"x")
             currentGamelog = gamelogCreation
             gamelogCreation.close()
             break
@@ -464,6 +464,7 @@ def createNewGamelog():
             #if Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)):
                 #gamelogNumber += 1
             #print("ikke fundet gamelog, men der var en fil der hed det")
+            #"Game" + str(gamelogNumber)
 
 
 def writeToGamelog(message : str):
