@@ -151,7 +151,7 @@ def game():
 Core game logic, called every frame while in game
 \nAlso calls drawGame()
     '''
-    global gameState; global animationList
+    global gameState; global animationList; global youStart
 
     #hovering detection
     gridMouse=Grid.getGrid(Input.mousePosition)
@@ -272,7 +272,7 @@ Core game logic, called every frame while in game
             
             if network.client: # du er selv host
                 if random.randint(0,1) == 1: 
-                    global youStart
+                    
                     messageBool = True
                     gameState.turnCycleStep = 6 # Enemy starts
                     youStart = False
