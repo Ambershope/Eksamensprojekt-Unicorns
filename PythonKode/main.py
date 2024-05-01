@@ -423,7 +423,7 @@ def networkingReader(message: str):
         gameState.holdingPiece = BrikLogik.Piece(receivedPieceId, False)
         gameState.placePiece(receivedPieceCords)
         gameState.newTurnStep()
-    elif message[0] == "GS":
+    elif message[0].find("GS")+1:
         if youStart == True:
             writeToGamelog("Player 2 places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))) + "on tile (" + str(gameState.newestPiece[0]) + "," + str(gameState.newestPiece[1]) + ")")
         else:
