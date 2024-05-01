@@ -365,7 +365,7 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     # if not Input.overlayOpen:
     #     if Input.mouseLeftButtonClick == True:
     #         switchScreen("game")
-    interatives = Visuals.gamemodeScreenDraw(Input, screen, Grid, network.openServers)
+    interatives = Visuals.gamemodeScreenDraw(screen, Grid, network.openServers)
     for tmp in interatives:
         if tmp[2].startswith("b"):
             if tmp[2].find("j")+1:
