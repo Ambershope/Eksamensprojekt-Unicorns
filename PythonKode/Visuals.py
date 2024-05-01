@@ -116,11 +116,10 @@ def getGridTopLeftFromField(fieldCords: tuple | list, tileSize: int|float):
     return (xGrid, yGrid)
 
 
-def gamemodeScreenDraw(Input, screen: pygame.surface.Surface, grid: Grid, servers: list[tuple]) -> list[tuple]:
+def gamemodeScreenDraw(screen: pygame.surface.Surface, grid: Grid, servers: list[tuple]) -> list[tuple]:
     '''
     Draws the select gamemode screen.\n
     '''
-    frameCounter = Input.frameCounter # Animations - tick
     returnlist = [] # List to return
     # Display background (Layer 1):
     screen.fill((150, 194, 145))
@@ -152,8 +151,6 @@ def overlayDraw(Input, screen, grid):
     scaledImage=pygame.transform.scale(image, (grid.getRealLen((1,1))))
 
     screen.blit(scaledImage, grid.getReal((31, 0)))
-
-    
 
 
     if Input.overlayOpen:
@@ -229,7 +226,7 @@ Draws the game\n
         drawYCorner = (handInfoSize*(i%3)) + (0.45*((i%3)+1)) + 1.1
         drawXCorner = 1 + ((i//3)*(18+7))
         if i < len(gameState.hand):
-            currentPieceValue= gameState.hand[i]
+            currentPieceValue = gameState.hand[i]
             if currentPieceValue != 0:
                 currentPieceValue.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(handInfoSize), True)
             else:
@@ -243,39 +240,29 @@ Draws the game\n
                 flavortextIteration = 0
 
 
-                x, y = grid.getReal((drawXCorner, drawYCorner))
-                xpos = x
-                ypos = y
+                flavorStartX, flavorStartY = grid.getReal((drawXCorner, drawYCorner))
+                xpos = flavorStartX
+                ypos = flavorStartY
                 sentenceWidth = 0
 
                 squareLength = grid.getRealLen(5)
                 flavorFont = pygame.font.SysFont(None,40)
                 spaceWidth = flavorFont.size(" ")[0]
+                wordHeight = flavorFont.size(" ")[1]
 
                 for flavortextIteration in range (len(flavortextList)):
                     flavortextRender = flavorFont.render(flavortextList[flavortextIteration],True,"BLACK")
                     wordWidth = flavortextRender.get_width()
-                    wordHeight= flavortextRender.get_height()
+                    #wordHeight= flavortextRender.get_height()
 
                     if sentenceWidth + wordWidth > squareLength:
-                        xpos = x
+                        xpos = flavorStartX
                         sentenceWidth = 0
                         ypos += wordHeight
                     
                     screen.blit(flavortextRender, (xpos + sentenceWidth,ypos))
                     sentenceWidth += wordWidth + spaceWidth
                     flavortextIteration += 1
-                
-
-                '''
-                Psudokode :))
-
-                Get size of boks (getReal/getRealLen?)
-
-                Lav en liste med ord fra flavorteksten (det kan man gøre ved at bruge flavortext.split)
-                
-                #hoveringPiece.drawMe(screen, grid.getReal((drawXCorner, drawYCorner)), grid.getRealLen(gameState.tileSize-1))
-                '''
     
     pieceCountTextFont=pygame.font.SysFont(FONT, int(grid.gridSize*1.8))
     yoursImage=pieceCountTextFont.render(str(gameState.field.yourPieces), True, YOUR_COLOR)
