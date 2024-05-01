@@ -455,8 +455,8 @@ def createNewGamelog():
     gamelogNumber = 1
     while True:
         try:
-            gamelogCreation = open(Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)),"x")
-            currentGamelog = gamelogCreation
+            currentGamelog = Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber))
+            gamelogCreation = open(currentGamelog,"x")
             gamelogCreation.close()
             break
         except:
