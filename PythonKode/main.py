@@ -272,6 +272,7 @@ Core game logic, called every frame while in game
             
             if network.client: # du er selv host
                 if random.randint(0,1) == 1: 
+                    global youStart
                     messageBool = True
                     gameState.turnCycleStep = 6 # Enemy starts
                     youStart = False
@@ -450,6 +451,10 @@ def createNewGamelog():
                 print("ikke fundet gamelog, men der var en fil der hed det")
 
 
+def writeToGamelog(message : str):
+    gamelog = open(currentGamelog, "w")
+    gamelog.write(message + "\n")
+    gamelog.close()
 
 
 pygame.init()
