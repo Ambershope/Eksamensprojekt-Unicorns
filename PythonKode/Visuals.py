@@ -191,18 +191,18 @@ def drawGame(Input, screen : pygame.surface, grid, gameState:GameState, hovering
     '''
 Draws the game\n
     '''
-
+    # the background
     screen.fill(SUNSHINE)
 
-    #draw the facy top infobar
+    # draws the top pink bar (the place with score info)
     pygame.draw.rect(screen, PINK, (grid.getReal((0,0)),grid.getRealLen((32,1.1))))
-    #draw field base
+    # draws the field background
     pygame.draw.rect(screen, BACKGROUND_COLOR, (grid.getReal((7,0)),grid.getRealLen((18,18))))
 
     
-    #draw field
+    # draw field
 
-    #for each location on the field, 
+    # for each location on the field, 
     for xField in range (gameState.field.fieldSize):
 
         for yField in range (gameState.field.fieldSize):
@@ -211,16 +211,16 @@ Draws the game\n
             currentTileValue=gameState.field.tileField[xField][yField]
             currentPieceValue=gameState.field.pieceField[xField][yField]
 
-            #place the appropriate tile
+            # place the appropriate tile
             if currentTileValue==0:
                 screen.blit(Loader.tile0Img, grid.getReal(gridCords))
             else:
                 screen.blit(Loader.tile1Img, grid.getReal(gridCords))
 
-            #Draw the appropiate piece
+            # Draw the appropiate piece
             if currentPieceValue != 0:
                 currentPieceValue.drawMe(screen, grid.getReal((gridCords[0]+0.25, gridCords[1]+0.25)),grid.getRealLen(gameState.tileSize-0.5))
-    #draw the hand
+    # draw the hand
     handInfoSize = 5
     for i in range (len(gameState.hand)+1):
         drawYCorner = (handInfoSize*(i%3)) + (0.45*((i%3)+1)) + 1.1
@@ -253,7 +253,7 @@ Draws the game\n
                 for flavortextIteration in range (len(flavortextList)):
                     flavortextRender = flavorFont.render(flavortextList[flavortextIteration],True,"BLACK")
                     wordWidth = flavortextRender.get_width()
-                    #wordHeight= flavortextRender.get_height()
+                    # wordHeight= flavortextRender.get_height()
 
                     if sentenceWidth + wordWidth > squareLength:
                         xpos = flavorStartX
@@ -272,25 +272,25 @@ Draws the game\n
     screen.blit(opponentsImage, grid.getReal((6.5-grid.getGridLen(opponentsImage.get_width()),0)))
 
             
-    #draws the piece in hand at the center of the cursor position         
+    # draws the piece in hand at the center of the cursor position         
     if gameState.holdingPiece != 0:
         gameState.holdingPiece.drawMe(screen, (Input.mousePosition[0]-(grid.getRealLen(gameState.tileSize-0.5)//2),Input.mousePosition[1]-(grid.getRealLen(gameState.tileSize-0.5)//2)), grid.getRealLen(gameState.tileSize-0.5))
 
 
     '''changes the cursor'''
-    #if the user is holding a piece in hand
+    # if the user is holding a piece in hand
     if Input.isHolding:
 
         holdingCursor= pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_SIZEALL)
         pygame.mouse.set_cursor(holdingCursor)
 
-    elif gameState.turnCycleStep == 0 : #if its the users turn to select a piece
-        #If they are hovering a piece in hand
+    elif gameState.turnCycleStep == 0 : # if its the users turn to select a piece
+        # ff they are hovering a piece in hand
         if hoveringHand != -1: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
         
         else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW))
 
-    #the cursor when it isn't the users turn
+    # the cursor when it isn't the users turn
     else: pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_CROSSHAIR))
 
 

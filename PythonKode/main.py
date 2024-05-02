@@ -442,10 +442,6 @@ def createNewGamelog():
             break
         except:
             gamelogNumber += 1
-            #if Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber)):
-                #gamelogNumber += 1
-            #print("ikke fundet gamelog, men der var en fil der hed det")
-            #"Game" + str(gamelogNumber)
             
 def  writePieceETBToGamelog(boolValue):
     global youStart
