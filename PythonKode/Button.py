@@ -16,12 +16,12 @@ class ButtonDetection:
         return False
 
 
-    def knap(self,input, CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
+    def button(self,input, CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
         if input.mouseLeftButtonClick and self.buttonCollisionTest(cornorButtonPositionA = CornerA, cornorButtonPositionB = CornerB):
             return ReturnValue
         return False
     
-    def antiKnap(self,input,CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
+    def antiButton(self,input,CornerA: tuple, CornerB: tuple, ReturnValue: bool = True):
         if input.mouseLeftButtonClick and not self.buttonCollisionTest(cornorButtonPositionA = CornerA, cornorButtonPositionB = CornerB):
             return ReturnValue
         return False
