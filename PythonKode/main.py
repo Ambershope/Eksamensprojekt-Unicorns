@@ -375,13 +375,13 @@ def gamemodeSelect(): # Bjørn arbejder på den lige nu
     for tmp in interatives:
         if tmp[2].startswith("b"):
             if tmp[2].find("j")+1:
-                if Knapperne.button(Input, tmp[0], tmp[1]):
+                if buttons.button(Input, tmp[0], tmp[1]):
                     print(tmp[3])
                     if not(network.connectTCPPort(tmp[3])):
                         switchScreen("game")
                         print("Joined Game on port: {}".format(tmp[3]))
             elif tmp[2].find("h")+1:
-                if Knapperne.button(Input, tmp[0], tmp[1]):
+                if buttons.button(Input, tmp[0], tmp[1]):
                     print("Hosting a GAME!!!")
                     network.leaveServerLister()
                     network.broadcastServer()
@@ -392,13 +392,13 @@ def overlay():
     '''
     if Input.overlayOpen:
         
-        if Knapperne.antiButton(Input,Grid.getReal((10,4)),Grid.getReal((22,14))):
+        if buttons.antiButton(Input,Grid.getReal((10,4)),Grid.getReal((22,14))):
             Input.closeOverlay = True
         
-        if Knapperne.button(Input,Grid.getReal((12,12)),Grid.getReal((20,13))):
+        if buttons.button(Input,Grid.getReal((12,12)),Grid.getReal((20,13))):
             return "close game"
     else:
-        if Knapperne.button(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
+        if buttons.button(Input,Grid.getReal((31,0)),Grid.getReal((32,1))):
             Input.overlayOpen = True 
 
 
@@ -475,7 +475,7 @@ youStart = True
 
 Input=Inputs()
 Grid=Visuals.Grid(screen)
-Knapperne = ButtonDetection()
+buttons = ButtonDetection()
 
 #midlertidig gameState, ændres inden et spil startes
 gameState=BrikLogik.GameState(GameObjects.Field(1),GameObjects.Pile("5 of everything"))
