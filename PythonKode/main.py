@@ -417,7 +417,7 @@ def networkingReader(message: str):
         gameState.placePiece(receivedPieceCords)
         writePieceETBToGamelog(False)
         gameState.newTurnStep()
-    elif message[0].find("GS")+1:
+    elif message[0] == "GS":
         print(message[1])
         if message[1] == "True": 
             print("WHAT")
