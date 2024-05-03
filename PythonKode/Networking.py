@@ -29,7 +29,7 @@ class NetConnecter():
         self.processFunk = lambda a: print(a)
         self.foundOpponentFunk = lambda: print("HAIY")
 
-    # ----------   General functions   ----------
+    # ----------   General methods   ----------
     def shutdown(self):
         '''
         En funktion til at slukke for socketsne, \n
@@ -48,7 +48,7 @@ class NetConnecter():
 
 
 
-    # ----------   UDP Port functions   ----------
+    # ----------   UDP Port methods   ----------
     def broadcastServer(self):
         '''
         This function starts a TCP server and then broadcast the ip, for this computer.\n
@@ -67,7 +67,6 @@ class NetConnecter():
         It is part of broadcastServer, and will crash the program if called.
         '''
         while self.broadcastingUDP:
-            # print(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName))
             self.socketUDP.sendto(str("O:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
             sleep(1.5)
         self.socketUDP.sendto(str("C:" + self.addr[0] + ":" + str(self.addr[1]) + ":" + self.serverName).encode("utf-8"), self.addrUDP)
@@ -123,7 +122,7 @@ class NetConnecter():
         print("Server stopped listening")
 
 
-    # ----------   TCP Port functions   ----------
+    # ----------   TCP Port methods   ----------
     def sendTCPMessage(self, message: str):
         '''
         Send message to the other player.
