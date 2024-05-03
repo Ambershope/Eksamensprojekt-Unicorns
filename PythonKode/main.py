@@ -369,16 +369,16 @@ def gamemodeSelect():
     \nhappen within this function, including drawing it.
     '''
     interactives = Visuals.gamemodeScreenDraw(screen, Grid, network.openServers)
-    for interactiveMessage in interactives:
-        if interactiveMessage[2].startswith("b"):
-            if interactiveMessage[2].find("j")+1:
-                if buttons.button(Input, interactiveMessage[0], interactiveMessage[1]):
-                    print(interactiveMessage[3])
-                    if not(network.connectTCPPort(interactiveMessage[3])):
+    for interactiveTuple in interactives:
+        if interactiveTuple[2].startswith("b"):
+            if interactiveTuple[2].find("j")+1:
+                if buttons.button(Input, interactiveTuple[0], interactiveTuple[1]):
+                    print(interactiveTuple[3])
+                    if not(network.connectTCPPort(interactiveTuple[3])):
                         switchScreen("game")
-                        print("Joined Game on port: {}".format(interactiveMessage[3]))
-            elif interactiveMessage[2].find("h")+1:
-                if buttons.button(Input, interactiveMessage[0], interactiveMessage[1]):
+                        print("Joined Game on port: {}".format(interactiveTuple[3]))
+            elif interactiveTuple[2].find("h")+1:
+                if buttons.button(Input, interactiveTuple[0], interactiveTuple[1]):
                     print("Hosting a GAME!!!")
                     network.leaveServerLister()
                     network.broadcastServer()
