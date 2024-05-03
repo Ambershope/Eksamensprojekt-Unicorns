@@ -363,14 +363,11 @@ def mainMenu():
     Visuals.mainMenuDraw(Input, screen, Grid)
     
 
-def gamemodeSelect(): # Bjørn arbejder på den lige nu
+def gamemodeSelect():
     '''
     Stuff for while on the gamemode selection screen should
-    \nhappen within this function, including drawing it
+    \nhappen within this function, including drawing it.
     '''
-    # if not Input.overlayOpen:
-    #     if Input.mouseLeftButtonClick == True:
-    #         switchScreen("game")
     interatives = Visuals.gamemodeScreenDraw(screen, Grid, network.openServers)
     for tmp in interatives:
         if tmp[2].startswith("b"):
