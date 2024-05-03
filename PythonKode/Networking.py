@@ -31,6 +31,10 @@ class NetConnecter():
 
     # ----------   General functions   ----------
     def shutdown(self):
+        '''
+        En funktion til at slukke for socketsne, \n
+        dette er anset for god stil og kan hjølpe med at undgå problemmer.
+        '''
         self.listerUDP = False
         try:  self.socketTCP.shutdown(0)
         except: pass
