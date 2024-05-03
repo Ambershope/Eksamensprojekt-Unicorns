@@ -246,7 +246,7 @@ Draws the game\n
                 sentenceWidth = 0
 
                 squareLength = grid.getRealLen(5)
-                flavorFont = pygame.font.SysFont(None,40)
+                flavorFont = pygame.font.SysFont(None,int(grid.getRealLen(0.65)))
                 spaceWidth = flavorFont.size(" ")[0]
                 wordHeight = flavorFont.size(" ")[1]
 

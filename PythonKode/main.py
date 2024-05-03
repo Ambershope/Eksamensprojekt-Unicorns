@@ -5,7 +5,7 @@ import BrikLogik
 import GameObjects
 import Database
 import Networking
-import Initialization
+#import Initialization
 from Button import ButtonDetection
 import Visuals
 from Constants import *
