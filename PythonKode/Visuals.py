@@ -84,7 +84,7 @@ class LoadedVariabels:
 
     def loadGamemodeScreen(self, grid: Grid):
         '''loads the gamemode screen'''
-        self.networksBackgroundText = "Hello World!"
+        self.networksBackgroundText = "Games on Lan:"
         self.networksBackgroundSize = grid.getRealLen((10.667, 14.4))
         self.networksBackgroundPos = grid.getReal((20, 1.8))
         self.networksBackground = pygame.transform.scale(pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","OpenNetworksBackground", ".png")), self.networksBackgroundSize)
