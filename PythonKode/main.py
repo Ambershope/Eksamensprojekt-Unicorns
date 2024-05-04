@@ -433,7 +433,9 @@ def createNewGamelog():
     gamelogNumber = 1
     while True:
         try:
+            # finds path to game + gamelog Number
             currentGamelog = Database.pathToGameDataFile("Gamelog","Game" + str(gamelogNumber))
+            # if there exists a file on path, error
             gamelogCreation = open(currentGamelog,"x")
             gamelogCreation.close()
             break
@@ -446,7 +448,7 @@ def  writePieceETBToGamelog(boolValue):
         player = "Player 1"
     else:
         player = "Player 2"
-    writeToGamelog(player+" places" + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
+    writeToGamelog(player+" places " + str(Database.databaseCardFinder("pieces", "pieceId",str(gameState.field.pieceField[gameState.newestPiece[0]][gameState.newestPiece[1]].pieceId))[0][1]) + "on tile " + str(gameState.newestPiece))
 
 def writeToGamelog(message : str):
     global currentGamelog
