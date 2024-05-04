@@ -442,9 +442,9 @@ def createNewGamelog():
         except:
             gamelogNumber += 1
             
-def  writePieceETBToGamelog(boolValue):
+def  writePieceETBToGamelog(playerBool):
     global youStart
-    if youStart == boolValue:
+    if youStart == playerBool:
         player = "Player 1"
     else:
         player = "Player 2"

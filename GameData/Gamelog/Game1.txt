@@ -1,0 +1,5 @@
+Player 1 places Sea Unicornon tile (4, 1)
+Player 2 places Sleepiecornon tile (4, 0)
+Player 1 places Ice breathing Unicornon tile (3, 0)
+Player 2 places Fire Breathing Unicornon tile (1, 0)
+Player 1 places Ice breathing Unicornon tile (0, 0)
