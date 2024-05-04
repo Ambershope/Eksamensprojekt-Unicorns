@@ -1,0 +1,2 @@
+Player 1 places Sleepiecornon tile (0, 1)
+Player 2 places Totally unicornon tile (1, 1)
