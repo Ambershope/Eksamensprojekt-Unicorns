@@ -18,14 +18,14 @@ def pathToGameFolder(folder):
 
 # find noget i databasen
 def databaseCardFinder(table, identifier : str, cardId : int | str):
-    conn = sqlite3.connect(pathToGameFolder('Databases')+'/Database.db')
+    databaseConnection = sqlite3.connect(pathToGameFolder('Databases')+'/Database.db')
 
     # Create a cursor object
-    cursor = conn.cursor()
+    cursor = databaseConnection.cursor()
     cursor.execute("SELECT * FROM " + table + " WHERE " + identifier + " == " + str(cardId))
     rows = cursor.fetchall()
     cursor.close()
-    conn.close()
+    databaseConnection.close()
     return rows
 
 

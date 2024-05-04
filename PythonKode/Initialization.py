@@ -2,10 +2,10 @@ import sqlite3
 import Database
 
 def innitialise():
-    conn = sqlite3.connect(Database.pathToGameFolder('Databases')+'/Database.db')
+    databaseConnection = sqlite3.connect(Database.pathToGameFolder('Databases')+'/Database.db')
 
     # Create a cursor object
-    cursor = conn.cursor()
+    cursor = databaseConnection.cursor()
 
     # Create a table
     cursor.execute('''CREATE TABLE IF NOT EXISTS pieces (
@@ -20,8 +20,7 @@ def innitialise():
                     flavorText TEXT)''')
 
     # Insert or update data into the table
-    # piece_data = (1, 'Fluttershy', 3, 1, 0, 1, 'Fluttershy_Main_Box', 0, 'Cute and bubbly')
-    # cursor.execute("INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", piece_data)
+    # piece_data = (pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText)
 
     cursor.execute('''INSERT OR REPLACE INTO pieces(pieceId, pieceName, north, east, south, west, artPath, effektId, flavorText) VALUES
                 (1, 'Totally unicorn', 3, 1, 0, 1, 'totallyUnicorn', 0, 'You can be anything you want to be!'),
@@ -55,10 +54,10 @@ def innitialise():
     # Template (id, 'Name', north, east, south, west, artpath, effektId, 'flavorText'),
 
     # Commit changes
-    conn.commit()
+    databaseConnection.commit()
 
     # Close cursor and connection
     cursor.close()
-    conn.close()
+    databaseConnection.close()
 if __name__== "__main__":
     innitialise()
