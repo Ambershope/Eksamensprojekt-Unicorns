@@ -55,7 +55,7 @@ class GameState:
     
 class Piece:
     def __init__ (self, pieceId_, isYours_=True):
-        cardData = Database.databaseCardFinder('pieces','pieceId',pieceId_)[0]
+        cardData = Database.databaseInnerJoinFinder('pieces','flavortextTable','pieceId',pieceId_,'flavortextId')[0]
         #print(cardData)
         self.pieceName = cardData[1]
         #print(self.pieceName)
@@ -68,7 +68,7 @@ class Piece:
         self.hueBorderAlly = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Blue_Turquise", ".png")).convert_alpha()
         self.hueBorderOpponent = pygame.image.load(Database.pathToGameDataFile("Visuals/DevArt", "HeartsBorder_Red_Green", ".png")).convert_alpha()
         self.effectId = cardData[7]
-        self.flavorText = cardData[8]
+        self.flavorText = cardData[10]
         self.calculatePowerArrowSurface()
 
         if self.effectId == 3:

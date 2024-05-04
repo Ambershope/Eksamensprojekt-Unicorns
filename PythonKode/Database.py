@@ -23,9 +23,23 @@ def databaseCardFinder(table, identifier : str, cardId : int | str):
     # Create a cursor object
     cursor = databaseConnection.cursor()
     cursor.execute("SELECT * FROM " + table + " WHERE " + identifier + " == " + str(cardId))
-    rows = cursor.fetchall()
+    row = cursor.fetchall()
     cursor.close()
     databaseConnection.close()
-    return rows
+    return row
+
+def databaseInnerJoinFinder(table1, table2, identifier : str, cardId : int | str, joinElement: int | str):
+    databaseConnection = sqlite3.connect(pathToGameFolder('Databases')+'/Database.db')
+
+    # Create a cursor object
+    cursor = databaseConnection.cursor()
+
+    cursor.execute("SELECT * FROM " + table1 + " INNER JOIN " + table2 + " ON " + table1 + "." + joinElement + "=" + table2 + "." + joinElement + " WHERE " + identifier + " == " + str(cardId))
+    row = cursor.fetchall()
+    cursor.close()
+    databaseConnection.close()
+    return row
+
+
 
 
