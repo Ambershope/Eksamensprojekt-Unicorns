@@ -41,18 +41,18 @@ def innitialise():
                 )
     
     cursor.execute('''INSERT OR REPLACE INTO flavortextTable(flavortextId, flavorText) VALUES
-                   
-                   (1, 'You can be anything you want to be!'),
-                   (2, 'Attacks 2 tiles away'),
-                   (3, 'Wait, jeg troede dette var lol'),
-                   (4, '*sunglasses*'),
-                   (5, 'Refreshing in summer'),
-                   (6, 'One of a kind'),
-                   (7, 'Mums!'),
-                   (8, 'Nimble like a cat, and sleepy too'),
-                   (9, 'Very nimble in the sea'),
-                   (10, 'Legally distinct'),
-                   (11, 'Twice as magical');''')
+                (1, 'You can be anything you want to be!'),
+                (2, 'Attacks 2 tiles away'),
+                (3, 'Wait, jeg troede dette var lol'),
+                (4, '*sunglasses*'),
+                (5, 'Refreshing in summer'),
+                (6, 'One of a kind'),
+                (7, 'Mums!'),
+                (8, 'Nimble like a cat, and sleepy too'),
+                (9, 'Very nimble in the sea'),
+                (10, 'Legally distinct'),
+                (11, 'Twice as magical');'''
+                )
     
     # (https://stockcake.com/i/majestic-horse-posing_720055_761979)
     # (https://stockcake.com/i/fiery-unicorn-blaze_234695_44744)

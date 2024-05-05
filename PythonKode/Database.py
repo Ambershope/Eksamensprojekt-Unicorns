@@ -33,7 +33,6 @@ def databaseInnerJoinFinder(table1, table2, identifier : str, cardId : int | str
 
     # Create a cursor object
     cursor = databaseConnection.cursor()
-
     cursor.execute("SELECT * FROM " + table1 + " INNER JOIN " + table2 + " ON " + table1 + "." + joinElement + "=" + table2 + "." + joinElement + " WHERE " + identifier + " == " + str(cardId))
     row = cursor.fetchall()
     cursor.close()

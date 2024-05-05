@@ -261,7 +261,7 @@ Core game logic, called every frame while in game
                 
                 
                 animationList=[]
-                animationList.append(Animations.Animation("endGamePopUp", winState, 6, (16,9)))
+                animationList.append(Animations.Animation(" ", winState, 6, (16,9)))
                 switchScreen("main menu")
                     
                 
