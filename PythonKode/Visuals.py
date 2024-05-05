@@ -145,7 +145,7 @@ def gamemodeScreenDraw(screen: pygame.surface.Surface, grid: Grid, servers: list
 
 def overlayDraw(Input, screen, grid):
     '''draws the overlay'''
-    #creates the bruger meny that opens the overlay
+    #creates the user menu that opens the overlay
 
     image=pygame.image.load(Database.pathToGameDataFile("Visuals\DevArt","ExitButton", ".png"))
     scaledImage=pygame.transform.scale(image, (grid.getRealLen((1,1))))

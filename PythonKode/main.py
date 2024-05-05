@@ -291,7 +291,7 @@ Core game logic, called every frame while in game
             gameState.newTurnStep()
             
 
-        case _ : #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
+        case 3 | 7: #gameState.turnCycleStep == 3 or 7 #place pieces on field etb A or B
             attack()
             gameState.newTurnStep()
             
