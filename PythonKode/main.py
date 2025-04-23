@@ -352,7 +352,7 @@ def startScreen():
 
 
 def mainMenu():
-    '''
+    ''' 
     Stuff for while on the main menu should
     \nhappen within this function, including drawing it
     '''

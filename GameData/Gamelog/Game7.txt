@@ -1,2 +1,0 @@
-Player 1 places Sea Unicornon tile (0, 0)
-Player 2 places Big Cornon tile (0, 1)
